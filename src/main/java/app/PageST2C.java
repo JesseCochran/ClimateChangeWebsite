@@ -20,10 +20,10 @@ import java.sql.Statement;
  * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
  * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
  */
-public class PageST2B implements Handler {
+public class PageST2C implements Handler {
 
     // URL of this page relative to http://localhost:7001/
-    public static final String URL = "/page2B.html";
+    public static final String URL = "/page2C.html";
 
     @Override
     public void handle(Context context) throws Exception {

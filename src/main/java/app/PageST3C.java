@@ -20,10 +20,10 @@ import java.sql.Statement;
  * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
  * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
  */
-public class PageST2B implements Handler {
+public class PageST3C implements Handler {
 
     // URL of this page relative to http://localhost:7001/
-    public static final String URL = "/page2B.html";
+    public static final String URL = "/page3C.html";
 
     @Override
     public void handle(Context context) throws Exception {
@@ -32,7 +32,7 @@ public class PageST2B implements Handler {
 
         // Add some Head information
         html = html + "<head>" +
-                "<title>Subtask 2.2</title>";
+                "<title>Subtask 3.2</title>";
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
@@ -60,7 +60,7 @@ public class PageST2B implements Handler {
         // Add header content block
         html = html + """
                     <div class='header'>
-                        <h1>Subtask 2.B</h1>
+                        <h1>Subtask 3.B</h1>
                     </div>
                 """;
 
@@ -69,7 +69,7 @@ public class PageST2B implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <p>Subtask 2.B page content</p>
+                <p>Subtask 3.B page content</p>
                 """;
 
         // Close Content div
