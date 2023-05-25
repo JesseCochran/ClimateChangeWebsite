@@ -42,11 +42,13 @@ public class PageST2B implements Handler {
         html = html + "<body>";
 
         // Add header content block
-        html = html + """
-                    <div class='header'>
-                        <h1>Climate Change Awareness</h1>
-                    </div>
-                """;
+        html = html
+                + """
+                            <div class='header'>
+                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                                Climate Change Awareness</h1>
+                            </div>
+                        """;
 
         // Add the topnav
         // This uses a Java v15+ Text Block
@@ -63,8 +65,6 @@ public class PageST2B implements Handler {
                     <a href='PageHelp.html'>Help Page</a>
                     </div>
                 """;
-
-
 
         // Add Div for page Content
         html = html + "<div class='content'>";
