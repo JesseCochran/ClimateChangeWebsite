@@ -41,6 +41,16 @@ public class PageIndex implements Handler {
         // Add the body
         html = html + "<body>";
 
+        // Add header content block
+        html = html + """
+            <div class='header'>
+                <h1>
+                    <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
+                    Homepage
+                </h1>
+            </div>
+        """;
+
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
@@ -52,17 +62,7 @@ public class PageIndex implements Handler {
                 <a href='page3A.html'>Sub Task 3.A</a>
                 <a href='page3B.html'>Sub Task 3.B</a>
             </div>
-        """;
-
-        // Add header content block
-        html = html + """
-            <div class='header'>
-                <h1>
-                    <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
-                    Homepage
-                </h1>
-            </div>
-        """;
+        """; 
 
         // Add Div for page Content
         html = html + "<div class='content'>";

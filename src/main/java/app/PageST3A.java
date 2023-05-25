@@ -41,6 +41,13 @@ public class PageST3A implements Handler {
         // Add the body
         html = html + "<body>";
 
+        // Add header content block
+        html = html + """
+            <div class='header'>
+                <h1>Subtask 3.A</h1>
+            </div>
+        """;
+
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
@@ -51,13 +58,6 @@ public class PageST3A implements Handler {
                 <a href='page2B.html'>Sub Task 2.B</a>
                 <a href='page3A.html'>Sub Task 3.A</a>
                 <a href='page3B.html'>Sub Task 3.B</a>
-            </div>
-        """;
-
-        // Add header content block
-        html = html + """
-            <div class='header'>
-                <h1>Subtask 3.A</h1>
             </div>
         """;
 
