@@ -17,6 +17,12 @@ body {
    background-color: #cccccc;
    color: #000000;
 }
+.title {
+   text-align: center;
+   padding: 10px;
+   background-color: #cccccc;
+   color: #000000;
+}
 
 .header h1 {
    font-size: 50px;
@@ -27,6 +33,12 @@ body {
 img.top-image {
    vertical-align: middle;
 }
+img.left-image {
+float: left;
+text-align: left;
+}
+
+
 
 /* CSS Layout from W3Schools: https://www.w3schools.com/css/css_templates.asp */
 /* Style the top navigation bar */

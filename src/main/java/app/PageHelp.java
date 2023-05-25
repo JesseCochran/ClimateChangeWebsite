@@ -31,6 +31,15 @@ public class PageHelp implements Handler {
         // Add the body
         html = html + "<body>";
 
+        html = html + """
+                    <div class='header'>
+                        <h1>
+                            <img src='logo.png' class='top-image' alt='RMIT logo' height='75' style='float: left;'>
+                            Help Page
+                        </h1>
+                    </div>
+                """;
+
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
@@ -50,7 +59,7 @@ public class PageHelp implements Handler {
         // Add header content block
         html = html + """
                     <div class='header'>
-                        <h1>Help Page</h1>
+                        <h2>Help Page</h1>
                     </div>
                 """;
 
