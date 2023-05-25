@@ -31,8 +31,8 @@ public class PageST2B implements Handler {
         String html = "<html>";
 
         // Add some Head information
-        html = html + "<head>" + 
-               "<title>Subtask 2.2</title>";
+        html = html + "<head>" +
+                "<title>Subtask 2.2</title>";
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
@@ -51,38 +51,49 @@ public class PageST2B implements Handler {
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
-            <div class='topnav'>
-                <a href='/'>Homepage</a>
-                <a href='mission.html'>Our Mission</a>
-                <a href='page2A.html'>Sub Task 2.A</a>
-                <a href='page2B.html'>Sub Task 2.B</a>
-                <a href='page3A.html'>Sub Task 3.A</a>
-                <a href='page3B.html'>Sub Task 3.B</a>
-            </div>
-        """;
+                    <div class='topnav'>
+                    <a href='/'>Homepage</a>
+                    <a href='mission.html'>Our Mission</a>
+                    <a href='page2A.html'>Sub Task 2.A</a>
+                    <a href='page2B.html'>Sub Task 2.B</a>
+                    <a href='page2C.html'>Sub Task 2.C</a>
+                    <a href='page3A.html'>Sub Task 3.A</a>
+                    <a href='page3B.html'>Sub Task 3.B</a>
+                    <a href='page3C.html'>Sub Task 3.C</a>
+                    <a href='PageHelp.html'>Help Page</a>
+                    </div>
+                """;
 
+<<<<<<< HEAD
+=======
+        // Add header content block
+        html = html + """
+                    <div class='header'>
+                        <h1>Subtask 2.B</h1>
+                    </div>
+                """;
+>>>>>>> 10686793b37851dbec2bd0dd44dc9ead415a2d56
 
         // Add Div for page Content
         html = html + "<div class='content'>";
 
         // Add HTML for the page content
         html = html + """
-            <p>Subtask 2.B page content</p>
-            """;
+                <p>Subtask 2.B page content</p>
+                """;
 
         // Close Content div
         html = html + "</div>";
 
         // Footer
         html = html + """
-            <div class='footer'>
-                <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-            </div>
-        """;
+                    <div class='footer'>
+                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
+                    </div>
+                """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
-        
 
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage

@@ -31,8 +31,8 @@ public class PageIndex implements Handler {
         String html = "<html>";
 
         // Add some Header information
-        html = html + "<head>" + 
-               "<title>Homepage</title>";
+        html = html + "<head>" +
+                "<title>Homepage</title>";
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
@@ -54,6 +54,7 @@ public class PageIndex implements Handler {
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
+<<<<<<< HEAD
             <div class='topnav'>
                 <a href='/'>Homepage</a>
                 <a href='mission.html'>Our Mission</a>
@@ -63,14 +64,38 @@ public class PageIndex implements Handler {
                 <a href='page3B.html'>Sub Task 3.B</a>
             </div>
         """; 
+=======
+                    <div class='topnav'>
+                    <a href='/'>Homepage</a>
+                    <a href='mission.html'>Our Mission</a>
+                    <a href='page2A.html'>Sub Task 2.A</a>
+                    <a href='page2B.html'>Sub Task 2.B</a>
+                    <a href='page2C.html'>Sub Task 2.C</a>
+                    <a href='page3A.html'>Sub Task 3.A</a>
+                    <a href='page3B.html'>Sub Task 3.B</a>
+                    <a href='page3C.html'>Sub Task 3.C</a>
+                    <a href='PageHelp.html'>Help Page</a>
+                    </div>
+                """;
+
+        // Add header content block
+        html = html + """
+                    <div class='header'>
+                        <h1>
+                            <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
+                            Homepage
+                        </h1>
+                    </div>
+                """;
+>>>>>>> 10686793b37851dbec2bd0dd44dc9ead415a2d56
 
         // Add Div for page Content
         html = html + "<div class='content'>";
 
         // Add HTML for the page content
         html = html + """
-            <p>Homepage content</p>
-            """;
+                <p>Homepage content</p>
+                """;
 
         // Get the ArrayList of Strings of all LGAs
         ArrayList<String> lgaNames = getLGAs2016();
@@ -91,20 +116,18 @@ public class PageIndex implements Handler {
 
         // Footer
         html = html + """
-            <div class='footer'>
-                <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-            </div>
-        """;
+                    <div class='footer'>
+                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
+                    </div>
+                """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
-
 
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
         context.html(html);
     }
-
 
     /**
      * Get the names of the LGAs in the database.
@@ -126,13 +149,13 @@ public class PageIndex implements Handler {
 
             // The Query
             String query = "SELECT * FROM LGA WHERE year='2016'";
-            
+
             // Get Result
             ResultSet results = statement.executeQuery(query);
 
             // Process all of the results
             while (results.next()) {
-                String name16  = results.getString("name");
+                String name16 = results.getString("name");
 
                 // Add the lga object to the array
                 lgas.add(name16);
