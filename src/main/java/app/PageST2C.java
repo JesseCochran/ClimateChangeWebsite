@@ -69,7 +69,7 @@ public class PageST2C implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <p>Subtask 2.B page content</p>
+                <p>Subtask 2.C page content</p>
                 """;
 
         html = html + "<form action='/page2C.html' method='post'>";
@@ -77,6 +77,11 @@ public class PageST2C implements Handler {
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year (Dropdown):</label>";
         html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<LGA> years = jdbc.getYears();
+        for (LGA year : years) {
+            html = html + "<option>" + year.getYear() + "</option>";
+        }
         html = html + "         <option>2010</option>";
         html = html + "         <option>2011</option>";
         html = html + "         <option>2012</option>";
