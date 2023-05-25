@@ -51,6 +51,7 @@ public class App {
         // app.post(PageMission.URL, new PageMission());
         // app.post(PageST2A.URL, new PageST2A());
         // app.post(PageST2B.URL, new PageST2B());
+        app.post(PageST2C.URL, new PageST2C());
         // app.post(PageST3A.URL, new PageST3A());
         // app.post(PageST3B.URL, new PageST3B());
     }

@@ -60,7 +60,7 @@ public class PageST2C implements Handler {
         // Add header content block
         html = html + """
                     <div class='header'>
-                        <h1>Subtask 2.B</h1>
+                        <h1>Subtask 2.B/EXAMPLE FOR NOW OF HOW TO DO DROP DOWNS</h1>
                     </div>
                 """;
 
@@ -72,6 +72,55 @@ public class PageST2C implements Handler {
                 <p>Subtask 2.B page content</p>
                 """;
 
+        html = html + "<form action='/page2C.html' method='post'>";
+
+        html = html + "   <div class='form-group'>";
+        html = html + "      <label for='StartYear_drop'>Select the start year (Dropdown):</label>";
+        html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
+        html = html + "         <option>2010</option>";
+        html = html + "         <option>2011</option>";
+        html = html + "         <option>2012</option>";
+        html = html + "      </select>";
+        html = html + "   </div>";
+
+        html = html + "   <div class='form-group'>";
+        html = html + "      <label for='EndYear_drop'>Select the end year (Dropdown):</label>";
+        html = html + "      <select id='EndYear_drop' name='EndYear_drop'>";
+        html = html + "         <option>2010</option>";
+        html = html + "         <option>2011</option>";
+        html = html + "         <option>2012</option>";
+        html = html + "         <option>2013</option>";
+        html = html + "      </select>";
+        html = html + "   </div>";
+        html = html + "   <button type='submit' class='btn btn-primary'>Submit Year Range</button>";
+
+        html = html + "</form>";
+
+        /*
+         * Get the Form Data
+         * from the drop down list
+         * Need to be Careful!!
+         * If the form is not filled in, then the form will return null!
+         */
+        String StartYear_drop = context.formParam("StartYear_drop");
+        // String movietype_drop = context.queryParam("movietype_drop");
+        if (StartYear_drop == null) {
+            // If NULL, nothing to show, therefore we make some "no results" HTML
+            html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+        } else {
+            // If NOT NULL, then lookup the movie by type!
+            html = html + outputData(StartYear_drop);
+        }
+
+        String EndYear_drop = context.formParam("EndYear_drop");
+        // String movietype_drop = context.queryParam("movietype_drop");
+        if (EndYear_drop == null) {
+            // If NULL, nothing to show, therefore we make some "no results" HTML
+            html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+        } else {
+            // If NOT NULL, then lookup the movie by type!
+            html = html + outputData(EndYear_drop);
+        }
         // Close Content div
         html = html + "</div>";
 
@@ -88,6 +137,30 @@ public class PageST2C implements Handler {
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
         context.html(html);
+    }
+
+    public String outputData(String Year) {
+        String html = "";
+        html = html + "<h2>" + Year + " Climate Data</h2>";
+
+        // 🚨 This block of code is for Pre-Req students.
+        // Altneratively we can use JDBCConnection to add HTML for the movies list
+        // Uncomment the code to use the JDBCConnection Objects example(s)
+
+        // THIS IS FOR THE DATA BASE CONNECTION
+        // JDBCConnection jdbc = new JDBCConnection();
+        // ArrayList<LGA> Climates = jdbc.getDataByYearRange(Year);
+        // html = html + "<h2>" +
+        // Year +
+        // " Movies with Years (from JDBCConnection)</h2>" +
+        // "<ul>";
+        // for (LGA Climate : Climates) {
+        // html = html + "<li>" + Climate.name + " was made in " + Climate.year +
+        // "</li>";
+        // }
+        // html = html + "</ul>";
+
+        return html;
     }
 
 }
