@@ -41,6 +41,13 @@ public class PageMission implements Handler {
         // Add the body
         html = html + "<body>";
 
+        // Add header content block
+        html = html + """
+            <div class='header'>
+                <h1>Our Mission</h1>
+            </div>
+        """;
+
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
@@ -57,6 +64,8 @@ public class PageMission implements Handler {
                     </div>
                 """;
 
+<<<<<<< HEAD
+=======
         // Add header content block
         html = html + """
                     <div class='header'>
@@ -64,6 +73,7 @@ public class PageMission implements Handler {
                     </div>
                 """;
 
+>>>>>>> 10686793b37851dbec2bd0dd44dc9ead415a2d56
         // Add Div for page Content
         html = html + "<div class='content'>";
 
