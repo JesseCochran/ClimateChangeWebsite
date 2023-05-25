@@ -109,10 +109,25 @@ public class PageHelp implements Handler {
 
         // Advanced features section of the page
         html = html + """
-                    <section id='advanced-section'>
-                        <h2>Advanced Features</h2>
+                <section id='advanced-section'>
+                <h2>Advanced Features</h2>
+                <h3>Keyboard Shortcuts</h3>
+                    <table>
+                      <tr>
+                        <th>Description</th>
+                        <th>Button Press</th>
+                      </tr>
+                      <tr>
+                        <td>Clear All</td>
+                        <td>Press C</td>
+                      </tr>
+                      <tr>
+                        <td>Scroll to a certain Page</td>
+                        <td>Press 1, 2, 3... 5</td>
+                      </tr>
+                    </table>
                     </section>
-                """;
+                                    """;
 
         // Add Div for page Content
         html = html + "<div class='content'>";
