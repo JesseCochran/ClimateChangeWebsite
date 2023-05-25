@@ -73,6 +73,7 @@ public class PageHelp implements Handler {
         html = html + """
                     <section id='help-section'>
                         <h2>Help</h2>
+                        <p>Steps to help you around the website:  </p>
 
                     </section>
                 """;
