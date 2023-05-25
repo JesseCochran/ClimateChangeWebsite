@@ -41,12 +41,12 @@ public class PageIndex implements Handler {
         // Add the body
         html = html + "<body>";
 
-        // Add header content block
+        // Add header content block with logo on the right
         html = html + """
                     <div class='header'>
                         <h1>
-                            <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
-                            Homepage
+                            <img src='logo.png' class='top-image' alt='RMIT logo' height='75' style='float: left;'>
+                            Climate Change Awareness
                         </h1>
                     </div>
                 """;
@@ -67,29 +67,20 @@ public class PageIndex implements Handler {
                 </div>
                         """;
 
-        // Add header content block
-        html = html + """
-                    <div class='header'>
-                        <h1>
-                            <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
-                            Homepage
-                        </h1>
-                    </div>
-                """;
 
         // Add Div for page Content
         html = html + "<div class='content'>";
 
         // Add HTML for the page content
         html = html + """
-                <p>Homepage content</p>
+                <h1>Homepage content</h1>
                 """;
 
         // Get the ArrayList of Strings of all LGAs
         ArrayList<String> lgaNames = getLGAs2016();
 
         // Add HTML for the LGA list
-        html = html + "<h1>All 2016 LGAs in the CTG database</h1>" + "<ul>";
+        html = html + "<h2>All 2016 LGAs in the CTG database</h2>" + "<ul>";
 
         // Finally we can print out all of the LGAs
         for (String name : lgaNames) {
