@@ -41,6 +41,13 @@ public class PageST2C implements Handler {
         // Add the body
         html = html + "<body>";
 
+         // Add header content block
+         html = html + """
+            <div class='header'>
+                <h1>Subtask 3.C</h1>
+            </div>
+        """;
+
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
@@ -57,12 +64,6 @@ public class PageST2C implements Handler {
                     </div>
                 """;
 
-        // Add header content block
-        html = html + """
-                    <div class='header'>
-                        <h1>Subtask 2.B/EXAMPLE FOR NOW OF HOW TO DO DROP DOWNS</h1>
-                    </div>
-                """;
 
         // Add Div for page Content
         html = html + "<div class='content'>";

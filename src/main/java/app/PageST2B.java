@@ -64,12 +64,7 @@ public class PageST2B implements Handler {
                     </div>
                 """;
 
-        // Add header content block
-        html = html + """
-                    <div class='header'>
-                        <h1>Subtask 2.B</h1>
-                    </div>
-                """;
+
 
         // Add Div for page Content
         html = html + "<div class='content'>";
