@@ -16,6 +16,13 @@ body {
    text-align: center;
    background-color: #cccccc;
    color: #000000;
+   
+}
+.header img {
+   position: absolute;
+   left: 20;
+   top: 50;
+   z-index: 1; 
 }
 .title {
    text-align: center;
