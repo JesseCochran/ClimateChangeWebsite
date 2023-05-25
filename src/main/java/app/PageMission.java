@@ -44,7 +44,7 @@ public class PageMission implements Handler {
         // Add header content block
         html = html + """
                     <div class='header'>
-                        <h1>Our Mission</h1>
+                        <h1>Climate Change Awareness</h1>
                     </div>
                 """;
 
@@ -70,7 +70,7 @@ public class PageMission implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <p>Mission page content</p>
+                <h1>Mission page content</h1>
                 """;
 
         // This example uses JDBC to lookup the LGAs
