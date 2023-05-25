@@ -43,10 +43,10 @@ public class PageST3A implements Handler {
 
         // Add header content block
         html = html + """
-            <div class='header'>
-                <h1>Subtask 3.A</h1>
-            </div>
-        """;
+                    <div class='header'>
+                        <h1>Subtask 3.A</h1>
+                    </div>
+                """;
 
         // Add the topnav
         // This uses a Java v15+ Text Block
@@ -64,8 +64,6 @@ public class PageST3A implements Handler {
                     </div>
                 """;
 
-<<<<<<< HEAD
-=======
         // Add header content block
         html = html + """
                     <div class='header'>
@@ -73,7 +71,6 @@ public class PageST3A implements Handler {
                     </div>
                 """;
 
->>>>>>> 10686793b37851dbec2bd0dd44dc9ead415a2d56
         // Add Div for page Content
         html = html + "<div class='content'>";
 

@@ -43,40 +43,29 @@ public class PageIndex implements Handler {
 
         // Add header content block
         html = html + """
-            <div class='header'>
-                <h1>
-                    <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
-                    Homepage
-                </h1>
-            </div>
-        """;
+                    <div class='header'>
+                        <h1>
+                            <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
+                            Homepage
+                        </h1>
+                    </div>
+                """;
 
         // Add the topnav
         // This uses a Java v15+ Text Block
         html = html + """
-<<<<<<< HEAD
-            <div class='topnav'>
+                <div class='topnav'>
                 <a href='/'>Homepage</a>
                 <a href='mission.html'>Our Mission</a>
                 <a href='page2A.html'>Sub Task 2.A</a>
                 <a href='page2B.html'>Sub Task 2.B</a>
+                <a href='page2C.html'>Sub Task 2.C</a>
                 <a href='page3A.html'>Sub Task 3.A</a>
                 <a href='page3B.html'>Sub Task 3.B</a>
-            </div>
-        """; 
-=======
-                    <div class='topnav'>
-                    <a href='/'>Homepage</a>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='page2A.html'>Sub Task 2.A</a>
-                    <a href='page2B.html'>Sub Task 2.B</a>
-                    <a href='page2C.html'>Sub Task 2.C</a>
-                    <a href='page3A.html'>Sub Task 3.A</a>
-                    <a href='page3B.html'>Sub Task 3.B</a>
-                    <a href='page3C.html'>Sub Task 3.C</a>
-                    <a href='PageHelp.html'>Help Page</a>
-                    </div>
-                """;
+                <a href='page3C.html'>Sub Task 3.C</a>
+                <a href='PageHelp.html'>Help Page</a>
+                </div>
+                        """;
 
         // Add header content block
         html = html + """
@@ -87,7 +76,6 @@ public class PageIndex implements Handler {
                         </h1>
                     </div>
                 """;
->>>>>>> 10686793b37851dbec2bd0dd44dc9ead415a2d56
 
         // Add Div for page Content
         html = html + "<div class='content'>";
