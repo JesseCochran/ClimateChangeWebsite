@@ -44,7 +44,7 @@ public class PageST2B implements Handler {
         // Add header content block
         html = html + """
                     <div class='header'>
-                        <h1>Subtask 2.B</h1>
+                        <h1>Climate Change Awareness</h1>
                     </div>
                 """;
 
@@ -71,7 +71,7 @@ public class PageST2B implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <p>Subtask 2.B page content</p>
+                <h1>Subtask 2.B page content</h1>
                 """;
 
         // Close Content div

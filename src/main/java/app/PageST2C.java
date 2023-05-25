@@ -44,7 +44,7 @@ public class PageST2C implements Handler {
          // Add header content block
          html = html + """
             <div class='header'>
-                <h1>Subtask 3.C</h1>
+                <h1>Climate Change Awareness</h1>
             </div>
         """;
 
@@ -70,7 +70,7 @@ public class PageST2C implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <p>Subtask 2.C page content</p>
+                <h1>Subtask 2.C page content</h1>
                 """;
 
         html = html + "<form action='/page2C.html' method='post'>";
