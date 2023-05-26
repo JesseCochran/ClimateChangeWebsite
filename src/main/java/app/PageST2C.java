@@ -87,6 +87,8 @@ public class PageST2C implements Handler {
         html = html
                 + "      <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions(this.value)' size='1'>";
         // This onchange section ^ makes the website more dynamic by using a java script
+        // Used java script taught in this video
+        // https://www.youtube.com/watch?v=SBmSRK3feww&t=7s and my own knowledge
         // function to take the value the user selects to then place it in the end date
         // drop down menu.
         // this connects the database to the start date drop down box.
@@ -123,8 +125,28 @@ public class PageST2C implements Handler {
         html = html + "      <select id='EndYear_drop' name='EndYear_drop' size='1'>";
         html = html + "      </select>";
         html = html + "   </div>";
+
+        // Sorting order
+        html = html + """
+                <p>Sort By</p>
+                <input type='radio' id='SortOrder' name='Sorting' value='Ascending'>
+                <label for='Ascending'>Ascending Order</label><br>
+                <input type='radio' id='SortOrder' name='Sorting' value='Descending'>
+                 <label for='Descending'>Descending Order</label>
+
+                    """;
+
+        html = html + "   <div class='form-group'>";
+        html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View (Dropdown):</label>";
+        html = html + "      <select id='TempSelection_drop' name='TempSelection_drop' size='1'>";
+        html = html + "<option>Only Average Land Ocean Temperature</option>";
+        html = html + "<option>Only Minimum Land Ocean Temperature</option>";
+        html = html + "<option>Only Maximum Land Ocean Temperature</option>";
+        html = html + "<option>Show All Land Ocean Temperature Data</option>";
+        html = html + "      </select>";
+        html = html + "   </div>";
         // submit button
-        html = html + "   <button type='submit' class='btn btn-primary'>Submit Year Range</button>";
+        html = html + "   <button type='submit' class='btn btn-primary'>Show Table</button>";
 
         html = html + "</form>";
 
@@ -141,17 +163,20 @@ public class PageST2C implements Handler {
             html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
-            html = html + outputData(StartYear_drop);
-        }
+            // html = html + outputData(StartYear_drop);
 
+        }
+        String DataToShow = context.formParam("TempSelection_drop");
         String EndYear_drop = context.formParam("EndYear_drop");
+
         // String movietype_drop = context.queryParam("movietype_drop");
         if (EndYear_drop == null) {
             // If NULL, nothing to show, therefore we make some "no results" HTML
             html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
-            html = html + outputData(EndYear_drop);
+            // html = html + outputData(EndYear_drop);
+            html = html + outputData(StartYear_drop, EndYear_drop, DataToShow);
         }
         // Close Content div
         html = html + "</div>";
@@ -171,10 +196,125 @@ public class PageST2C implements Handler {
         context.html(html);
     }
 
-    public String outputData(String Year) {
-        String html = "";
-        html = html + "<h2>" + Year + " Climate Data</h2>";
+    public String outputData(String startYear, String endYear, String DataToShow) {
+        String html = "<div>";
+        html = html + "<h2>" + "Climate Data From " + startYear + " to " + endYear + "</h2>";
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> oceantemps = jdbc.getAllLandOceanData();
 
+        int startIndex = 0;
+        for (int i = 0; i < oceantemps.size(); i++) {
+            if (oceantemps.get(i).getYear() == Integer.parseInt(startYear)) {
+                startIndex = i;
+                break;
+            }
+        }
+        int endIndex = 0;
+        for (int i = 0; i < oceantemps.size(); i++) {
+            if (oceantemps.get(i).getYear() == Integer.parseInt(endYear)) {
+                endIndex = i;
+                break;
+            }
+        }
+        if (DataToShow.equals("Only Average Land Ocean Temperature")) {
+            html = html
+                    + """
+                            <table>
+                                  <tr>
+                                    <th>Year</th>
+                                    <th>Average Land Ocean Temperature</th>
+                                  </tr>
+                                  """;
+
+            for (int i = startIndex; i <= endIndex; i++) {
+                html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+                        + oceantemps.get(i).getAverageTemperature()
+                        + "</td> </tr>";
+            }
+
+            html = html +
+                    """
+                            </table>
+                            """;
+
+        } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
+            html = html
+                    + """
+                            <table>
+                                  <tr>
+                                    <th>Year</th>
+                                    <th>Minimum Land Ocean Temperature</th>
+                                  </tr>
+                                  """;
+
+            for (int i = startIndex; i <= endIndex; i++) {
+                html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+                        + oceantemps.get(i).getMinimumTemperature()
+                        + "</td> </tr>";
+            }
+
+            html = html +
+                    """
+                            </table>
+                            """;
+
+        } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
+            html = html
+                    + """
+                            <table>
+                                  <tr>
+                                    <th>Year</th>
+                                    <th>Maximum Land Ocean Temperature</th>
+                                  </tr>
+                                  """;
+
+            for (int i = startIndex; i <= endIndex; i++) {
+                html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+                        + oceantemps.get(i).getMaximumTemperature()
+                        + "</td> </tr>";
+            }
+
+            html = html +
+                    """
+                            </table>
+                            """;
+
+        } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
+            html = html
+                    + """
+                            <table>
+                                  <tr>
+                                    <th>Year</th>
+                                    <th>Average Land Ocean Temperature</th>
+                                    <th>Minimum Land Ocean Temperature</th>
+                                    <th>Maximum Land Ocean Temperature</th>
+                                  </tr>
+                                  """;
+
+            for (int i = startIndex; i <= endIndex; i++) {
+                html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+                        + oceantemps.get(i).getAverageTemperature()
+                        + "</td>" + "<td>"
+                        + oceantemps.get(i).getMinimumTemperature() + "</td>" + "<td>"
+                        + oceantemps.get(i).getMaximumTemperature()
+                        + "</td> </tr>";
+            }
+
+            html = html +
+                    """
+                            </table>
+                            """;
+
+        }
+        // for (int i = startIndex; i <= endIndex; i++) {
+        // html = html + "<p>" + oceantemps.get(i).getYear() + " " +
+        // oceantemps.get(i).getAverageTemperature()
+        // + " " + oceantemps.get(i).getMinimumTemperature() + " " +
+        // oceantemps.get(i).getMaximumTemperature()
+        // + "</p>";
+        // }
+
+        html = html + "</div>";
         return html;
     }
 

@@ -77,4 +77,32 @@ public class Climate {
         return populationLevel;
     }
 
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public void setAverageTemperature(float averageTemperature) {
+        this.averageTemperature = averageTemperature;
+    }
+
+    public void setMinimumTemperature(float minimumTemperature) {
+        this.minimumTemperature = minimumTemperature;
+    }
+
+    public void setMaximumTemperature(float maximumTemperature) {
+        this.maximumTemperature = maximumTemperature;
+    }
+
+    public void setPopulationLevel(long populationLevel) {
+        this.populationLevel = populationLevel;
+    }
+
 }
