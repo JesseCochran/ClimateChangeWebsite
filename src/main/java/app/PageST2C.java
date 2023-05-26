@@ -85,8 +85,8 @@ public class PageST2C implements Handler {
         html = html + "      <label for='StartYear_drop'>Select the start year (Dropdown):</label>";
         html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
         JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<LGA> years = jdbc.getYears();
-        for (LGA year : years) {
+        ArrayList<Climate> years = jdbc.getLandOceanYears();
+        for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
         html = html + "         <option>2010</option>";

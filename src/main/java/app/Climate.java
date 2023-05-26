@@ -23,16 +23,26 @@ public class Climate {
     /**
      * Create an Climate object and set the fields
      */
-    public Climate(String countryName, String statename, String cityname, int year, float averageTemperature,
-            float minimumTemperature, float maximumTemperature, long populationLevel) {
-        this.countryName = countryName;
-        this.stateName = statename;
-        this.cityName = cityname;
+    /*
+     * public Climate(String countryName, String statename, String cityname, int
+     * year, float averageTemperature,
+     * float minimumTemperature, float maximumTemperature, long populationLevel) {
+     * this.countryName = countryName;
+     * this.stateName = statename;
+     * this.cityName = cityname;
+     * this.year = year;
+     * this.averageTemperature = averageTemperature;
+     * this.minimumTemperature = minimumTemperature;
+     * this.maximumTemperature = maximumTemperature;
+     * this.populationLevel = populationLevel;
+     * }
+     */
+    public Climate() {
+
+    }
+
+    public void setYear(int year) {
         this.year = year;
-        this.averageTemperature = averageTemperature;
-        this.minimumTemperature = minimumTemperature;
-        this.maximumTemperature = maximumTemperature;
-        this.populationLevel = populationLevel;
     }
 
     public String getCountryName() {

@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class JDBCConnection {
 
     // Name of database file (contained in database folder)
-    public static final String DATABASE = "jdbc:sqlite:database/ctg.db";
+    public static final String DATABASE = "jdbc:sqlite:database/Climate.db";
     // public static final String DATABASE = "jdbc:sqlite:database/climate.db";
 
     /**
@@ -90,9 +90,9 @@ public class JDBCConnection {
     }
 
     // TODO: Add your required methods here
-    public ArrayList<LGA> getYears() {
-        // Create the ArrayList of LGA objects to return
-        ArrayList<LGA> lgas = new ArrayList<LGA>();
+    public ArrayList<Climate> getLandOceanYears() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
 
         // Setup the variable for the JDBC connection
         Connection connection = null;
@@ -106,7 +106,12 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
 
             // The Query
-            String query = "SELECT DISTINCT * FROM LGA";
+            String query = """
+                        SELECT Year FROM GlobalLandOceanTemp
+                    WHERE GlobalLandOceanTemp.AvgOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MaxOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MinOceanTemp IS NOT NULL
+                    """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -114,15 +119,15 @@ public class JDBCConnection {
             // Process all of the results
             while (results.next()) {
                 // Lookup the columns we need
-                int code = results.getInt("code");
-                String name = results.getString("name");
+
                 int year = results.getInt("year");
 
-                // Create a LGA Object
-                LGA lga = new LGA(code, name, year);
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
 
                 // Add the lga object to the array
-                lgas.add(lga);
+                climates.add(climate);
             }
 
             // Close the statement because we are done with it
@@ -143,6 +148,6 @@ public class JDBCConnection {
         }
 
         // Finally we return all of the lga
-        return lgas;
+        return climates;
     }
 }
