@@ -32,7 +32,7 @@ public class PageST2C implements Handler {
 
         // Add some Head information
         html = html + "<head>" +
-                "<title>Subtask 2.2</title>";
+                "<title>Focused View Of Land Ocean Temperature</title>";
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
@@ -70,9 +70,14 @@ public class PageST2C implements Handler {
         html = html + "<div class='content'>";
 
         // Add HTML for the page content
-        html = html + """
-                <h1>Subtask 2.C page content</h1>
-                """;
+        // Explanation of land ocean temp
+        html = html
+                + """
+                        <h2>A look at Annual Global Land Ocean Temperature records</h2>
+                        <p>Land Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
+                        <p>The Global Land Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
+                        this is because oceans have a higher heat capacity compared to land therefore meaning they absorb and release heat slower which can then help show greater discrepancies in temperatures therefore showing signs of climate change. </p>
+                        """;
 
         html = html + "<form action='/page2C.html' method='post'>";
 
