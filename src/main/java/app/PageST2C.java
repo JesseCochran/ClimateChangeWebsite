@@ -80,7 +80,53 @@ public class PageST2C implements Handler {
                         """;
 
         // All the Drop down menu stuff for the data to eventually be retrieved from
-        html = html + "<form action='/page2C.html' method='post'>";
+        // html = html + "<form action='/page2C.html' method='post'>";
+
+        // A version of the same thing with a javascript function to stop values entered
+        // being cleared on reload
+        html = html + "<form action='/page2C.html' method='post' onsubmit='return ReenterData()'>";
+
+        // This bit of javascript makes it so the page keeps the same values leading to
+        // less user confusion when the page reloads
+        html = html + "<script>";
+        html = html + "   function ReenterData() {";
+        html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
+        html = html + "       var endYear = document.getElementById('EndYear_drop').value;";
+        html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
+        html = html + "       var dataToShow = document.getElementById('TempSelection_drop').value;";
+        html = html + "       sessionStorage.setItem('startYear', startYear);";
+        html = html + "       sessionStorage.setItem('endYear', endYear);";
+        html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
+        html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
+        html = html + "       return true;";
+        html = html + "   }";
+        html = html + " window.onload = function() {";
+        html = html + " var startYear = sessionStorage.getItem('startYear');";
+        html = html + " var endYear = sessionStorage.getItem('endYear');";
+        html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
+        html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
+        html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
+        html = html + " if (endYear) document.getElementById('EndYear_drop').value = endYear;";
+        html = html
+                + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
+        html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
+        html = html + " }";
+        html = html + "</script>";
+
+        // reload/clear button
+        html = html + "<button type='button' onclick='reload()'>Reload</button>";
+        // javascript for that button to clear all data entered
+        //
+        html = html + "<script>";
+        html = html + "   function reload() {";
+        html = html + "       document.getElementById('StartYear_drop').value = '';";
+        html = html + "       document.getElementById('EndYear_drop').options.length = 0;";
+        html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
+        html = html + "       sortOrderRadios.forEach(function(radio) { radio.checked = false; });";
+        html = html + "       document.getElementById('TempSelection_drop').value = '';";
+        html = html + "       return false;";
+        html = html + "   }";
+        html = html + "</script>";
 
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year (Dropdown):</label>";
@@ -91,6 +137,7 @@ public class PageST2C implements Handler {
         // https://www.youtube.com/watch?v=SBmSRK3feww&t=7s and my own knowledge
         // function to take the value the user selects to then place it in the end date
         // drop down menu.
+
         // this connects the database to the start date drop down box.
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> years = jdbc.getLandOceanYears();
@@ -119,6 +166,7 @@ public class PageST2C implements Handler {
         html = html + "       }";
         html = html + "   }";
         html = html + "</script>";
+
         // element of the end year drop down box
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='EndYear_drop'>Select the end year (Dropdown):</label>";
@@ -239,10 +287,7 @@ public class PageST2C implements Handler {
                             + "</td> </tr>";
                 }
 
-                html = html +
-                        """
-                                </table>
-                                """;
+                html = html + "</table>";
 
             } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
                 html = html
@@ -260,10 +305,7 @@ public class PageST2C implements Handler {
                             + "</td> </tr>";
                 }
 
-                html = html +
-                        """
-                                </table>
-                                """;
+                html = html + "</table>";
 
             } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
                 html = html
@@ -422,15 +464,9 @@ public class PageST2C implements Handler {
 
             }
         }
-        // for (int i = startIndex; i <= endIndex; i++) {
-        // html = html + "<p>" + oceantemps.get(i).getYear() + " " +
-        // oceantemps.get(i).getAverageTemperature()
-        // + " " + oceantemps.get(i).getMinimumTemperature() + " " +
-        // oceantemps.get(i).getMaximumTemperature()
-        // + "</p>";
-        // }
 
         html = html + "</div>";
+
         return html;
     }
 
