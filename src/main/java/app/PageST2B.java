@@ -32,7 +32,7 @@ public class PageST2B implements Handler {
 
         // Add some Head information
         html = html + "<head>" +
-                "<title>Subtask 2.2</title>";
+                "<title>  ";
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
