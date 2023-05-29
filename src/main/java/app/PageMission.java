@@ -60,7 +60,7 @@ public class PageMission implements Handler {
                     <a href='page3A.html'>Sub Task 3.A</a>
                     <a href='page3B.html'>Sub Task 3.B</a>
                     <a href='page3C.html'>Sub Task 3.C</a>
-                    <a href='PageHelp.html'>Help Page</a>
+                    
                     </div>
                 """;
 
@@ -73,17 +73,7 @@ public class PageMission implements Handler {
                 <h1>Mission Statement</h1>
                 """;
 
-        // This example uses JDBC to lookup the LGAs
-       
-
-        // Next we will ask this *class* for the LGAs
-
-
-        // Add HTML for the LGA list
-        
-
-        // Finally we can print out all of the LGAs
-     
+        //
 
         // Finish the List HTML
         html = html + "</ul>";
@@ -94,7 +84,8 @@ public class PageMission implements Handler {
         // Footer
         html = html + """
                     <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
+    
+                        <a href='PageHelp.html'>Help Page</a>
                     </div>
                 """;
 
