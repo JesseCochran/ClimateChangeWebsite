@@ -1,5 +1,6 @@
 package app;
 
+import java.lang.Math;
 import java.util.ArrayList;
 
 import io.javalin.http.Context;
@@ -31,7 +32,7 @@ public class PageST2C implements Handler {
         String html = "<html>";
 
         // Add some Head information
-        html = html + "<head>" +
+        html = html + "<head> <meta charset='UTF-8'>" +
                 "<title>Focused View Of Land Ocean Temperature</title>";
 
         // Add some CSS (external file)
@@ -271,7 +272,37 @@ public class PageST2C implements Handler {
                     break;
                 }
             }
+
             if (DataToShow.equals("Only Average Land Ocean Temperature")) {
+
+                // Comparison of data over the time period selected
+                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getAverageTemperature()
+                        - oceantemps.get(startIndex).getAverageTemperature())
+                        / oceantemps.get(startIndex).getAverageTemperature()) * 100);
+                String tempChange = "No Change";
+                String roundDifferenceValue = "0";
+                float differenceValue = oceantemps.get(endIndex).getAverageTemperature()
+                        - oceantemps.get(startIndex).getAverageTemperature();
+                if (String.format("%.2f", differenceValue).equals("0.00")) {
+                    roundDifferenceValue = Float.toString(differenceValue);
+                } else {
+                    roundDifferenceValue = String.format("%.2f", differenceValue);
+                }
+                if (oceantemps.get(startIndex).getAverageTemperature() < oceantemps.get(endIndex)
+                        .getAverageTemperature()) {
+                    tempChange = "There was an increase in average temperature";
+                } else if (oceantemps.get(startIndex).getAverageTemperature() > oceantemps.get(endIndex)
+                        .getAverageTemperature()) {
+                    tempChange = "There was an decrease in average temperature";
+                } else {
+                    tempChange = "There was no change in average temperature";
+                }
+                html = html + "<div>";
+                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                        + "%. </p>";
+                html = html + "</div>";
                 html = html
                         + """
                                 <table>
@@ -351,7 +382,9 @@ public class PageST2C implements Handler {
 
                 html = html +
                         """
-                                </table>
+                                  </table>
+
+
                                 """;
 
             }
@@ -374,6 +407,35 @@ public class PageST2C implements Handler {
                 }
             }
             if (DataToShow.equals("Only Average Land Ocean Temperature")) {
+                // Comparison of data over the time period selected
+                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getAverageTemperature()
+                        - oceantemps.get(startIndex).getAverageTemperature())
+                        / oceantemps.get(startIndex).getAverageTemperature()) * 100);
+                String tempChange = "No Change";
+                String roundDifferenceValue = "0";
+                float differenceValue = oceantemps.get(endIndex).getAverageTemperature()
+                        - oceantemps.get(startIndex).getAverageTemperature();
+                if (String.format("%.2f", differenceValue).equals("0.00")) {
+                    roundDifferenceValue = Float.toString(differenceValue);
+                } else {
+                    roundDifferenceValue = String.format("%.2f", differenceValue);
+                }
+                if (oceantemps.get(startIndex).getAverageTemperature() < oceantemps.get(endIndex)
+                        .getAverageTemperature()) {
+                    tempChange = "There was an increase in average temperature";
+                } else if (oceantemps.get(startIndex).getAverageTemperature() > oceantemps.get(endIndex)
+                        .getAverageTemperature()) {
+                    tempChange = "There was an decrease in average temperature";
+                } else {
+                    tempChange = "There was no change in average temperature";
+                }
+                html = html + "<div>";
+                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                        + "%. </p>";
+                html = html + "</div>";
+
                 html = html
                         + """
                                 <table>
@@ -469,5 +531,4 @@ public class PageST2C implements Handler {
 
         return html;
     }
-
 }
