@@ -74,10 +74,10 @@ public class PageMission implements Handler {
                 """;
 
         // This example uses JDBC to lookup the LGAs
-        JDBCConnection jdbc = new JDBCConnection();
+       
 
         // Next we will ask this *class* for the LGAs
-        ArrayList<LGA> lgas = jdbc.getLGAs2016();
+
 
         // Add HTML for the LGA list
         
