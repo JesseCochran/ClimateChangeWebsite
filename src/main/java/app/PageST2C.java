@@ -237,11 +237,14 @@ public class PageST2C implements Handler {
         html = html + "</div>";
 
         // Footer
-        html = html + """
-                    <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-                    </div>
-                """;
+        html = html
+                + """
+                            <div class='footer'>
+                                <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
+                                <a href='PageHelp.html'>Help Page</a>
+                                <p style='display: flex; gap: 10px;'><a href='PageHelp.html#help-section'>Help</a><a href='PageHelp.html#faq-section'>FAQ</a><a href='PageHelp.html#advanced-section'>Advanced Features</a></p>
+                            </div>
+                        """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
