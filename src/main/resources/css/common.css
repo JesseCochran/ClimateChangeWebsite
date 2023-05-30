@@ -14,8 +14,10 @@ body {
 .header {
    padding: 10px;
    text-align: center;
-   background-color: #cccccc;
-   color: #000000;
+   /*old background-color: #cccccc; 
+   color: #000000; */
+   background-color: #292d6a;
+   color: #ffffff;
    
 }
 .header img {

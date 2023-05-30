@@ -115,7 +115,7 @@ public class PageST2C implements Handler {
         html = html + "</script>";
 
         // reload/clear button
-        html = html + "<button type='button' onclick='reload()'>Reload</button>";
+        html = html + "<button type='button' onclick='reload()'>Reset</button>";
         // javascript for that button to clear all data entered
         //
         html = html + "<script>";
@@ -125,6 +125,8 @@ public class PageST2C implements Handler {
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
         html = html + "       sortOrderRadios.forEach(function(radio) { radio.checked = false; });";
         html = html + "       document.getElementById('TempSelection_drop').value = '';";
+        // TODO implement this
+        html = html + "       document.getElementById('dataTable').innerHTML = '';";
         html = html + "       return false;";
         html = html + "   }";
         html = html + "</script>";
