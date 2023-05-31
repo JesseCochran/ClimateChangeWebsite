@@ -73,22 +73,21 @@ public class PageIndex implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <h1>Homepage content</h1>
+                <h1>Homepage</h1>
                 """;
 
-        // Get the ArrayList of Strings of all LGAs
-        ArrayList<String> lgaNames = getLGAs2016();
+
 
         // Add HTML for the LGA list
-        html = html + "<h2>All 2016 LGAs in the CTG database</h2>" + "<ul>";
+        html = html + "<h2>Introduction to Climate Change Awareness</h2>";
+        
+        //Add HTML paragraph description
+        html = html + "<p>Climate change is a growing issue for not only the world but for your futures and lives. Throughout this website we are giving you multiple tools to research and view this data for yourselves.</p>";
 
-        // Finally we can print out all of the LGAs
-        for (String name : lgaNames) {
-            html = html + "<li>" + name + "</li>";
-        }
+        //Add HTML data specifications(1A)
+        html = html + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at **** where the population was **** and the temperature was ****. It then ends at **** where the population was **** and the average temperature was ****. There is **** years of data for population and **** years of data for temperature.</p>";
 
-        // Finish the List HTML
-        html = html + "</ul>";
+        html = html + "<h3>Climate Change Data Overview</h3>";
 
         // Close Content div
         html = html + "</div>";
