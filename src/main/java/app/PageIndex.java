@@ -102,6 +102,32 @@ public class PageIndex implements Handler {
 
         html = html + "<h3>Climate Change Data Overview</h3>";
 
+        //Add table for global temperature and population ranges
+        html = html
+                        + """
+                                <table>
+                                      <tr>
+                                        <th>Year</th>
+                                        <th>Population</th>
+                                        <th>Average Temperature</th>
+                                        <th>Minimum Temperature</th>
+                                        <th>Maximum Temperature</th>
+                                      </tr>
+                                      """;
+
+                for (int i = 0; i < populationTempRanges.size(); ++i) {
+                    html = html + " <tr> <td>" + populationTempRanges.get(i).getYear() + "</td> " + "<td>"
+                            + populationTempRanges.get(i).getPopulationLevel() + "</td>" + "<td>"
+                            + populationTempRanges.get(i).getAverageTemperature() + "</td>" + "<td>"
+                            + populationTempRanges.get(i).getMinimumTemperature() + "</td>" + "<td>"
+                            + populationTempRanges.get(i).getMaximumTemperature() + "</td> </tr>";
+                }
+
+                html = html +
+                        """
+                                </table>
+                                """;
+
         // Close Content div
         html = html + "</div>";
 
