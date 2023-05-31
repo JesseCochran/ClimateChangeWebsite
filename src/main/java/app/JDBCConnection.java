@@ -286,7 +286,7 @@ public class JDBCConnection {
         return climates;
     }
 
-    //Method to get range of global population and temp data (1A)
+    // Method to get range of global population and temp data (1A)
     public ArrayList<Climate> getPopulationTempRanges() {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -304,12 +304,13 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                SELECT p.Year, p.PopulationLevel, t.AvgAirTemp, t.MinAirTemp, t.MaxAirTemp
-                FROM CountryPopulation AS p
-                JOIN GlobalTemp AS t ON p.Year = t.Year
-                WHERE p.Year IN (1960, 2013)
-                AND p.CountryName = 'World';
-                    """;
+                    SELECT p.Year, p.PopulationLevel, t.AvgAirTemp, t.MinAirTemp, t.MaxAirTemp
+                    FROM CountryPopulation AS p
+                    JOIN GlobalTemp AS t ON p.Year = t.Year
+                    JOIN Country As c ON p.CountryId = c.CountryId
+                    WHERE p.Year IN (1960, 2013)
+                    AND c.CountryName = 'World';
+                        """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
