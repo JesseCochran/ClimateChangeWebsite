@@ -125,8 +125,8 @@ public class PageST2C implements Handler {
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
         html = html + "       sortOrderRadios.forEach(function(radio) { radio.checked = false; });";
         html = html + "       document.getElementById('TempSelection_drop').value = '';";
-        // TODO implement this
-        html = html + "       document.getElementById('dataTable').innerHTML = '';";
+
+        html = html + "       document.getElementById('tableData').innerHTML = '';";
         html = html + "       return false;";
         html = html + "   }";
         html = html + "</script>";
@@ -257,8 +257,8 @@ public class PageST2C implements Handler {
     }
 
     public String outputData(String startYear, String endYear, String DataToShow, String SortBy) {
-        String html = "<div>";
-        html = html + "<h2>" + "Climate Data From " + startYear + " to " + endYear + "</h2>";
+        String html = "<div id='tableData'>";
+        html = html + "<h2>" + "Climate Data From " + startYear + " To " + endYear + "</h2>";
         JDBCConnection jdbc = new JDBCConnection();
 
         if (SortBy.equals("Ascending")) {
@@ -302,7 +302,7 @@ public class PageST2C implements Handler {
                 } else {
                     tempChange = "There was no change in average temperature";
                 }
-                html = html + "<div>";
+                html = html + "<div id='tableData'>";
                 html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
                 html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
                         + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
@@ -326,6 +326,36 @@ public class PageST2C implements Handler {
                 html = html + "</table>";
 
             } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
+
+                // Comparison of data over the time period selected
+                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getMinimumTemperature()
+                        - oceantemps.get(startIndex).getMinimumTemperature())
+                        / oceantemps.get(startIndex).getMinimumTemperature()) * 100);
+                String tempChange = "No Change";
+                String roundDifferenceValue = "0";
+                float differenceValue = oceantemps.get(endIndex).getMinimumTemperature()
+                        - oceantemps.get(startIndex).getMinimumTemperature();
+                if (String.format("%.2f", differenceValue).equals("0.00")) {
+                    roundDifferenceValue = Float.toString(differenceValue);
+                } else {
+                    roundDifferenceValue = String.format("%.2f", differenceValue);
+                }
+                if (oceantemps.get(startIndex).getMinimumTemperature() < oceantemps.get(endIndex)
+                        .getMinimumTemperature()) {
+                    tempChange = "There was an increase in the minimum average temperature";
+                } else if (oceantemps.get(startIndex).getMinimumTemperature() > oceantemps.get(endIndex)
+                        .getMinimumTemperature()) {
+                    tempChange = "There was an decrease in the minimum average temperature";
+                } else {
+                    tempChange = "There was no change in the minimum average temperature";
+                }
+                html = html + "<div id='tableData'>";
+                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                        + "%. </p>";
+                html = html + "</div>";
+
                 html = html
                         + """
                                 <table>
@@ -344,6 +374,36 @@ public class PageST2C implements Handler {
                 html = html + "</table>";
 
             } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
+
+                // Comparison of data over the time period selected
+                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getMaximumTemperature()
+                        - oceantemps.get(startIndex).getMaximumTemperature())
+                        / oceantemps.get(startIndex).getMaximumTemperature()) * 100);
+                String tempChange = "No Change";
+                String roundDifferenceValue = "0";
+                float differenceValue = oceantemps.get(endIndex).getMaximumTemperature()
+                        - oceantemps.get(startIndex).getMaximumTemperature();
+                if (String.format("%.2f", differenceValue).equals("0.00")) {
+                    roundDifferenceValue = Float.toString(differenceValue);
+                } else {
+                    roundDifferenceValue = String.format("%.2f", differenceValue);
+                }
+                if (oceantemps.get(startIndex).getMaximumTemperature() < oceantemps.get(endIndex)
+                        .getMaximumTemperature()) {
+                    tempChange = "There was an increase in the minimum average temperature";
+                } else if (oceantemps.get(startIndex).getMaximumTemperature() > oceantemps.get(endIndex)
+                        .getMaximumTemperature()) {
+                    tempChange = "There was an decrease in the maximum average temperature";
+                } else {
+                    tempChange = "There was no change in the maximum average temperature";
+                }
+                html = html + "<div id='tableData'>";
+                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                        + "%. </p>";
+                html = html + "</div>";
+
                 html = html
                         + """
                                 <table>
@@ -434,7 +494,7 @@ public class PageST2C implements Handler {
                 } else {
                     tempChange = "There was no change in average temperature";
                 }
-                html = html + "<div>";
+                html = html + "<div id='tableData'>";
                 html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
                 html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
                         + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
@@ -462,6 +522,35 @@ public class PageST2C implements Handler {
                                 """;
 
             } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
+                // Comparison of data over the time period selected
+                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getMinimumTemperature()
+                        - oceantemps.get(startIndex).getMinimumTemperature())
+                        / oceantemps.get(startIndex).getMinimumTemperature()) * 100);
+                String tempChange = "No Change";
+                String roundDifferenceValue = "0";
+                float differenceValue = oceantemps.get(endIndex).getMinimumTemperature()
+                        - oceantemps.get(startIndex).getMinimumTemperature();
+                if (String.format("%.2f", differenceValue).equals("0.00")) {
+                    roundDifferenceValue = Float.toString(differenceValue);
+                } else {
+                    roundDifferenceValue = String.format("%.2f", differenceValue);
+                }
+                if (oceantemps.get(startIndex).getMinimumTemperature() < oceantemps.get(endIndex)
+                        .getMinimumTemperature()) {
+                    tempChange = "There was an increase in the minimum average temperature";
+                } else if (oceantemps.get(startIndex).getMinimumTemperature() > oceantemps.get(endIndex)
+                        .getMinimumTemperature()) {
+                    tempChange = "There was a decrease in the minimum average temperature";
+                } else {
+                    tempChange = "There was no change in the minimum average temperature";
+                }
+                html = html + "<div id='tableData'>";
+                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                        + "%. </p>";
+                html = html + "</div>";
+
                 html = html
                         + """
                                 <table>
@@ -483,6 +572,35 @@ public class PageST2C implements Handler {
                                 """;
 
             } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
+                // Comparison of data over the time period selected
+                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getMaximumTemperature()
+                        - oceantemps.get(startIndex).getMaximumTemperature())
+                        / oceantemps.get(startIndex).getMaximumTemperature()) * 100);
+                String tempChange = "No Change";
+                String roundDifferenceValue = "0";
+                float differenceValue = oceantemps.get(endIndex).getMaximumTemperature()
+                        - oceantemps.get(startIndex).getMaximumTemperature();
+                if (String.format("%.2f", differenceValue).equals("0.00")) {
+                    roundDifferenceValue = Float.toString(differenceValue);
+                } else {
+                    roundDifferenceValue = String.format("%.2f", differenceValue);
+                }
+                if (oceantemps.get(startIndex).getMaximumTemperature() < oceantemps.get(endIndex)
+                        .getMaximumTemperature()) {
+                    tempChange = "There was an increase in the minimum average temperature";
+                } else if (oceantemps.get(startIndex).getMaximumTemperature() > oceantemps.get(endIndex)
+                        .getMaximumTemperature()) {
+                    tempChange = "There was an decrease in the maximum average temperature";
+                } else {
+                    tempChange = "There was no change in the maximum average temperature";
+                }
+                html = html + "<div id='tableData'>";
+                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                        + "%. </p>";
+                html = html + "</div>";
+
                 html = html
                         + """
                                 <table>
