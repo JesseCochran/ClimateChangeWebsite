@@ -368,10 +368,9 @@ public class PageST3C implements Handler {
                             + climate.getMinimumTemperature() + "</td><td>" + climate.getMaximumTemperature()
                             + "</td></tr>";
                 }
-                html = html + "</table>";
 
             }
-
+            html = html + "</table>";
         }
         html = html + "</div>";
 
@@ -498,5 +497,4 @@ public class PageST3C implements Handler {
         String percentageChange = String.format("%.2f", percentage) + "%";
         return percentageChange;
     }
-
 }
