@@ -84,8 +84,21 @@ public class PageIndex implements Handler {
         //Add HTML paragraph description
         html = html + "<p>Climate change is a growing issue for not only the world but for your futures and lives. Throughout this website we are giving you multiple tools to research and view this data for yourselves.</p>";
 
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> populationTempRanges = jdbc.getPopulationTempRanges();
+        int firstYear = populationTempRanges.get(0).getYear();
+        long firstPopulation = populationTempRanges.get(0).getPopulationLevel();
+        float firstTemp = populationTempRanges.get(0).getAverageTemperature();
+        int secondYear = populationTempRanges.get(1).getYear();
+        long secondPopulation = populationTempRanges.get(1).getPopulationLevel();
+        float secondTemp = populationTempRanges.get(1).getAverageTemperature();
+        
+
         //Add HTML data specifications(1A)
-        html = html + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at **** where the population was **** and the temperature was ****. It then ends at **** where the population was **** and the average temperature was ****. There is **** years of data for population and **** years of data for temperature.</p>";
+        html = html + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at " +
+                        "<strong>" + firstYear + "</strong> where the global population was <strong>" + firstPopulation + "</strong> and the average temperature was " +
+                        "<strong>" + firstTemp + "</strong>. It then ends at <strong>" + secondYear + "</strong> where the global population was <strong>" + secondPopulation + 
+                        "</strong> and the average temperature was <strong>" + secondTemp + "</strong>. There is **** years of data for population and **** years of data for temperature.</p>";
 
         html = html + "<h3>Climate Change Data Overview</h3>";
 
