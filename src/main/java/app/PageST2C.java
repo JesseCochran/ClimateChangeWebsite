@@ -125,8 +125,8 @@ public class PageST2C implements Handler {
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
         html = html + "       sortOrderRadios.forEach(function(radio) { radio.checked = false; });";
         html = html + "       document.getElementById('TempSelection_drop').value = '';";
-        // TODO implement this
-        html = html + "       document.getElementById('dataTable').innerHTML = '';";
+
+        html = html + "       document.getElementById('tableData').innerHTML = '';";
         html = html + "       return false;";
         html = html + "   }";
         html = html + "</script>";
@@ -257,283 +257,669 @@ public class PageST2C implements Handler {
     }
 
     public String outputData(String startYear, String endYear, String DataToShow, String SortBy) {
-        String html = "<div>";
-        html = html + "<h2>" + "Climate Data From " + startYear + " to " + endYear + "</h2>";
+        String html = "<div id='tableData'>";
+        html = html + "<h2>" + "Climate Data From " + startYear + " To " + endYear + "</h2>";
         JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> oceantemps;
 
         if (SortBy.equals("Ascending")) {
-            ArrayList<Climate> oceantemps = jdbc.getAllLandOceanDataASC();
-            int startIndex = 0;
-            for (int i = 0; i < oceantemps.size(); i++) {
-                if (oceantemps.get(i).getYear() == Integer.parseInt(startYear)) {
-                    startIndex = i;
-                    break;
-                }
-            }
-            int endIndex = 0;
-            for (int i = 0; i < oceantemps.size(); i++) {
-                if (oceantemps.get(i).getYear() == Integer.parseInt(endYear)) {
-                    endIndex = i;
-                    break;
-                }
-            }
-
-            if (DataToShow.equals("Only Average Land Ocean Temperature")) {
-
-                // Comparison of data over the time period selected
-                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getAverageTemperature()
-                        - oceantemps.get(startIndex).getAverageTemperature())
-                        / oceantemps.get(startIndex).getAverageTemperature()) * 100);
-                String tempChange = "No Change";
-                String roundDifferenceValue = "0";
-                float differenceValue = oceantemps.get(endIndex).getAverageTemperature()
-                        - oceantemps.get(startIndex).getAverageTemperature();
-                if (String.format("%.2f", differenceValue).equals("0.00")) {
-                    roundDifferenceValue = Float.toString(differenceValue);
-                } else {
-                    roundDifferenceValue = String.format("%.2f", differenceValue);
-                }
-                if (oceantemps.get(startIndex).getAverageTemperature() < oceantemps.get(endIndex)
-                        .getAverageTemperature()) {
-                    tempChange = "There was an increase in average temperature";
-                } else if (oceantemps.get(startIndex).getAverageTemperature() > oceantemps.get(endIndex)
-                        .getAverageTemperature()) {
-                    tempChange = "There was an decrease in average temperature";
-                } else {
-                    tempChange = "There was no change in average temperature";
-                }
-                html = html + "<div>";
-                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
-                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
-                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
-                        + "%. </p>";
-                html = html + "</div>";
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Average Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = startIndex; i <= endIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getAverageTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html + "</table>";
-
-            } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Minimum Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = startIndex; i <= endIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getMinimumTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html + "</table>";
-
-            } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Maximum Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = startIndex; i <= endIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getMaximumTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html +
-                        """
-                                </table>
-                                """;
-
-            } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Average Land Ocean Temperature</th>
-                                        <th>Minimum Land Ocean Temperature</th>
-                                        <th>Maximum Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = startIndex; i <= endIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getAverageTemperature()
-                            + "</td>" + "<td>"
-                            + oceantemps.get(i).getMinimumTemperature() + "</td>" + "<td>"
-                            + oceantemps.get(i).getMaximumTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html +
-                        """
-                                  </table>
-
-
-                                """;
-
-            }
+            oceantemps = jdbc.getAllLandOceanDataASC();
         } else if (SortBy.equals("Descending")) {
-            ArrayList<Climate> oceantemps = jdbc.getAllLandOceanDataDESC();
-            int startIndex = 0;
-            for (int i = 0; i < oceantemps.size(); i++) {
-                if (oceantemps.get(i).getYear() == Integer.parseInt(startYear)) {
-                    startIndex = i;
-                    // TESTING html = html + "<p>" + startIndex + "</p>";
-                    break;
-                }
-            }
-            int endIndex = 0;
-            for (int i = 0; i < oceantemps.size(); i++) {
-                if (oceantemps.get(i).getYear() == Integer.parseInt(endYear)) {
-                    endIndex = i;
-                    // TESTING html = html + "<p>" + endIndex + "</p>";
-                    break;
-                }
-            }
-            if (DataToShow.equals("Only Average Land Ocean Temperature")) {
-                // Comparison of data over the time period selected
-                String percentageChange = String.format("%.2f", ((oceantemps.get(endIndex).getAverageTemperature()
-                        - oceantemps.get(startIndex).getAverageTemperature())
-                        / oceantemps.get(startIndex).getAverageTemperature()) * 100);
-                String tempChange = "No Change";
-                String roundDifferenceValue = "0";
-                float differenceValue = oceantemps.get(endIndex).getAverageTemperature()
-                        - oceantemps.get(startIndex).getAverageTemperature();
-                if (String.format("%.2f", differenceValue).equals("0.00")) {
-                    roundDifferenceValue = Float.toString(differenceValue);
-                } else {
-                    roundDifferenceValue = String.format("%.2f", differenceValue);
-                }
-                if (oceantemps.get(startIndex).getAverageTemperature() < oceantemps.get(endIndex)
-                        .getAverageTemperature()) {
-                    tempChange = "There was an increase in average temperature";
-                } else if (oceantemps.get(startIndex).getAverageTemperature() > oceantemps.get(endIndex)
-                        .getAverageTemperature()) {
-                    tempChange = "There was an decrease in average temperature";
-                } else {
-                    tempChange = "There was no change in average temperature";
-                }
-                html = html + "<div>";
-                html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
-                html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
-                        + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
-                        + "%. </p>";
-                html = html + "</div>";
-
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Average Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = endIndex; i <= startIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getAverageTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html +
-                        """
-                                </table>
-                                """;
-
-            } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Minimum Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = endIndex; i <= startIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getMinimumTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html +
-                        """
-                                </table>
-                                """;
-
-            } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Maximum Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = endIndex; i <= startIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getMaximumTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html +
-                        """
-                                </table>
-                                """;
-
-            } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
-                html = html
-                        + """
-                                <table>
-                                      <tr>
-                                        <th>Year</th>
-                                        <th>Average Land Ocean Temperature</th>
-                                        <th>Minimum Land Ocean Temperature</th>
-                                        <th>Maximum Land Ocean Temperature</th>
-                                      </tr>
-                                      """;
-
-                for (int i = endIndex; i <= startIndex; i++) {
-                    html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
-                            + oceantemps.get(i).getAverageTemperature()
-                            + "</td>" + "<td>"
-                            + oceantemps.get(i).getMinimumTemperature() + "</td>" + "<td>"
-                            + oceantemps.get(i).getMaximumTemperature()
-                            + "</td> </tr>";
-                }
-
-                html = html +
-                        """
-                                </table>
-                                """;
-
-            }
+            oceantemps = jdbc.getAllLandOceanDataDESC();
+        }
+        // default option
+        else {
+            oceantemps = jdbc.getAllLandOceanDataASC();
         }
 
+        int startIndex = getIndexByYear(oceantemps, Integer.parseInt(startYear));
+        int endIndex = getIndexByYear(oceantemps, Integer.parseInt(endYear));
+
+        if (DataToShow.equals("Only Average Land Ocean Temperature")) {
+            String dataType = "Average";
+            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = html + "<table>";
+            html = html
+                    + "<tr><th>Year</th><th>Average Land Ocean Temperature</th></tr>";
+            if (SortBy.equals("Ascending")) {
+                for (int i = startIndex; i <= endIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getAverageTemperature()
+                            + "</td></tr>";
+                }
+            } else if (SortBy.equals("Descending")) {
+                for (int i = endIndex; i <= startIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getAverageTemperature()
+                            + "</td></tr>";
+                }
+            }
+            html = html + "</table>";
+
+        } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
+            String dataType = "Minimum";
+            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = html + "<table>";
+            html = html
+                    + "<tr><th>Year</th><th>Minimum Land Ocean Temperature</th></tr>";
+
+            if (SortBy.equals("Ascending")) {
+                for (int i = startIndex; i <= endIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getMinimumTemperature()
+                            + "</td></tr>";
+                }
+            } else if (SortBy.equals("Descending")) {
+                for (int i = endIndex; i <= startIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getMinimumTemperature()
+                            + "</td></tr>";
+                }
+            }
+            html = html + "</table>";
+
+        } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
+            String dataType = "Maximum";
+            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = html + "<table>";
+            html = html
+                    + "<tr><th>Year</th><th>Maximum Land Ocean Temperature</th></tr>";
+            if (SortBy.equals("Ascending")) {
+                for (int i = startIndex; i <= endIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getMaximumTemperature()
+                            + "</td></tr>";
+                }
+            } else if (SortBy.equals("Descending")) {
+                for (int i = endIndex; i <= startIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getMaximumTemperature()
+                            + "</td></tr>";
+                }
+            }
+            html = html + "</table>";
+
+        } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
+            String dataType = "All";
+            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = html + "<table>";
+            html = html
+                    + "<tr><th>Year</th><th>Average Land Ocean Temperature</th><th>Minimum Land Ocean Temperature</th><th>Maximum Land Ocean Temperature</th></tr>";
+            if (SortBy.equals("Ascending")) {
+                for (int i = startIndex; i <= endIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getAverageTemperature()
+                            + "</td><td>"
+                            + climate.getMinimumTemperature() + "</td><td>" + climate.getMaximumTemperature()
+                            + "</td></tr>";
+                }
+            } else if (SortBy.equals("Descending")) {
+                for (int i = endIndex; i <= startIndex; i++) {
+                    Climate climate = oceantemps.get(i);
+                    html = html + "<tr><td>" + climate.getYear() + "</td><td>" + climate.getAverageTemperature()
+                            + "</td><td>"
+                            + climate.getMinimumTemperature() + "</td><td>" + climate.getMaximumTemperature()
+                            + "</td></tr>";
+                }
+
+            }
+            html = html + "</table>";
+        }
         html = html + "</div>";
 
         return html;
     }
+
+    private int getIndexByYear(ArrayList<Climate> oceantemps, int year) {
+        for (int i = 0; i < oceantemps.size(); i++) {
+            if (oceantemps.get(i).getYear() == year) {
+                return i;
+            }
+        }
+        // Default index if year is not found otherwise there is an error
+        return 0;
+    }
+
+    private String displayTable(String html, String startYear, String endYear, ArrayList<Climate> oceantemps,
+            int startIndex, int endIndex, String dataType) {
+        float startValue = 0;
+        float endValue = 0;
+        String tempChange = "";
+        String roundDifferenceValue = "";
+        String percentageChange = "";
+        html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+
+        if (dataType.equals("Average")) {
+
+            startValue = oceantemps.get(startIndex).getAverageTemperature();
+            endValue = oceantemps.get(endIndex).getAverageTemperature();
+            tempChange = getTemperatureChange(startValue, endValue, dataType);
+            roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
+            percentageChange = getPercentageChange(startValue, endValue);
+        } else if (dataType.equals("Minimum")) {
+
+            startValue = oceantemps.get(startIndex).getMinimumTemperature();
+            endValue = oceantemps.get(endIndex).getMinimumTemperature();
+            tempChange = getTemperatureChange(startValue, endValue, dataType);
+            roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
+            percentageChange = getPercentageChange(startValue, endValue);
+        } else if (dataType.equals("Maximum")) {
+
+            startValue = oceantemps.get(startIndex).getMaximumTemperature();
+            endValue = oceantemps.get(endIndex).getMaximumTemperature();
+            tempChange = getTemperatureChange(startValue, endValue, dataType);
+            roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
+            percentageChange = getPercentageChange(startValue, endValue);
+        } else if (dataType.equals("All")) {
+            // average data
+            dataType = "Average";
+            startValue = oceantemps.get(startIndex).getAverageTemperature();
+            endValue = oceantemps.get(endIndex).getAverageTemperature();
+            tempChange = getTemperatureChange(startValue, endValue, dataType);
+            roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
+            percentageChange = getPercentageChange(startValue, endValue);
+            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+                    + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                    + ". </p>";
+            // min data
+            dataType = "Minimum";
+            startValue = oceantemps.get(startIndex).getMinimumTemperature();
+            endValue = oceantemps.get(endIndex).getMinimumTemperature();
+            tempChange = getTemperatureChange(startValue, endValue, dataType);
+            roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
+            percentageChange = getPercentageChange(startValue, endValue);
+            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+                    + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                    + ". </p>";
+            // max data
+            dataType = "Maximum";
+            startValue = oceantemps.get(startIndex).getMaximumTemperature();
+            endValue = oceantemps.get(endIndex).getMaximumTemperature();
+            tempChange = getTemperatureChange(startValue, endValue, dataType);
+            roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
+            percentageChange = getPercentageChange(startValue, endValue);
+            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+                    + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                    + ". </p>";
+            return html;
+
+        } else {
+            tempChange = "";
+            roundDifferenceValue = "";
+            percentageChange = "";
+        }
+
+        // html = html + "<h3>" + "Land Ocean Temperature (" + dataType + ")" + "</h3>";
+        // html = html + "<p>" + "Start Year: " + startYear + ", End Year: " + endYear +
+        // "</p>";
+        // html = html + "<p>" + "Temperature Change: " + tempChange + "</p>";
+        // html = html + "<p>" + "Round Difference Value: " + roundDifferenceValue +
+        // "</p>";
+        // html = html + "<p>" + "Percentage Change: " + percentageChange + "</p>";
+
+        html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+                + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
+                + ". </p>";
+
+        return html;
+    }
+
+    public String getTemperatureChange(float startValue, float endValue, String dataType) {
+        String tempChange = "";
+        float difference = endValue - startValue;
+        if (difference > 0) {
+            tempChange = " an increase in the " + dataType.toLowerCase() + " temperature";
+        } else if (difference < 0) {
+            tempChange = " a decrease in the " + dataType.toLowerCase() + " temperature";
+        } else {
+            tempChange = " no change in the " + dataType.toLowerCase() + " temperature";
+        }
+        // tempChange = tempChange + String.format("%.2f", difference) + " °C";
+        return tempChange;
+    }
+
+    public String getRoundDifferenceValue(float startValue, float endValue) {
+        float difference = endValue - startValue;
+        String roundDifferenceValue = String.format("%.2f", difference);
+        return roundDifferenceValue;
+    }
+
+    public String getPercentageChange(float startValue, float endValue) {
+        float difference = endValue - startValue;
+        float percentage = (difference / startValue) * 100;
+        String percentageChange = String.format("%.2f", percentage) + "%";
+        return percentageChange;
+    }
 }
+
+// old
+// public String outputData(String startYear, String endYear, String DataToShow,
+// String SortBy) {
+// String html = "<div id='tableData'>";
+// html = html + "<h2>" + "Climate Data From " + startYear + " To " + endYear +
+// "</h2>";
+// JDBCConnection jdbc = new JDBCConnection();
+
+// if (SortBy.equals("Ascending")) {
+// ArrayList<Climate> oceantemps = jdbc.getAllLandOceanDataASC();
+// int startIndex = 0;
+// for (int i = 0; i < oceantemps.size(); i++) {
+// if (oceantemps.get(i).getYear() == Integer.parseInt(startYear)) {
+// startIndex = i;
+// break;
+// }
+// }
+// int endIndex = 0;
+// for (int i = 0; i < oceantemps.size(); i++) {
+// if (oceantemps.get(i).getYear() == Integer.parseInt(endYear)) {
+// endIndex = i;
+// break;
+// }
+// }
+
+// if (DataToShow.equals("Only Average Land Ocean Temperature")) {
+
+// // Comparison of data over the time period selected
+// String percentageChange = String.format("%.2f",
+// ((oceantemps.get(endIndex).getAverageTemperature()
+// - oceantemps.get(startIndex).getAverageTemperature())
+// / oceantemps.get(startIndex).getAverageTemperature()) * 100);
+// String tempChange = "No Change";
+// String roundDifferenceValue = "0";
+// float differenceValue = oceantemps.get(endIndex).getAverageTemperature()
+// - oceantemps.get(startIndex).getAverageTemperature();
+// if (String.format("%.2f", differenceValue).equals("0.00")) {
+// roundDifferenceValue = Float.toString(differenceValue);
+// } else {
+// roundDifferenceValue = String.format("%.2f", differenceValue);
+// }
+// if (oceantemps.get(startIndex).getAverageTemperature() <
+// oceantemps.get(endIndex)
+// .getAverageTemperature()) {
+// tempChange = "There was an increase in average temperature";
+// } else if (oceantemps.get(startIndex).getAverageTemperature() >
+// oceantemps.get(endIndex)
+// .getAverageTemperature()) {
+// tempChange = "There was an decrease in average temperature";
+// } else {
+// tempChange = "There was no change in average temperature";
+// }
+// html = html + "<div id='tableData'>";
+// html = html + "<h2> Change In Temperature Between " + startYear + " And " +
+// endYear + "</h2>";
+// html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+// + " of " + roundDifferenceValue + "°C. This is a percentage change of " +
+// percentageChange
+// + "%. </p>";
+// html = html + "</div>";
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Average Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = startIndex; i <= endIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getAverageTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html + "</table>";
+
+// } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
+
+// // Comparison of data over the time period selected
+// String percentageChange = String.format("%.2f",
+// ((oceantemps.get(endIndex).getMinimumTemperature()
+// - oceantemps.get(startIndex).getMinimumTemperature())
+// / oceantemps.get(startIndex).getMinimumTemperature()) * 100);
+// String tempChange = "No Change";
+// String roundDifferenceValue = "0";
+// float differenceValue = oceantemps.get(endIndex).getMinimumTemperature()
+// - oceantemps.get(startIndex).getMinimumTemperature();
+// if (String.format("%.2f", differenceValue).equals("0.00")) {
+// roundDifferenceValue = Float.toString(differenceValue);
+// } else {
+// roundDifferenceValue = String.format("%.2f", differenceValue);
+// }
+// if (oceantemps.get(startIndex).getMinimumTemperature() <
+// oceantemps.get(endIndex)
+// .getMinimumTemperature()) {
+// tempChange = "There was an increase in the minimum average temperature";
+// } else if (oceantemps.get(startIndex).getMinimumTemperature() >
+// oceantemps.get(endIndex)
+// .getMinimumTemperature()) {
+// tempChange = "There was an decrease in the minimum average temperature";
+// } else {
+// tempChange = "There was no change in the minimum average temperature";
+// }
+// html = html + "<div id='tableData'>";
+// html = html + "<h2> Change In Temperature Between " + startYear + " And " +
+// endYear + "</h2>";
+// html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+// + " of " + roundDifferenceValue + "°C. This is a percentage change of " +
+// percentageChange
+// + "%. </p>";
+// html = html + "</div>";
+
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Minimum Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = startIndex; i <= endIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getMinimumTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html + "</table>";
+
+// } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
+
+// // Comparison of data over the time period selected
+// String percentageChange = String.format("%.2f",
+// ((oceantemps.get(endIndex).getMaximumTemperature()
+// - oceantemps.get(startIndex).getMaximumTemperature())
+// / oceantemps.get(startIndex).getMaximumTemperature()) * 100);
+// String tempChange = "No Change";
+// String roundDifferenceValue = "0";
+// float differenceValue = oceantemps.get(endIndex).getMaximumTemperature()
+// - oceantemps.get(startIndex).getMaximumTemperature();
+// if (String.format("%.2f", differenceValue).equals("0.00")) {
+// roundDifferenceValue = Float.toString(differenceValue);
+// } else {
+// roundDifferenceValue = String.format("%.2f", differenceValue);
+// }
+// if (oceantemps.get(startIndex).getMaximumTemperature() <
+// oceantemps.get(endIndex)
+// .getMaximumTemperature()) {
+// tempChange = "There was an increase in the minimum average temperature";
+// } else if (oceantemps.get(startIndex).getMaximumTemperature() >
+// oceantemps.get(endIndex)
+// .getMaximumTemperature()) {
+// tempChange = "There was an decrease in the maximum average temperature";
+// } else {
+// tempChange = "There was no change in the maximum average temperature";
+// }
+// html = html + "<div id='tableData'>";
+// html = html + "<h2> Change In Temperature Between " + startYear + " And " +
+// endYear + "</h2>";
+// html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+// + " of " + roundDifferenceValue + "°C. This is a percentage change of " +
+// percentageChange
+// + "%. </p>";
+// html = html + "</div>";
+
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Maximum Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = startIndex; i <= endIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getMaximumTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html +
+// """
+// </table>
+// """;
+
+// } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Average Land Ocean Temperature</th>
+// <th>Minimum Land Ocean Temperature</th>
+// <th>Maximum Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = startIndex; i <= endIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getAverageTemperature()
+// + "</td>" + "<td>"
+// + oceantemps.get(i).getMinimumTemperature() + "</td>" + "<td>"
+// + oceantemps.get(i).getMaximumTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html +
+// """
+// </table>
+
+// """;
+
+// }
+// } else if (SortBy.equals("Descending")) {
+// ArrayList<Climate> oceantemps = jdbc.getAllLandOceanDataDESC();
+// int startIndex = 0;
+// for (int i = 0; i < oceantemps.size(); i++) {
+// if (oceantemps.get(i).getYear() == Integer.parseInt(startYear)) {
+// startIndex = i;
+// // TESTING html = html + "<p>" + startIndex + "</p>";
+// break;
+// }
+// }
+// int endIndex = 0;
+// for (int i = 0; i < oceantemps.size(); i++) {
+// if (oceantemps.get(i).getYear() == Integer.parseInt(endYear)) {
+// endIndex = i;
+// // TESTING html = html + "<p>" + endIndex + "</p>";
+// break;
+// }
+// }
+// if (DataToShow.equals("Only Average Land Ocean Temperature")) {
+// // Comparison of data over the time period selected
+// String percentageChange = String.format("%.2f",
+// ((oceantemps.get(endIndex).getAverageTemperature()
+// - oceantemps.get(startIndex).getAverageTemperature())
+// / oceantemps.get(startIndex).getAverageTemperature()) * 100);
+// String tempChange = "No Change";
+// String roundDifferenceValue = "0";
+// float differenceValue = oceantemps.get(endIndex).getAverageTemperature()
+// - oceantemps.get(startIndex).getAverageTemperature();
+// if (String.format("%.2f", differenceValue).equals("0.00")) {
+// roundDifferenceValue = Float.toString(differenceValue);
+// } else {
+// roundDifferenceValue = String.format("%.2f", differenceValue);
+// }
+// if (oceantemps.get(startIndex).getAverageTemperature() <
+// oceantemps.get(endIndex)
+// .getAverageTemperature()) {
+// tempChange = "There was an increase in average temperature";
+// } else if (oceantemps.get(startIndex).getAverageTemperature() >
+// oceantemps.get(endIndex)
+// .getAverageTemperature()) {
+// tempChange = "There was an decrease in average temperature";
+// } else {
+// tempChange = "There was no change in average temperature";
+// }
+// html = html + "<div id='tableData'>";
+// html = html + "<h2> Change In Temperature Between " + startYear + " And " +
+// endYear + "</h2>";
+// html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+// + " of " + roundDifferenceValue + "°C. This is a percentage change of " +
+// percentageChange
+// + "%. </p>";
+// html = html + "</div>";
+
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Average Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = endIndex; i <= startIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getAverageTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html +
+// """
+// </table>
+// """;
+
+// } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
+// // Comparison of data over the time period selected
+// String percentageChange = String.format("%.2f",
+// ((oceantemps.get(endIndex).getMinimumTemperature()
+// - oceantemps.get(startIndex).getMinimumTemperature())
+// / oceantemps.get(startIndex).getMinimumTemperature()) * 100);
+// String tempChange = "No Change";
+// String roundDifferenceValue = "0";
+// float differenceValue = oceantemps.get(endIndex).getMinimumTemperature()
+// - oceantemps.get(startIndex).getMinimumTemperature();
+// if (String.format("%.2f", differenceValue).equals("0.00")) {
+// roundDifferenceValue = Float.toString(differenceValue);
+// } else {
+// roundDifferenceValue = String.format("%.2f", differenceValue);
+// }
+// if (oceantemps.get(startIndex).getMinimumTemperature() <
+// oceantemps.get(endIndex)
+// .getMinimumTemperature()) {
+// tempChange = "There was an increase in the minimum average temperature";
+// } else if (oceantemps.get(startIndex).getMinimumTemperature() >
+// oceantemps.get(endIndex)
+// .getMinimumTemperature()) {
+// tempChange = "There was a decrease in the minimum average temperature";
+// } else {
+// tempChange = "There was no change in the minimum average temperature";
+// }
+// html = html + "<div id='tableData'>";
+// html = html + "<h2> Change In Temperature Between " + startYear + " And " +
+// endYear + "</h2>";
+// html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+// + " of " + roundDifferenceValue + "°C. This is a percentage change of " +
+// percentageChange
+// + "%. </p>";
+// html = html + "</div>";
+
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Minimum Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = endIndex; i <= startIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getMinimumTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html +
+// """
+// </table>
+// """;
+
+// } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
+// // Comparison of data over the time period selected
+// String percentageChange = String.format("%.2f",
+// ((oceantemps.get(endIndex).getMaximumTemperature()
+// - oceantemps.get(startIndex).getMaximumTemperature())
+// / oceantemps.get(startIndex).getMaximumTemperature()) * 100);
+// String tempChange = "No Change";
+// String roundDifferenceValue = "0";
+// float differenceValue = oceantemps.get(endIndex).getMaximumTemperature()
+// - oceantemps.get(startIndex).getMaximumTemperature();
+// if (String.format("%.2f", differenceValue).equals("0.00")) {
+// roundDifferenceValue = Float.toString(differenceValue);
+// } else {
+// roundDifferenceValue = String.format("%.2f", differenceValue);
+// }
+// if (oceantemps.get(startIndex).getMaximumTemperature() <
+// oceantemps.get(endIndex)
+// .getMaximumTemperature()) {
+// tempChange = "There was an increase in the minimum average temperature";
+// } else if (oceantemps.get(startIndex).getMaximumTemperature() >
+// oceantemps.get(endIndex)
+// .getMaximumTemperature()) {
+// tempChange = "There was an decrease in the maximum average temperature";
+// } else {
+// tempChange = "There was no change in the maximum average temperature";
+// }
+// html = html + "<div id='tableData'>";
+// html = html + "<h2> Change In Temperature Between " + startYear + " And " +
+// endYear + "</h2>";
+// html = html + "<p>" + tempChange + " from " + startYear + " to " + endYear
+// + " of " + roundDifferenceValue + "°C. This is a percentage change of " +
+// percentageChange
+// + "%. </p>";
+// html = html + "</div>";
+
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Maximum Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = endIndex; i <= startIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getMaximumTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html +
+// """
+// </table>
+// """;
+
+// } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
+// html = html
+// + """
+// <table>
+// <tr>
+// <th>Year</th>
+// <th>Average Land Ocean Temperature</th>
+// <th>Minimum Land Ocean Temperature</th>
+// <th>Maximum Land Ocean Temperature</th>
+// </tr>
+// """;
+
+// for (int i = endIndex; i <= startIndex; i++) {
+// html = html + " <tr> <td>" + oceantemps.get(i).getYear() + "</td> " + "<td>"
+// + oceantemps.get(i).getAverageTemperature()
+// + "</td>" + "<td>"
+// + oceantemps.get(i).getMinimumTemperature() + "</td>" + "<td>"
+// + oceantemps.get(i).getMaximumTemperature()
+// + "</td> </tr>";
+// }
+
+// html = html +
+// """
+// </table>
+// """;
+
+// }
+// }
+
+// html = html + "</div>";
+
+// return html;
+// }
+// }
