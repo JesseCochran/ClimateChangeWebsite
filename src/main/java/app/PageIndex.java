@@ -93,15 +93,19 @@ public class PageIndex implements Handler {
         long secondPopulation = populationTempRanges.get(1).getPopulationLevel();
         float secondTemp = populationTempRanges.get(1).getAverageTemperature();
 
-        int populationTemp = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
+        ArrayList<Climate> tempYearRange = jdbc.getGlobalTempYears();
+
+        int temperatureYears = tempYearRange.get(tempYearRange.size()-1).getYear() - tempYearRange.get(0).getYear();
+
+        int populationYears = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
         
 
         //Add HTML data specifications(1A)
         html = html + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at " +
                         "<strong>" + firstYear + "</strong> where the global population was <strong>" + firstPopulation + "</strong> and the average temperature was " +
                         "<strong>" + firstTemp + "</strong>. It then ends at <strong>" + secondYear + "</strong> where the global population was <strong>" + secondPopulation + 
-                        "</strong> and the average temperature was <strong>" + secondTemp + "</strong>. There is <strong>" + populationTemp + 
-                        "</strong> years of data for global population, however, there is  **** years of data for global temperature as more data is available.</p>";
+                        "</strong> and the average temperature was <strong>" + secondTemp + "</strong>. There is <strong>" + populationYears + 
+                        "</strong> years of data for global population, however, there is <strong>" + temperatureYears + "</strong> years of data for global temperature as more data is available.</p>";
 
         html = html + "<h3>Climate Change Data Overview</h3>";
 

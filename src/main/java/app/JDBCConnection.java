@@ -448,7 +448,7 @@ public class JDBCConnection {
             while (results.next()) {
                 // Lookup the columns we need
 
-                int year = results.getInt("ear");
+                int year = results.getInt("year");
                 
 
                 // Create a Climate Object
