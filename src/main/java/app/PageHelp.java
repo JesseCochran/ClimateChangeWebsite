@@ -25,7 +25,8 @@ public class PageHelp implements Handler {
                 "<title>Our Mission</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='HelpPage.css' />";
         html = html + "</head>";
 
         // Add the body
@@ -61,8 +62,10 @@ public class PageHelp implements Handler {
 
         // Add header content block
         html = html + """
-                    <div class='header'>
+                    <div class='content'>
+                    <div class='sections'>
                         <h2>Help And Support Page</h2>
+                        <h3>Contents</h3>
                         <h3><a href='#help-section'>Help</a></h3>
                         <h3><a href='#faq-section'>FAQ</a></h3>
                         <h3><a href='#advanced-section'>Advanced Features</a></h3>
