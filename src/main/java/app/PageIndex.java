@@ -130,13 +130,29 @@ public class PageIndex implements Handler {
                             + populationTempRanges.get(i).getMaximumTemperature() + "</td> </tr>";
                 }
 
-                html = html +
-                        """
-                                </table>
-                                """;
-
+                html = html + "</table>";
+                        
         // Close Content div
         html = html + "</div>";
+
+        // Bar chart for temperature range
+        html = html + "<div id='barchart'></div>";
+        
+        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+        html = html + "<script type='text/javascript'>";
+        html = html + "google.charts.load('current', {'packages':['corechart']});";
+        html = html + "google.charts.setOnLoadCallback(drawChart);";
+        html = html + "function drawChart() {";
+        html = html + "var data = google.visualization.arrayToDataTable([";
+        html = html + "['Year', 'Population'],";
+        html = html + "[" + firstYear + ", " + populationTempRanges.get(0).getPopulationLevel() + "],";
+        html = html + "[" + secondYear + ", " + populationTempRanges.get(1).getPopulationLevel() + "],";
+        html = html + "]);";
+        html = html + "var options = {'title':'Population Change', 'width':550, 'height':400};";
+        html = html + "var chart = new google.visualization.BarChart(document.getElementById('barchart'));";
+        html = html + "chart.draw(data, options);";
+        html = html + "}";
+        html = html + "</script>";
 
         // Footer
         html = html + """
@@ -147,6 +163,8 @@ public class PageIndex implements Handler {
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
+
+        
 
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
