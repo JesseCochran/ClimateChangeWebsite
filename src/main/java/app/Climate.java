@@ -19,6 +19,8 @@ public class Climate {
     private float maximumTemperature;
     // population level
     private long populationLevel;
+    private String question;
+    private String answer;
 
     /**
      * Create an Climate object and set the fields
@@ -43,6 +45,22 @@ public class Climate {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getCountryName() {
