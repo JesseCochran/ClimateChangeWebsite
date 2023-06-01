@@ -36,7 +36,8 @@ public class PageST2C implements Handler {
                 "<title>Focused View Of Land Ocean Temperature</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        // html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
         html = html + "</head>";
 
         // Add the body
@@ -74,7 +75,7 @@ public class PageST2C implements Handler {
         // Explanation of land ocean temp
         html = html
                 + """
-                        <h2>A look at Annual Global Land Ocean Temperature records</h2>
+                        <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
                         <p>Land Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
                         <p>The Global Land Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
                         this is because oceans have a higher heat capacity compared to land therefore meaning they absorb and release heat slower which can then help show greater discrepancies in temperatures therefore showing signs of climate change. </p>
@@ -115,7 +116,7 @@ public class PageST2C implements Handler {
         html = html + "</script>";
 
         // reload/clear button
-        html = html + "<button type='button' onclick='reload()'>Reset</button>";
+        html = html + "<button class='reset' type='button' onclick='reload()'>Reset</button>";
         // javascript for that button to clear all data entered
         //
         html = html + "<script>";
@@ -172,6 +173,7 @@ public class PageST2C implements Handler {
 
         // element of the end year drop down box
         html = html + "   <div class='form-group'>";
+        html = html + "<p></p>";
         html = html + "      <label for='EndYear_drop'>Select the end year (Dropdown):</label>";
         html = html + "      <select id='EndYear_drop' name='EndYear_drop' size='1'>";
         html = html + "      </select>";
@@ -181,9 +183,9 @@ public class PageST2C implements Handler {
         html = html + """
                 <p>Sort By</p>
                 <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label for='Ascending'>Ascending Order</label><br>
+                <label class='radio-label' for='Ascending'>Ascending Order</label><br>
                 <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label for='Descending'>Descending Order</label>
+                 <label class='radio-label' for='Descending'>Descending Order</label>
 
                     """;
 
@@ -197,7 +199,7 @@ public class PageST2C implements Handler {
         html = html + "      </select>";
         html = html + "   </div>";
         // submit button
-        html = html + "   <button type='submit' class='btn btn-primary'>Show Table</button>";
+        html = html + "   <button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
 
         html = html + "</form>";
 
@@ -211,7 +213,8 @@ public class PageST2C implements Handler {
         // String movietype_drop = context.queryParam("movietype_drop");
         if (StartYear_drop == null) {
             // If NULL, nothing to show, therefore we make some "no results" HTML
-            html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+
+            // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
             // html = html + outputData(StartYear_drop);
@@ -223,7 +226,8 @@ public class PageST2C implements Handler {
         // String movietype_drop = context.queryParam("movietype_drop");
         if (EndYear_drop == null) {
             // If NULL, nothing to show, therefore we make some "no results" HTML
-            html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+
+            // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
             // html = html + outputData(EndYear_drop);

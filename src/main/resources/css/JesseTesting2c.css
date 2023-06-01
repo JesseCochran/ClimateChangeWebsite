@@ -1,0 +1,233 @@
+/* External CSS style file */
+
+* {
+   box-sizing: border-box;
+}
+
+body {
+   font-family: "Roboto", Arial, sans-serif;
+   font-size: 18px;
+   padding: 0px;
+   background: #f1f1f1;
+   margin: 0px;
+}
+
+/* Header (div) formatting */
+.header {
+   padding: 0.25px;
+   position: fixed;
+   top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  
+   text-align: center;
+   /*old background-color: #cccccc; 
+   color: #000000; */
+   background-color: #292d6a;
+   color: #ffffff;
+   
+}
+.header img {
+   position: absolute;
+   left: 20;
+   top: 1;
+   z-index: 1; 
+}
+.title {
+   text-align: center;
+   padding: 0.25px;
+   background-color: #cccccc;
+   color: #000000;
+}
+
+.header h1 {
+   font-size: 50px;
+}
+
+
+/* Make the logo have a rounded edge */
+img.top-image {
+   vertical-align: middle;
+}
+img.left-image {
+float: left;
+text-align: left;
+}
+.tr, td, th, table {
+   border: 1px solid;
+   font-family: "Roboto", Arial, sans-serif;
+   font-size: 18px;
+}
+
+
+
+
+/* CSS Layout from W3Schools: https://www.w3schools.com/css/css_templates.asp */
+/* Style the top navigation bar */
+.topnav {
+   width: 100%;
+   z-index: 9999;
+   margin-top: 5px;
+   position: fixed;
+
+   overflow: hidden;
+   
+   background-color: #333;
+   text-align: center;
+   display: flex;
+  justify-content: center;
+ }
+ 
+ /* Style the topnav links */
+ .topnav a {
+   float: left;
+   display: block;
+   color: #f2f2f2;
+   text-align: center;
+   
+   padding: 14px 16px;
+   text-decoration: none;
+ }
+ 
+ /* Change color on hover */
+ .topnav a:hover {
+   background-color: #f1f1f1;
+   color: black;
+ }
+ 
+ /* Style the content */
+ .content {
+   position: relative;
+   padding-top: 100px;
+   margin-top: 100px;
+   background-color: #f1f1f1;
+   padding: 40px;
+   z-index: 9997;
+ }
+ 
+ /* Style the footer */
+ .footer {
+   background-color: #cccccc;
+   padding: 10px;
+ }
+
+ .reset {
+   background-color: transparent;
+  color: #292d6a;
+  border: 1px solid #292d6a;
+  cursor: pointer;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+ }
+ 
+ .reset:hover {
+   background-color: #292d6a;
+  color: #fff;
+ }
+
+.showTable{
+   display: inline-block;
+   padding: 12px 24px;
+   font-size: 16px;
+   font-weight: bold;
+   text-align: center;
+   text-decoration: none;
+   border: none;
+   border-radius: 8px;
+   background-color: #292d6a;
+   color: #ffffff;
+   cursor: pointer;
+}
+
+.showTable:hover {
+   background-color: #40407a;
+}
+.showTable:focus {
+   outline: none;
+  box-shadow: 0 0 0 3px #272760;
+}
+
+
+.content h2 {
+   color: #6cb358;
+   
+}
+.content select {
+   font-family: "Roboto", Arial, sans-serif;
+   font-size: 18px;
+   padding: 0px;
+   background: #f1f1f1;
+}
+
+
+input[type="radio"] {
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   border: 2px solid #292d6a;
+   outline: none;
+   transition: border-color 0.3s;
+   position: relative;
+   margin-top: 0px;
+   margin-bottom: 10px;
+   
+ }
+ 
+ input[type="radio"]:checked {
+   border-color: #292d6a;
+ }
+ 
+ input[type="radio"]::before {
+   content: "";
+   display: block;
+   width: 15px;
+   height: 15px;
+   margin: 0;
+   border-radius: 50%;
+   background-color: #292d6a;
+   opacity: 0;
+   transition: opacity 0.3s;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+ }
+ /*
+ input[type="radio"]::after {
+   content: "";
+   display: block;
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background-color: #ffffff;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+ }
+ */
+ 
+ input[type="radio"]:checked::before {
+   opacity: 1;
+ }
+ 
+ label.radio-label {
+   display: inline-block;
+   vertical-align: middle;
+   margin-left: 5px;
+ }
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
