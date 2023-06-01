@@ -233,7 +233,7 @@ public class PageST2C implements Handler {
                     """;
 
         html = html + "   <div class='form-group'>";
-        html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View (Dropdown):</label>";
+        html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View:</label>";
         html = html + "      <select id='TempSelection_drop' name='TempSelection_drop' size='1'>";
         html = html + "<option>Only Average Land Ocean Temperature</option>";
         html = html + "<option>Only Minimum Land Ocean Temperature</option>";
