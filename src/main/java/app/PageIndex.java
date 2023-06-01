@@ -87,10 +87,10 @@ public class PageIndex implements Handler {
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> populationTempRanges = jdbc.getPopulationTempRanges();
         int firstYear = populationTempRanges.get(0).getYear();
-        long firstPopulation = populationTempRanges.get(0).getPopulationLevel();
+        String firstPopulation = String.format("%,d", populationTempRanges.get(0).getPopulationLevel());
         float firstTemp = populationTempRanges.get(0).getAverageTemperature();
         int secondYear = populationTempRanges.get(1).getYear();
-        long secondPopulation = populationTempRanges.get(1).getPopulationLevel();
+        String secondPopulation = String.format("%,d", populationTempRanges.get(1).getPopulationLevel());
         float secondTemp = populationTempRanges.get(1).getAverageTemperature();
 
         ArrayList<Climate> tempYearRange = jdbc.getGlobalTempYears();
@@ -124,7 +124,7 @@ public class PageIndex implements Handler {
 
                 for (int i = 0; i < populationTempRanges.size(); ++i) {
                     html = html + " <tr> <td>" + populationTempRanges.get(i).getYear() + "</td> " + "<td>"
-                            + populationTempRanges.get(i).getPopulationLevel() + "</td>" + "<td>"
+                            + String.format("%,d", populationTempRanges.get(i).getPopulationLevel()) + "</td>" + "<td>"
                             + populationTempRanges.get(i).getAverageTemperature() + "</td>" + "<td>"
                             + populationTempRanges.get(i).getMinimumTemperature() + "</td>" + "<td>"
                             + populationTempRanges.get(i).getMaximumTemperature() + "</td> </tr>";
