@@ -149,7 +149,7 @@ public class PageIndex implements Handler {
         html = html + "[" + secondYear + ", " + populationTempRanges.get(1).getPopulationLevel() + "],";
         html = html + "]);";
         html = html + "var options = {'title':'Population Change', 'width':550, 'height':400};";
-        html = html + "var chart = new google.visualization.BarChart(document.getElementById('barchart'));";
+        html = html + "var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));";
         html = html + "chart.draw(data, options);";
         html = html + "}";
         html = html + "</script>";
