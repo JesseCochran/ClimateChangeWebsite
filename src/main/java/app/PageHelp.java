@@ -25,7 +25,8 @@ public class PageHelp implements Handler {
                 "<title>Our Mission</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='HelpPage.css' />";
         html = html + "</head>";
 
         // Add the body
@@ -61,8 +62,10 @@ public class PageHelp implements Handler {
 
         // Add header content block
         html = html + """
-                    <div class='header'>
+                    <div class='content'>
+                    <div class='sections'>
                         <h2>Help And Support Page</h2>
+                        <h3>Contents</h3>
                         <h3><a href='#help-section'>Help</a></h3>
                         <h3><a href='#faq-section'>FAQ</a></h3>
                         <h3><a href='#advanced-section'>Advanced Features</a></h3>
@@ -80,10 +83,32 @@ public class PageHelp implements Handler {
 
         // FAQ section of the page
         // In the future this will take data from the database
+
+        // Prints each question and answer from the database and formats the answer
+        // properly by spliting up the answer after each fullstop and a space.
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> QnA = jdbc.getFAQ();
+        String answerStructure = "";
+        String[] lineByLine;
         html = html
                 + """
-                            <section id='faq-section'>
-                                <h2>Frequently Asked Questions (FAQ)</h2>
+                        <section id='faq-section'>
+                            <h2>Frequently Asked Questions (FAQ)</h2>
+                            """;
+        for (int i = 0; i <= QnA.size() - 1; i++) {
+            html = html + "<h3>" + QnA.get(i).getQuestion() + "</h3>";
+            answerStructure = QnA.get(i).getAnswer();
+            lineByLine = answerStructure.split("\\. ");
+            for (String line : lineByLine) {
+                html = html + "<p>" + line + "</p>";
+            }
+
+        }
+
+        html = html
+                + """
+
+
                                 <h3> Question 1 </h3>
                                 <p> Answer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque, a pretium urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis vestibulum, placerat lectus et, fermentum nisl. Pellentesque felis nisi, pulvinar sed magna eu, fermentum malesuada ex. Pellentesque iaculis pretium orci eget bibendum. Nullam a leo nunc.
 

@@ -65,7 +65,6 @@ public class PageMission implements Handler {
                     </div>
                 """;
 
-
         // Add Div for page Content
         html += "<div class='content'>";
 

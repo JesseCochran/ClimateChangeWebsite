@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class JDBCConnection {
 
     // Name of database file (contained in database folder)
-    public static final String DATABASE = "jdbc:sqlite:database/ctg.db";
+    public static final String DATABASE = "jdbc:sqlite:database/Climate.db";
     // public static final String DATABASE = "jdbc:sqlite:database/climate.db";
 
     /**
@@ -90,9 +90,9 @@ public class JDBCConnection {
     }
 
     // TODO: Add your required methods here
-    public ArrayList<LGA> getYears() {
-        // Create the ArrayList of LGA objects to return
-        ArrayList<LGA> lgas = new ArrayList<LGA>();
+    public ArrayList<Climate> getLandOceanYears() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
 
         // Setup the variable for the JDBC connection
         Connection connection = null;
@@ -106,7 +106,12 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
 
             // The Query
-            String query = "SELECT DISTINCT * FROM LGA";
+            String query = """
+                        SELECT Year FROM GlobalLandOceanTemp
+                    WHERE GlobalLandOceanTemp.AvgOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MaxOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MinOceanTemp IS NOT NULL
+                    """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -114,15 +119,15 @@ public class JDBCConnection {
             // Process all of the results
             while (results.next()) {
                 // Lookup the columns we need
-                int code = results.getInt("code");
-                String name = results.getString("name");
+
                 int year = results.getInt("year");
 
-                // Create a LGA Object
-                LGA lga = new LGA(code, name, year);
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
 
                 // Add the lga object to the array
-                lgas.add(lga);
+                climates.add(climate);
             }
 
             // Close the statement because we are done with it
@@ -143,6 +148,336 @@ public class JDBCConnection {
         }
 
         // Finally we return all of the lga
-        return lgas;
+        return climates;
     }
+
+    public ArrayList<Climate> getAllLandOceanDataASC() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                        SELECT * FROM GlobalLandOceanTemp
+                    WHERE GlobalLandOceanTemp.AvgOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MaxOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MinOceanTemp IS NOT NULL
+                    """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("year");
+                float averageTemperature = results.getFloat("AvgOceanTemp");
+                float minimumTemperature = results.getFloat("MinOceanTemp");
+                float maximumTemperature = results.getFloat("MaxOceanTemp");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setAverageTemperature(averageTemperature);
+                climate.setMinimumTemperature(minimumTemperature);
+                climate.setMaximumTemperature(maximumTemperature);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+    public ArrayList<Climate> getAllLandOceanDataDESC() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                        SELECT * FROM GlobalLandOceanTemp
+                    WHERE GlobalLandOceanTemp.AvgOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MaxOceanTemp IS NOT NULL
+                    AND GlobalLandOceanTemp.MinOceanTemp IS NOT NULL
+                    ORDER BY Year DESC
+                    """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("year");
+                float averageTemperature = results.getFloat("AvgOceanTemp");
+                float minimumTemperature = results.getFloat("MinOceanTemp");
+                float maximumTemperature = results.getFloat("MaxOceanTemp");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setAverageTemperature(averageTemperature);
+                climate.setMinimumTemperature(minimumTemperature);
+                climate.setMaximumTemperature(maximumTemperature);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+    // Method to get range of global population and temp data (1A)
+    public ArrayList<Climate> getPopulationTempRanges() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                    SELECT p.Year, p.PopulationLevel, t.AvgAirTemp, t.MinAirTemp, t.MaxAirTemp
+                    FROM CountryPopulation AS p
+                    JOIN GlobalTemp AS t ON p.Year = t.Year
+                    JOIN Country As c ON p.CountryId = c.CountryId
+                    WHERE p.Year IN (1960, 2013)
+                    AND c.CountryName = 'World';
+                        """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("year");
+                long populationLevel = results.getLong("PopulationLevel");
+                float averageTemperature = results.getFloat("AvgAirTemp");
+                float minimumTemperature = results.getFloat("MinAirTemp");
+                float maximumTemperature = results.getFloat("MaxAirTemp");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setPopulationLevel(populationLevel);
+                climate.setAverageTemperature(averageTemperature);
+                climate.setMinimumTemperature(minimumTemperature);
+                climate.setMaximumTemperature(maximumTemperature);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+    public ArrayList<Climate> getFAQ() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                    SELECT FAQ.Question, FAQ.Answer
+                    FROM FAQ
+                    ;
+                        """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                String question = results.getString("Question");
+                String answer = results.getString("Answer");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setQuestion(question);
+                climate.setAnswer(answer);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+    public ArrayList<Climate> getGlobalTempYears() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                    SELECT Year
+                    FROM GlobalTemp;
+                        """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("year");
+                
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
 }

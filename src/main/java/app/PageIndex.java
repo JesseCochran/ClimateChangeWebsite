@@ -73,25 +73,86 @@ public class PageIndex implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <h1>Homepage content</h1>
+                <h1>Homepage</h1>
                 """;
 
-        // Get the ArrayList of Strings of all LGAs
-        ArrayList<String> lgaNames = getLGAs2016();
+
 
         // Add HTML for the LGA list
-        html = html + "<h2>All 2016 LGAs in the CTG database</h2>" + "<ul>";
+        html = html + "<h2>Introduction to Climate Change Awareness</h2>";
+        
+        //Add HTML paragraph description
+        html = html + "<p>Climate change is a growing issue for not only the world but for your futures and lives. Throughout this website we are giving you multiple tools to research and view this data for yourselves.</p>";
 
-        // Finally we can print out all of the LGAs
-        for (String name : lgaNames) {
-            html = html + "<li>" + name + "</li>";
-        }
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> populationTempRanges = jdbc.getPopulationTempRanges();
+        int firstYear = populationTempRanges.get(0).getYear();
+        String firstPopulation = String.format("%,d", populationTempRanges.get(0).getPopulationLevel());
+        float firstTemp = populationTempRanges.get(0).getAverageTemperature();
+        int secondYear = populationTempRanges.get(1).getYear();
+        String secondPopulation = String.format("%,d", populationTempRanges.get(1).getPopulationLevel());
+        float secondTemp = populationTempRanges.get(1).getAverageTemperature();
 
-        // Finish the List HTML
-        html = html + "</ul>";
+        ArrayList<Climate> tempYearRange = jdbc.getGlobalTempYears();
 
+        int temperatureYears = tempYearRange.get(tempYearRange.size()-1).getYear() - tempYearRange.get(0).getYear();
+
+        int populationYears = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
+        
+
+        //Add HTML data specifications(1A)
+        html = html + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at " +
+                        "<strong>" + firstYear + "</strong> where the global population was <strong>" + firstPopulation + "</strong> and the average temperature was " +
+                        "<strong>" + firstTemp + "</strong>. It then ends at <strong>" + secondYear + "</strong> where the global population was <strong>" + secondPopulation + 
+                        "</strong> and the average temperature was <strong>" + secondTemp + "</strong>. There is <strong>" + populationYears + 
+                        "</strong> years of data for global population, however, there is <strong>" + temperatureYears + "</strong> years of data for global temperature as more data is available.</p>";
+
+        html = html + "<h3>Climate Change Data Overview</h3>";
+
+        //Add table for global temperature and population ranges
+        html = html
+                        + """
+                                <table>
+                                      <tr>
+                                        <th>Year</th>
+                                        <th>Population</th>
+                                        <th>Average Temperature</th>
+                                        <th>Minimum Temperature</th>
+                                        <th>Maximum Temperature</th>
+                                      </tr>
+                                      """;
+
+                for (int i = 0; i < populationTempRanges.size(); ++i) {
+                    html = html + " <tr> <td>" + populationTempRanges.get(i).getYear() + "</td> " + "<td>"
+                            + String.format("%,d", populationTempRanges.get(i).getPopulationLevel()) + "</td>" + "<td>"
+                            + populationTempRanges.get(i).getAverageTemperature() + "</td>" + "<td>"
+                            + populationTempRanges.get(i).getMinimumTemperature() + "</td>" + "<td>"
+                            + populationTempRanges.get(i).getMaximumTemperature() + "</td> </tr>";
+                }
+
+                html = html + "</table>";
+                        
         // Close Content div
         html = html + "</div>";
+
+        // Bar chart for temperature range
+        html = html + "<div id='barchart'></div>";
+        
+        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+        html = html + "<script type='text/javascript'>";
+        html = html + "google.charts.load('current', {'packages':['corechart']});";
+        html = html + "google.charts.setOnLoadCallback(drawChart);";
+        html = html + "function drawChart() {";
+        html = html + "var data = google.visualization.arrayToDataTable([";
+        html = html + "['Year', 'Population'],";
+        html = html + "[" + firstYear + ", " + populationTempRanges.get(0).getPopulationLevel() + "],";
+        html = html + "[" + secondYear + ", " + populationTempRanges.get(1).getPopulationLevel() + "],";
+        html = html + "]);";
+        html = html + "var options = {'title':'Population Change', 'width':550, 'height':400};";
+        html = html + "var chart = new google.visualization.BarChart(document.getElementById('barchart'));";
+        html = html + "chart.draw(data, options);";
+        html = html + "}";
+        html = html + "</script>";
 
         // Footer
         html = html + """
@@ -102,6 +163,8 @@ public class PageIndex implements Handler {
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
+
+        
 
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
