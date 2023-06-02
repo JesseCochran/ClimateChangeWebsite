@@ -1,95 +1,164 @@
 package app;
 
-import java.util.ArrayList;
+ import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
+ import io.javalin.http.Handler;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+ import java.sql.Connection;
+ import java.sql.DriverManager;
+ import java.sql.ResultSet;
+ import java.sql.SQLException;
+ import java.sql.Statement;
 
-/**
- * Example Index HTML class using Javalin
- * <p>
- * Generate a static HTML page using Javalin
- * by writing the raw HTML into a Java String object
- *
- * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
- * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
- */
-public class PageST2B implements Handler {
+ /**
+  * Example Index HTML class using Javalin
+  * <p>
+  * Generate a static HTML page using Javalin
+  * by writing the raw HTML into a Java String object
+  *
+  * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
+  * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
+  */
+ public class PageST2B implements Handler {
 
-    // URL of this page relative to http://localhost:7001/
-    public static final String URL = "/page2B.html";
+     // URL of this page relative to http://localhost:7001/
+     public static final String URL = "/page2B.html";
 
-    @Override
-    public void handle(Context context) throws Exception {
-        // Create a simple HTML webpage in a String
-        String html = "<html>";
+     @Override
+     public void handle(Context context) throws Exception {
+           // Create a simple HTML webpage in a String
+           String html = "<html>";
 
-        // Add some Head information
-        html = html + "<head>" +
-                "<title>  ";
+           // Add some Head information
+           html = html + "<head>" +
+                   "<title>Subtask 2.1</title>";
+   
+           // Add some CSS (external file)
+           html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+           html = html + "</head>";
+   
+           // Add the body
+           html = html + "<body>";
+   
+           // Add header content block
+           html = html
+                   + """
+                               <div class='header'>
+                                   <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                                   Climate Change Awareness</h1>
+                               </div>
+                           """;
+         // Add the topnav
+         // This uses a Java v15+ Text Block
+         html = html + """
+            <div class='topnav'>
+            <a href='/'>Homepage</a>
+            <a href='mission.html'>Our Mission</a>
+            <a href='page2A.html'>Sub Task 2.A</a>
+            <a href='page2B.html'>Sub Task 2.B</a>
+            <a href='page2C.html'>Sub Task 2.C</a>
+            <a href='page3A.html'>Sub Task 3.A</a>
+            <a href='page3B.html'>Sub Task 3.B</a>
+            <a href='page3C.html'>Sub Task 3.C</a>
+            <a href='PageHelp.html'>Help Page</a>
+            </div>
+        """;
+         String country = context.req.getParameter("country");
 
-        // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
-        html = html + "</head>";
+         // Add header content block
+         html = html + """
+             <div class='header'>
+                 <h3> A focuseed view of temperatures by states or city </h3>
+             </div>
+         """;
+         HashMap<String, String> countries = JDBCConnection.getCountryName();
+         html += "<form>";
+         html += """
+            <select name="country">
+            """;
 
-        // Add the body
-        html = html + "<body>";
+        for (Map.Entry<String, String> entry : countries.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (country != null){
+                if (country.equals(key)){
+                    html += "<option selected='selected' value='";
+                    html += key + "'>" + value + "</option>";
+                }
+            }
+            html += "<option value='";
+            html += key + "'>" + value + "</option>";
+        }
 
-        // Add header content block
-        html = html
+        html += "</select>";
+        html += """
+                <select name='type'>
+                <option value='states'>States</option> 
+                <option value='cities'>Cities</option> 
+                </select>
+                """;
+        html += """
+            <button type="submit">submit</button>""";        
+        html += "</form>";
+
+
+
+         // Add Div for page Content
+         html = html + "<div class='content'>";
+
+         // Add HTML for the page content
+         html = html + """
+             <p>Subtask 2.B page content</p>
+             """;
+
+         // Close Content div
+         html = html + "</div>";
+
+         // Footer
+         html = html
                 + """
-                            <div class='header'>
-                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                                Climate Change Awareness</h1>
+                            <div class='footer'>
+                                <p>COSC2803 - Studio Project Starter Code (Apr23)</p
+                                <p style='display: flex; gap: 10px;'><a 
+                          href='PageHelp.html#help-section'> Help </a><a   
+                                href='PageHelp.html#faq-section'> FAQ </a><a 
+                                href='PageHelp.html#advanced-section'> Advanced Features </a></p>
                             </div>
                         """;
 
-        // Add the topnav
-        // This uses a Java v15+ Text Block
-        html = html + """
-                    <div class='topnav'>
-                    <a href='/'>Homepage</a>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='page2A.html'>Sub Task 2.A</a>
-                    <a href='page2B.html'>Sub Task 2.B</a>
-                    <a href='page2C.html'>Sub Task 2.C</a>
-                    <a href='page3A.html'>Sub Task 3.A</a>
-                    <a href='page3B.html'>Sub Task 3.B</a>
-                    <a href='page3C.html'>Sub Task 3.C</a>
-                    <a href='PageHelp.html'>Help Page</a>
-                    </div>
-                """;
+         // Finish the HTML webpage
+         html = html + "</body>" + "</html>";
 
-        // Add Div for page Content
-        html = html + "<div class='content'>";
 
-        // Add HTML for the page content
-        html = html + """
-                <h1>Subtask 2.B page content</h1>
-                """;
+         // DO NOT MODIFY THIS
+         // Makes Javalin render the webpage
+         context.html(html);
 
-        // Close Content div
-        html = html + "</div>";
 
-        // Footer
-        html = html + """
-                    <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-                    </div>
-                """;
 
-        // Finish the HTML webpage
-        html = html + "</body>" + "</html>";
+        // if (country != null) {
+        //     ArrayList<String> states = JDBCConnection.getStatesForCountry(country);
+        //     html += "<form>";
+        //     html += """
+        //        <select name='State'>
+        //        """;
+        //    for (String c:states){
+        //        html += "<option>" + c + "</option>";
+        //    }
+        //    html += "</select>";
+        //    html += """
+        //        <button type="submit">submit</button>""";
+           
+        //    html += "</form>";
 
-        // DO NOT MODIFY THIS
-        // Makes Javalin render the webpage
-        context.html(html);
-    }
+        // }
 
-}
+
+
+
+     }
+
+ }
