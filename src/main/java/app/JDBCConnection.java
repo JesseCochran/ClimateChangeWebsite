@@ -449,7 +449,6 @@ public class JDBCConnection {
 
                 int year = results.getInt("year");
 
-
                 // Create a Climate Object
                 Climate climate = new Climate();
                 climate.setYear(year);
@@ -479,8 +478,141 @@ public class JDBCConnection {
         return climates;
     }
 
-    //
-    public static HashMap<String, String> getCountryNames() {
+
+    public ArrayList<Climate> getCountryClimateData() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+
+            String query = """
+                    SELECT country.CountryName, countryTemp.Year, countryTemp.AvgTemp, countryTemp.MinTemp, countrytemp.MaxTemp
+                    FROM CountryTemp
+                    JOIN country ON countryTemp.CountryId = country.CountryId
+                    ORDER BY Year;
+                            """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                String Name = results.getString("CountryName");
+                int year = results.getInt("Year");
+                float averageTemperature = results.getFloat("AvgTemp");
+                float minimumTemperature = results.getFloat("MinTemp");
+                float maximumTemperature = results.getFloat("MaxTemp");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setCountryName(Name);
+                climate.setYear(year);
+                climate.setAverageTemperature(averageTemperature);
+                climate.setMinimumTemperature(minimumTemperature);
+                climate.setMaximumTemperature(maximumTemperature);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the climate data
+        return climates;
+    }
+
+    public ArrayList<Climate> getCountryYearsOfData() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+
+            String query = """
+                    SELECT DISTINCT CountryTemp.Year
+                    FROM CountryTemp
+                    ORDER BY Year;
+                                """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+
+                int year = results.getInt("Year");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+
+                climate.setYear(year);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+
+        // Finally we return all of the climate data
+        return climates;
+    }
+  public static HashMap<String, String> getCountryNames() {
 
         HashMap<String, String> countryNames = new HashMap<String, String>();
 

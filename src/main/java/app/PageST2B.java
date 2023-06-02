@@ -170,6 +170,7 @@ import io.javalin.http.Context;
 
          // Footer
          html = html
+
                 + """
                             <div class='footer'>
                                 <p>COSC2803 - Studio Project Starter Code (Apr23)</p

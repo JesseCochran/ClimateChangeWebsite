@@ -38,6 +38,7 @@ public class PageMission implements Handler {
         html += "<link rel='stylesheet' type='text/css' href='common.css' />";
         html += "</head>";
 
+
         // Add the body
         html += "<body>";
 
