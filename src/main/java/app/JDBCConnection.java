@@ -480,7 +480,7 @@ public class JDBCConnection {
     }
 
     //
-    public static HashMap<String, String> getCountryName() {
+    public static HashMap<String, String> getCountryNames() {
 
         HashMap<String, String> countryNames = new HashMap<String, String>();
 

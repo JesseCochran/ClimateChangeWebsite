@@ -81,7 +81,7 @@ import io.javalin.http.Context;
                  <h3> A focused view of temperatures by states or city </h3>
              </div>
          """;
-         HashMap<String, String> countries = JDBCConnection.getCountryName();
+         HashMap<String, String> countries = JDBCConnection.getCountryNames();
          html += "<form>";
          html += """
             <select name="country">
