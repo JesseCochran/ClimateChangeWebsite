@@ -3,6 +3,7 @@ package helper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -46,7 +47,6 @@ public class ClimateProcessCSV {
       // Load the Country Temperature Observations
       loadCountryTemperatures();
 
-      return;
    }
 
    public static void loadYears() {
@@ -129,7 +129,7 @@ public class ClimateProcessCSV {
             }
 
             // Convert any Latin1 encoded country names to UTF-8
-            String countryName = new String(rawCountryName.getBytes("ISO-8859-1"), "UTF-8");
+            String countryName = new String(rawCountryName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
             // We now need to look-up the country code from the name
             Statement statement = connection.createStatement();
             String query = "SELECT * from Country WHERE CountryName = \"" + countryName + "\"";

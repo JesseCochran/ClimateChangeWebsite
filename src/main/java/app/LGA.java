@@ -8,13 +8,13 @@ package app;
  */
 public class LGA {
    // LGA Code
-   private int code;
+   private final int code;
 
    // LGA Name
-   private String name;
+   private final String name;
 
    // LGA Year
-   private int year;
+   private final int year;
 
    /**
     * Create an LGA and set the fields
