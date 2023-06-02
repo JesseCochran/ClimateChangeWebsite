@@ -93,22 +93,22 @@ public class PageST3C implements Handler {
         html = html + "<script>";
         html = html + "   function ReenterData() {";
         html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
-        html = html + "       var endYear = document.getElementById('EndYear_drop').value;";
+        html = html + "       var timeYears = document.getElementById('timeYears_drop').value;";
         html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
         html = html + "       var dataToShow = document.getElementById('TempSelection_drop').value;";
         html = html + "       sessionStorage.setItem('startYear', startYear);";
-        html = html + "       sessionStorage.setItem('endYear', endYear);";
+        html = html + "       sessionStorage.setItem('timeYears', timeYears);";
         html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
         html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
         html = html + "       return true;";
         html = html + "   }";
         html = html + " window.onload = function() {";
         html = html + " var startYear = sessionStorage.getItem('startYear');";
-        html = html + " var endYear = sessionStorage.getItem('endYear');";
+        html = html + " var timeYears = sessionStorage.getItem('timeYears');";
         html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
         html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
         html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
-        html = html + " if (endYear) document.getElementById('EndYear_drop').value = endYear;";
+        html = html + " if (timeYears) document.getElementById('timeYears_drop').value = timeYears;";
         html = html
                 + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
         html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
@@ -261,7 +261,7 @@ public class PageST3C implements Handler {
             // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
-            // html = html + outputData(EndYear_drop);
+            // html = html + outputData(timeYears_drop);
 
             if (SortBy == null) {
                 html = html + "<h2><i>Please select a sorting method</i></h2>";
@@ -291,7 +291,8 @@ public class PageST3C implements Handler {
         context.html(html);
     }
 
-    public String outputData(String startYear, String endYear, String DataToShow, String SortBy) {
+    public String outputData(String startYear, String timeYears, String DataToShow, String SortBy) {
+        String endYear = Integer.toString(Integer.parseInt(startYear) + Integer.parseInt(timeYears) - 1);
         String html = "<div id='tableData'>";
         html = html + "<h2>" + "Climate Data From " + startYear + " To " + endYear + "</h2>";
         JDBCConnection jdbc = new JDBCConnection();
@@ -312,7 +313,7 @@ public class PageST3C implements Handler {
 
         if (DataToShow.equals("Only Average Land Ocean Temperature")) {
             String dataType = "Average";
-            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = displayTable(html, startYear, timeYears, oceantemps, startIndex, endIndex, dataType);
             html = html + "<table>";
             html = html
                     + "<tr><th>Year</th><th>Average Land Ocean Temperature</th></tr>";
@@ -333,7 +334,7 @@ public class PageST3C implements Handler {
 
         } else if (DataToShow.equals("Only Minimum Land Ocean Temperature")) {
             String dataType = "Minimum";
-            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = displayTable(html, startYear, timeYears, oceantemps, startIndex, endIndex, dataType);
             html = html + "<table>";
             html = html
                     + "<tr><th>Year</th><th>Minimum Land Ocean Temperature</th></tr>";
@@ -355,7 +356,7 @@ public class PageST3C implements Handler {
 
         } else if (DataToShow.equals("Only Maximum Land Ocean Temperature")) {
             String dataType = "Maximum";
-            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = displayTable(html, startYear, timeYears, oceantemps, startIndex, endIndex, dataType);
             html = html + "<table>";
             html = html
                     + "<tr><th>Year</th><th>Maximum Land Ocean Temperature</th></tr>";
@@ -376,7 +377,7 @@ public class PageST3C implements Handler {
 
         } else if (DataToShow.equals("Show All Land Ocean Temperature Data")) {
             String dataType = "All";
-            html = displayTable(html, startYear, endYear, oceantemps, startIndex, endIndex, dataType);
+            html = displayTable(html, startYear, timeYears, oceantemps, startIndex, endIndex, dataType);
             html = html + "<table>";
             html = html
                     + "<tr><th>Year</th><th>Average Land Ocean Temperature</th><th>Minimum Land Ocean Temperature</th><th>Maximum Land Ocean Temperature</th></tr>";
@@ -415,18 +416,19 @@ public class PageST3C implements Handler {
         return 0;
     }
 
-    private String displayTable(String html, String startYear, String endYear, ArrayList<Climate> oceantemps,
+    private String displayTable(String html, String startYear, String timeYears, ArrayList<Climate> oceantemps,
             int startIndex, int endIndex, String dataType) {
         float startValue = 0;
         float endValue = 0;
         String tempChange = "";
         String roundDifferenceValue = "";
         String percentageChange = "";
-        html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
+        html = html + "<h2> Change In Temperature Between " + startYear + " And " + timeYears + "</h2>";
 
         if (dataType.equals("Average")) {
 
             startValue = oceantemps.get(startIndex).getAverageTemperature();
+            html = html + "<p>" + startIndex + "</p>";
             endValue = oceantemps.get(endIndex).getAverageTemperature();
             tempChange = getTemperatureChange(startValue, endValue, dataType);
             roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
@@ -453,7 +455,7 @@ public class PageST3C implements Handler {
             tempChange = getTemperatureChange(startValue, endValue, dataType);
             roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
             percentageChange = getPercentageChange(startValue, endValue);
-            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + timeYears
                     + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                     + ". </p>";
             // min data
@@ -463,7 +465,7 @@ public class PageST3C implements Handler {
             tempChange = getTemperatureChange(startValue, endValue, dataType);
             roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
             percentageChange = getPercentageChange(startValue, endValue);
-            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + timeYears
                     + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                     + ". </p>";
             // max data
@@ -473,7 +475,7 @@ public class PageST3C implements Handler {
             tempChange = getTemperatureChange(startValue, endValue, dataType);
             roundDifferenceValue = getRoundDifferenceValue(startValue, endValue);
             percentageChange = getPercentageChange(startValue, endValue);
-            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+            html = html + "<p> There was" + tempChange + " from " + startYear + " to " + timeYears
                     + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                     + ". </p>";
             return html;
@@ -484,7 +486,7 @@ public class PageST3C implements Handler {
             percentageChange = "";
         }
 
-        html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
+        html = html + "<p> There was" + tempChange + " from " + startYear + " to " + timeYears
                 + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                 + ". </p>";
 
