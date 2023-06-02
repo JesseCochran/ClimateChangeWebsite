@@ -43,7 +43,7 @@ public class CTGProcessCSV {
       // The order of each array MUST match the order of the CSV.
       // These are specific to the given file and should be changed for each file.
       // This is a *simple* way to help you get up and running quickly wihout being confusing
-      String category[] = {
+      String[] category = {
          "_0_4",
          "_5_9",
          "_10_14",
@@ -59,16 +59,16 @@ public class CTGProcessCSV {
          "_60_64",
          "_65_yrs_ov"
       };
-      String status[] = {
+      String[] status = {
          "indig",
          "non_indig",
          "indig_ns"
       };
-      String sex[] = {
+      String[] sex = {
          "f",
          "m"
       };
-      int age_min[] = {
+      int[] age_min = {
          0,
          5,
          10,
@@ -84,7 +84,7 @@ public class CTGProcessCSV {
          60,
          65
       };
-      int age_max[] = {
+      int[] age_max = {
          4,
          9,
          14,
