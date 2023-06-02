@@ -13,7 +13,9 @@ import io.javalin.http.Context;
  import java.sql.SQLException;
  import java.sql.Statement;
 
- /**
+ import static app.JDBCConnection.getTempByState;
+
+/**
   * Example Index HTML class using Javalin
   * <p>
   * Generate a static HTML page using Javalin
@@ -68,10 +70,15 @@ import io.javalin.http.Context;
         """;
          String country = context.req.getParameter("country");
 
+
+
+
+
+
          // Add header content block
          html = html + """
              <div class='header'>
-                 <h3> A focuseed view of temperatures by states or city </h3>
+                 <h3> A focused view of temperatures by states or city </h3>
              </div>
          """;
          HashMap<String, String> countries = JDBCConnection.getCountryName();
@@ -100,14 +107,58 @@ import io.javalin.http.Context;
                 <option value='cities'>Cities</option> 
                 </select>
                 """;
+
+         html += "<select name='from'>";
+         for (int i = 1750; i < 2014; i++){
+             html += "<option>" + i + "</option>";
+         }
+         html += "</select>";
+         html += "<select name='to'>";
+         for (int i = 1750; i < 2014; i++){
+             html += "<option>" + i + "</option>";
+         }
+         html += "</select>";
         html += """
             <button type="submit">submit</button>""";        
         html += "</form>";
 
+         html = html + "<button class='reset' type='button' onclick='reload()'>Reset</button>";
 
+
+         String type = context.req.getParameter("type");
 
          // Add Div for page Content
          html = html + "<div class='content'>";
+         int fromDate = Integer.parseInt(context.req.getParameter("from"));
+         int toDate = Integer.parseInt(context.req.getParameter("to"));
+
+         if (country != null){
+             ArrayList<TempData> data = JDBCConnection.getTempByState(country, fromDate, toDate);
+             html +=
+                     "<table><tr> <th> Year </th> ";
+             if (type.equals("states")){
+                 html += "<th> State</th>";
+             } else {
+                 html += "<th> City</th><";
+
+             }
+
+             html +=
+                     "<th> Average Temperature </th> ";
+             html += "<th> Minimum Temperature </th> <th> Maximum Temperature </th> </tr>";
+
+             for (TempData d:data){
+                 html += "<tr><td>" + d.getYear() + "</td>";
+                 html += "<td>" + d.getName() + "</td>";
+                 html += "<td>" + d.getAvgTemp() + "</td>";
+                 html += "<td>" + d.getMinTemp() + "</td>";
+                 html += "<td>" + d.getMaxTemp() + "</td></tr>";
+             }
+             html +="<table>";
+//                     " <td> " + Years + "</td>";
+
+
+         }
 
          // Add HTML for the page content
          html = html + """
