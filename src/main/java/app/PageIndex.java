@@ -163,10 +163,12 @@ public class PageIndex implements Handler {
         ArrayList<Climate> Countries = jdbc.getCountryClimateData();
         // jdbc = new JDBCConnection(); Found out you only need one of these
         ArrayList<Climate> Years = jdbc.getCountryYearsOfData();
-        html = html + "<h6> Average Temperature Of The World In " +
+        int currentYearIndex = 0;
+        html = html + "<h4> Average Temperature Of The World In " +
                 Years.get(0).getYear() + ".</h4>";
         html = html
                 + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
+        html = html + "<button onclick='updateGraph()'>Next Year</button>";
         // attempt at a geo graph
         html = html + "<div id='regions_div'></div>";
         html = html + """
