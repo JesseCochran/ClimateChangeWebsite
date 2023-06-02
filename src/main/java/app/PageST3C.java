@@ -1,5 +1,6 @@
 package app;
 
+import java.lang.Math;
 import java.util.ArrayList;
 
 import io.javalin.http.Context;
@@ -31,11 +32,13 @@ public class PageST3C implements Handler {
         String html = "<html>";
 
         // Add some Head information
-        html = html + "<head>" +
-                "<title>Subtask 3.2</title>";
+        // makes it so certain characters are visible
+        html = html + "<head> <meta charset='UTF-8'>" +
+                "<title>Focused View Of Land Ocean Temperature</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        // html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
         html = html + "</head>";
 
         // Add the body
@@ -51,7 +54,6 @@ public class PageST3C implements Handler {
                         """;
 
         // Add the topnav
-        // This uses a Java v15+ Text Block
         html = html + """
                     <div class='topnav'>
                     <a href='/'>Homepage</a>
@@ -70,15 +72,10 @@ public class PageST3C implements Handler {
         html = html + "<div class='content'>";
 
         // Add HTML for the page content
-        html = html + """
-                <h1>Subtask 3.C page content</h1>
-                """;
-
-        // Add HTML for the page content
         // Explanation of land ocean temp
         html = html
                 + """
-                        <h2>A look at Annual Global Land Ocean Temperature records</h2>
+                        <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
                         <p>Land Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
                         <p>The Global Land Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
                         this is because oceans have a higher heat capacity compared to land therefore meaning they absorb and release heat slower which can then help show greater discrepancies in temperatures therefore showing signs of climate change. </p>
@@ -119,13 +116,13 @@ public class PageST3C implements Handler {
         html = html + "</script>";
 
         // reload/clear button
-        html = html + "<button type='button' onclick='reload()'>Reset</button>";
+        html = html + "<button class='reset' type='button' onclick='reload()'>Reset</button>";
         // javascript for that button to clear all data entered
         //
         html = html + "<script>";
         html = html + "   function reload() {";
         html = html + "       document.getElementById('StartYear_drop').value = '';";
-        html = html + "       document.getElementById('EndYear_drop').options.length = 0;";
+        html = html + "       document.getElementById('lengthDropdown').value = '';";
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
         html = html + "       sortOrderRadios.forEach(function(radio) { radio.checked = false; });";
         html = html + "       document.getElementById('TempSelection_drop').value = '';";
@@ -136,63 +133,95 @@ public class PageST3C implements Handler {
         html = html + "</script>";
 
         html = html + "   <div class='form-group'>";
-        html = html + "      <label for='StartYear_drop'>Select the start year (Dropdown):</label>";
-        html = html
-                + "      <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions(this.value)' size='1'>";
-        // This onchange section ^ makes the website more dynamic by using a java script
-        // Used java script taught in this video
-        // https://www.youtube.com/watch?v=SBmSRK3feww&t=7s and my own knowledge
-        // function to take the value the user selects to then place it in the end date
-        // drop down menu.
+        html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
+        html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
 
-        // this connects the database to the start date drop down box.
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> years = jdbc.getLandOceanYears();
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
         html = html + "      </select>";
-        html = html + "   </div>";
-        // Using some javascript to change the value of the end year drop down section
-        // to be the same as the start year
-        html = html + "<script>";
-        html = html + "   function updateEndYearOptions(selectedItem) {";
-        html = html + "       var endYearDropdown = document.getElementById('EndYear_drop');";
-        html = html + "       endYearDropdown.innerHTML = '';"; // Clear existing options
 
-        // This javascript code effectively makes the data in the end year section must
-        // be in the range of the user selected date to the end of the avilable data in
-        // the database.
-        html = html + "       var selectedYear = parseInt(selectedItem);";
-        html = html + "       var EndYear = " + years.get(years.size() - 1).getYear() + ";";
-        html = html + "       for (var year = selectedYear; year <= EndYear; year++) {";
-        html = html + "           var option = document.createElement('option');";
-        html = html + "           option.text = year;";
-        html = html + "           option.value = year;";
-        html = html + "           endYearDropdown.add(option);";
-        html = html + "       }";
-        html = html + "   }";
-        html = html + "</script>";
-
-        // element of the end year drop down box
-        html = html + "   <div class='form-group'>";
-        html = html + "      <label for='EndYear_drop'>Select the end year (Dropdown):</label>";
-        html = html + "      <select id='EndYear_drop' name='EndYear_drop' size='1'>";
+        html = html + "      <label for='lengthDropdown'>Select the time period of years:</label>";
+        html = html + "      <select id='lengthDropdown' name='lengthDropdown'>";
+        for (int i = 1; i < years.size(); i++) {
+            if (i != 1) {
+                html = html + " <option value= " + i + ">" + i + " years</option>";
+            } else {
+                html = html + " <option value= " + i + ">" + i + " year</option>";
+            }
+        }
         html = html + "      </select>";
-        html = html + "   </div>";
+
+        html = html + """
+                <script>
+                var startYearDropdown = document.getElementById('StartYear_drop');
+                var lengthDropdown = document.getElementById('lengthDropdown');
+                var startYearOptions = [];
+
+                // Populate start year options
+                function populateStartYearOptions() {
+                  var selectedLength = parseInt(lengthDropdown.value);
+                  """;
+        html = html + "var minStartYear = " + years.get(0).getYear() + ";";
+        html = html + "var maxStartYear = " + years.get(years.size() - 1).getYear() + "- selectedLength;";
+        html = html + """
+                    startYearOptions = [];
+
+                    // Add options based on the selected length
+                    for (var year = maxStartYear; year >= minStartYear; year--) {
+                      startYearOptions.push(year);
+                    }
+                  }
+
+                  // Event listener for length dropdown
+                  lengthDropdown.addEventListener('change', function() {
+                    populateStartYearOptions();
+                    updateStartYearOptions();
+                  });
+
+                  // Update start year options
+                  function updateStartYearOptions() {
+                    var selectedStartYear = startYearDropdown.value;
+
+                    // Clear previous options
+                    startYearDropdown.innerHTML = '';
+
+                    // Add new options based on the selected length
+                    for (var i = 0; i < startYearOptions.length; i++) {
+                      var year = startYearOptions[i];
+
+                      var option = document.createElement('option');
+                      option.text = year;
+                      option.value = year;
+                      startYearDropdown.appendChild(option);
+                    }
+
+                    // Set selected start year if within the available range
+                    if (startYearOptions.includes(parseInt(selectedStartYear))) {
+                      startYearDropdown.value = selectedStartYear;
+                    }
+                  }
+
+                  // Initial population and update of start year options
+                  populateStartYearOptions();
+                  updateStartYearOptions();
+                </script>
+                      """;
 
         // Sorting order
         html = html + """
                 <p>Sort By</p>
                 <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label for='Ascending'>Ascending Order</label><br>
+                <label class='radio-label' for='Ascending'>Ascending Order</label><br>
                 <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label for='Descending'>Descending Order</label>
+                 <label class='radio-label' for='Descending'>Descending Order</label>
 
                     """;
 
         html = html + "   <div class='form-group'>";
-        html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View (Dropdown):</label>";
+        html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View:</label>";
         html = html + "      <select id='TempSelection_drop' name='TempSelection_drop' size='1'>";
         html = html + "<option>Only Average Land Ocean Temperature</option>";
         html = html + "<option>Only Minimum Land Ocean Temperature</option>";
@@ -201,7 +230,7 @@ public class PageST3C implements Handler {
         html = html + "      </select>";
         html = html + "   </div>";
         // submit button
-        html = html + "   <button type='submit' class='btn btn-primary'>Show Table</button>";
+        html = html + "   <button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
 
         html = html + "</form>";
 
@@ -212,22 +241,24 @@ public class PageST3C implements Handler {
          * If the form is not filled in, then the form will return null!
          */
         String StartYear_drop = context.formParam("StartYear_drop");
-        // String movietype_drop = context.queryParam("movietype_drop");
+
         if (StartYear_drop == null) {
             // If NULL, nothing to show, therefore we make some "no results" HTML
-            html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+
+            // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
             // html = html + outputData(StartYear_drop);
 
         }
         String DataToShow = context.formParam("TempSelection_drop");
-        String EndYear_drop = context.formParam("EndYear_drop");
+        String lengthDropdown = context.formParam("lengthDropdown");
         String SortBy = context.formParam("SortOrder");
         // String movietype_drop = context.queryParam("movietype_drop");
-        if (EndYear_drop == null) {
+        if (lengthDropdown == null) {
             // If NULL, nothing to show, therefore we make some "no results" HTML
-            html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+
+            // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
         } else {
             // If NOT NULL, then lookup the movie by type!
             // html = html + outputData(EndYear_drop);
@@ -235,12 +266,12 @@ public class PageST3C implements Handler {
             if (SortBy == null) {
                 html = html + "<h2><i>Please select a sorting method</i></h2>";
             } else {
-                html = html + outputData(StartYear_drop, EndYear_drop, DataToShow, SortBy);
+                html = html + outputData(StartYear_drop, lengthDropdown, DataToShow, SortBy);
             }
         }
 
         // Close Content div
-        // html = html + "</div>";
+        html = html + "</div>";
 
         // Footer
         html = html
@@ -251,9 +282,6 @@ public class PageST3C implements Handler {
                                 <p style='display: flex; gap: 10px;'><a href='PageHelp.html#help-section'>Help</a><a href='PageHelp.html#faq-section'>FAQ</a><a href='PageHelp.html#advanced-section'>Advanced Features</a></p>
                             </div>
                         """;
-
-        // Close Content div
-        html = html + "</div>";
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
@@ -456,14 +484,6 @@ public class PageST3C implements Handler {
             percentageChange = "";
         }
 
-        // html = html + "<h3>" + "Land Ocean Temperature (" + dataType + ")" + "</h3>";
-        // html = html + "<p>" + "Start Year: " + startYear + ", End Year: " + endYear +
-        // "</p>";
-        // html = html + "<p>" + "Temperature Change: " + tempChange + "</p>";
-        // html = html + "<p>" + "Round Difference Value: " + roundDifferenceValue +
-        // "</p>";
-        // html = html + "<p>" + "Percentage Change: " + percentageChange + "</p>";
-
         html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
                 + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                 + ". </p>";
@@ -481,7 +501,7 @@ public class PageST3C implements Handler {
         } else {
             tempChange = " no change in the " + dataType.toLowerCase() + " temperature";
         }
-        // tempChange = tempChange + String.format("%.2f", difference) + " °C";
+
         return tempChange;
     }
 
@@ -497,4 +517,5 @@ public class PageST3C implements Handler {
         String percentageChange = String.format("%.2f", percentage) + "%";
         return percentageChange;
     }
+
 }
