@@ -31,18 +31,19 @@ public class PageMission implements Handler {
         String html = "<html>";
 
         // Add some Head information
-        html = html + "<head>" +
+        html += "<head>" +
                 "<title>Our Mission</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
-        html = html + "</head>";
+        html += "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html += "</head>";
 
         // Add the body
-        html = html + "<body>";
+        html += "<body>";
+
 
         // Add header content block
-        html = html + """
+        html += """
                     <div class='header'>
                         <h1>Climate Change Awareness</h1>
                     </div>
@@ -50,7 +51,7 @@ public class PageMission implements Handler {
 
         // Add the topnav
         // This uses a Java v15+ Text Block
-        html = html + """
+        html += """
                     <div class='topnav'>
                     <a href='/'>Homepage</a>
                     <a href='mission.html'>Our Mission</a>
@@ -66,23 +67,31 @@ public class PageMission implements Handler {
 
 
         // Add Div for page Content
-        html = html + "<div class='content'>";
+        html += "<div class='content'>";
 
-        // Add HTML for the page content
-        html = html + """
+        // Add HTML for the page content more to be added to the mission statement
+        html += """
                 <h1>Mission Statement</h1>
                 """;
+
+                    html += """
+                      
+    
+                        <p> Our aim is to provide a platform in which we can raise awareness about climate change and provide an avenue to explore real world data. </p>
+
+                            """;
+
 
         //
 
         // Finish the List HTML
-        html = html + "</ul>";
+        html += "</ul>";
 
         // Close Content div
-        html = html + "</div>";
+        html += "</div>";
 
         // Footer
-        html = html + """
+        html += """
                     <div class='footer'>
     
                         <a href='PageHelp.html'>Help Page</a>
@@ -90,7 +99,7 @@ public class PageMission implements Handler {
                 """;
 
         // Finish the HTML webpage
-        html = html + "</body>" + "</html>";
+        html += "</body>" + "</html>";
 
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
