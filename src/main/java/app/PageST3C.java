@@ -34,7 +34,7 @@ public class PageST3C implements Handler {
         // Add some Head information
         // makes it so certain characters are visible
         html = html + "<head> <meta charset='UTF-8'>" +
-                "<title>Focused View Of Land Ocean Temperature</title>";
+                "<title>Comparing Land and Land-Ocean Temperature Data</title>";
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
@@ -76,9 +76,10 @@ public class PageST3C implements Handler {
         html = html
                 + """
                         <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
-                        <p>Land Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
-                        <p>The Global Land Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
-                        this is because oceans have a higher heat capacity compared to land therefore meaning they absorb and release heat slower which can then help show greater discrepancies in temperatures therefore showing signs of climate change. </p>
+                        <p>Analysing the relationship between global land-ocean temperatures and land temperatures can help determine long term temperature trends on a global scale.<br>
+                        The reason for comparing global land-ocean with land temperature data is that water has a higher heat capacity than land and as such it takes longer to heat up and cool down thus resulting in a slower temperature change. <br>
+                        This can than lead to much more useful results then otherwise just comparing a time period of land-ocean data to another time period, as would just comparing land temperature to land temperature. </p>
+
                         """;
 
         // All the Drop down menu stuff for the data to eventually be retrieved from
@@ -131,7 +132,7 @@ public class PageST3C implements Handler {
         html = html + "       return false;";
         html = html + "   }";
         html = html + "</script>";
-
+        html = html + " <div class='container'>";
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
         html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
@@ -153,6 +154,29 @@ public class PageST3C implements Handler {
             }
         }
         html = html + "      </select>";
+
+        html = html + "      </div>";
+
+        html = html + "   <div class='form-group'>";
+
+        html = html + "      <label for='dataType'>Select data you wish to view:</label>";
+        html = html + "      <select id='dataType' name='dataType' size='1'>";
+        html = html + "<option>Land Data</option>";
+        html = html + "<option>Land-Ocean Data</option>";
+        html = html + "      </select>";
+
+        html = html + "      <label for='Comparison_textbox'>Select how many time periods you wish to compare:</label>";
+        html = html
+                + "      <input class='form-control' id='Comparison_textbox' name='Comparison_textbox' placeholder='Eg. 1 or 10'>";
+        html = html + "      </div>";
+        html = html + " </div>";
+        html = html + " <div class='container'>";
+        html = html + "<p>Please Select Another Set Of Data To Compare:</p>";
+        // the extras created by javascript depending on the comparision textbox
+        html = html + "   <div id='startYearSection' class='form-group'></div>";
+        html = html + "   <div id='lengthSection' class='form-group'></div>";
+        html = html + "   <div id='dataTypeSection' class='form-group'></div>";
+        html = html + " </div>";
 
         html = html + """
                 <script>
@@ -209,6 +233,37 @@ public class PageST3C implements Handler {
                   updateStartYearOptions();
                 </script>
                       """;
+
+        // Javascript to create multiple comparisons
+
+        html = html + "<script>";
+        html = html + "   function updateSections() {";
+        html = html + "       var comparisonValue = parseInt(document.getElementById('Comparison_textbox').value);";
+        html = html + "       var startYearSection = document.getElementById('startYearSection');";
+        html = html + "       var lengthSection = document.getElementById('lengthSection');";
+        html = html + "       var dataTypeSection = document.getElementById('dataTypeSection');";
+        html = html + "       startYearSection.innerHTML = '';";
+        html = html + "       lengthSection.innerHTML = '';";
+        html = html + "       dataTypeSection.innerHTML = '';";
+
+        html = html + "       for (var i = 1; i < comparisonValue; i++) {";
+        html = html
+                + "           startYearSection.innerHTML += 'Select another start year: ' + (i + 1) + ': <select id=\"startYear_' + i + '\" name=\"startYear_' + i + '\"></select><br>';";
+        html = html
+                + "           lengthSection.innerHTML += 'Select another or the same time period: ' + (i + 1) + ': <select id=\"length_' + i + '\" name=\"length_' + i + '\"></select><br>';";
+        html = html
+                + "           dataTypeSection.innerHTML += 'Select data you wish to view: ' + (i + 1) + ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i + '\"></select><br>';";
+        html = html + "       }";
+        html = html + "   }";
+
+        html = html + "   document.getElementById('Comparison_textbox').addEventListener('input', function() {";
+        html = html + "       updateSections();";
+        html = html + "   });";
+
+        html = html + "   window.addEventListener('load', function() {";
+        html = html + "       updateSections();";
+        html = html + "   });";
+        html = html + "</script>";
 
         // Sorting order
         html = html + """
