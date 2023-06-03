@@ -248,11 +248,19 @@ public class PageST3C implements Handler {
 
         html = html + "       for (var i = 1; i < comparisonValue; i++) {";
         html = html
-                + "           startYearSection.innerHTML += 'Select another start year: ' + (i + 1) + ': <select id=\"startYear_' + i + '\" name=\"startYear_' + i + '\"></select><br>';";
-        html = html
-                + "           lengthSection.innerHTML += 'Select another or the same time period: ' + (i + 1) + ': <select id=\"length_' + i + '\" name=\"length_' + i + '\"></select><br>';";
-        html = html
-                + "           dataTypeSection.innerHTML += 'Select data you wish to view: ' + (i + 1) + ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i + '\"></select><br>';";
+                + """
+
+                        startYearSection.innerHTML += 'Select another start year ' + i + ': <select id=\"startYear_' + i + '\" name=\"startYear_' + i + '\"></select>';
+                        startYearSection.innerHTML += 'Select another or the same time period ' + i + ': <select id=\"length_' + i + '\" name=\"length_' + i + '\"></select><br>';
+                        startYearSection.innerHTML += 'Select data you wish to view ' + i + ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i + '\"></select><br><br>'; """;
+        // html = html
+        // + " lengthSection.innerHTML += 'Select another or the same time period: ' +
+        // (i + 1) + ': <select id=\"length_' + i + '\" name=\"length_' + i +
+        // '\"></select><br>';";
+        // html = html
+        // + " dataTypeSection.innerHTML += 'Select data you wish to view: ' + (i + 1) +
+        // ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i +
+        // '\"></select><br>';";
         html = html + "       }";
         html = html + "   }";
 
