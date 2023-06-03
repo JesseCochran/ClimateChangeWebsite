@@ -246,21 +246,39 @@ public class PageST3C implements Handler {
         html = html + "       lengthSection.innerHTML = '';";
         html = html + "       dataTypeSection.innerHTML = '';";
 
-        html = html + "       for (var i = 1; i < comparisonValue; i++) {";
+        // gets data from existing 3 drop downs
+        // start year drop down
+        html = html + "       var startYearOptionsHTML = '';";
+        html = html + "       var startYearDropdown = document.getElementById('StartYear_drop');";
+        html = html + "       for (var i = 0; i < startYearDropdown.options.length; i++) {";
         html = html
-                + """
+                + "           startYearOptionsHTML += '<option value=\"' + startYearDropdown.options[i].value + '\">' + startYearDropdown.options[i].text + '</option>';";
+        html = html + "       }";
+        // duration drop down
+        html = html + "       var lengthOptionsHTML = '';";
+        html = html + "       var lengthDropdown = document.getElementById('lengthDropdown');";
+        html = html + "       for (var i = 0; i < lengthDropdown.options.length; i++) {";
+        html = html
+                + "           lengthOptionsHTML += '<option value=\"' + lengthDropdown.options[i].value + '\">' + lengthDropdown.options[i].text + '</option>';";
+        html = html + "       }";
+        // data options
+        html = html + "       var dataTypeOptionsHTML = '';";
+        html = html + "       var dataTypeDropdown = document.getElementById('dataType');";
+        html = html + "       for (var i = 0; i < dataTypeDropdown.options.length; i++) {";
+        html = html
+                + "           dataTypeOptionsHTML += '<option value=\"' + dataTypeDropdown.options[i].value + '\">' + dataTypeDropdown.options[i].text + '</option>';";
+        html = html + "       }";
 
-                        startYearSection.innerHTML += 'Select another start year ' + i + ': <select id=\"startYear_' + i + '\" name=\"startYear_' + i + '\"></select>';
-                        startYearSection.innerHTML += 'Select another or the same time period ' + i + ': <select id=\"length_' + i + '\" name=\"length_' + i + '\"></select><br>';
-                        startYearSection.innerHTML += 'Select data you wish to view ' + i + ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i + '\"></select><br><br>'; """;
-        // html = html
-        // + " lengthSection.innerHTML += 'Select another or the same time period: ' +
-        // (i + 1) + ': <select id=\"length_' + i + '\" name=\"length_' + i +
-        // '\"></select><br>';";
-        // html = html
-        // + " dataTypeSection.innerHTML += 'Select data you wish to view: ' + (i + 1) +
-        // ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i +
-        // '\"></select><br>';";
+        html = html + "       for (var i = 1; i < comparisonValue; i++) {";
+        html = html + "startYearSection.innerHTML += '<p>Please Select Another Set Of Data To Compare:</p>';";
+        html = html
+                + "startYearSection.innerHTML += 'Select another start year ' + i + ': <select id=\"startYear_' + i + '\" name=\"startYear_' + i + '\"><option></option>' + startYearOptionsHTML + '</select>';";
+        html = html
+                + "startYearSection.innerHTML += 'Select another or the same time period ' + i + ': <select id=\"length_' + i + '\" name=\"length_' + i + '\"><option></option>' + lengthOptionsHTML + '</select><br>';";
+
+        html = html
+                + "startYearSection.innerHTML += 'Select data you wish to view ' + i + ': <select id=\"dataType_' + i + '\" name=\"dataType_' + i +'\"><option></option>' + dataTypeOptionsHTML + '</select><br><br>';";
+
         html = html + "       }";
         html = html + "   }";
 
