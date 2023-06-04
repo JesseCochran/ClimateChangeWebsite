@@ -712,6 +712,144 @@ public class JDBCConnection {
         return tempByState;
     }
 
+
+    public ArrayList<Climate> getCountryPopulationTemp() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                    SELECT cp.Year, c.CountryName, cp.PopulationLevel, ct.AvgTemp
+                    FROM CountryPopulation AS cp
+                    JOIN CountryTemp AS ct ON cp.Year = ct.Year AND cp.CountryId = ct.CountryId
+                    JOIN Country AS c ON cp.CountryId = c.CountryId;
+                        """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("Year");
+                String countryName = results.getString("CountryName");
+                long populationLevel = results.getLong("PopulationLevel");
+                float averageTemperature = results.getFloat("AvgTemp");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setCountryName(countryName);
+                climate.setPopulationLevel(populationLevel);
+                climate.setAverageTemperature(averageTemperature);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+    public ArrayList<Climate> getWorldPopulationTemp() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                    SELECT p.Year, c.CountryName, p.PopulationLevel, t.AvgAirTemp
+                    FROM CountryPopulation AS p
+                    JOIN GlobalTemp AS t ON p.Year = t.Year
+                    JOIN Country As c ON p.CountryId = c.CountryId
+                    WHERE c.CountryName = 'World';
+                        """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("Year");
+                String countryName = results.getString("CountryName");
+                long populationLevel = results.getLong("PopulationLevel");
+                float averageTemperature = results.getFloat("AvgTemp");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setCountryName(countryName);
+                climate.setPopulationLevel(populationLevel);
+                climate.setAverageTemperature(averageTemperature);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+
+
 }
 
 //    public static ArrayList<TempData> getTempByCity(String countryId, String fromDate, String toDate) {
