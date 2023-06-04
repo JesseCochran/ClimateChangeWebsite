@@ -74,6 +74,107 @@ public class PageST2A implements Handler {
                 <h2>Focused view of temperature and population change by Country/Global</h2>
                 """;
 
+        html = html + "<form>";    
+        //Dropdown to select country or world data
+        html = html + "<div class='form-group'>";
+        html = html + "     <label for='CountryWorld_drop'>Select World or Country data:</label>";
+        html = html + "     <select id='CountryWorld_drop' name='CountryWorld_drop' size='1'>";
+        html = html + "     <option>World</option>";
+        html = html + "     <option>Country</option>";
+        html = html + "     </select>";
+        html = html + "</div>";
+
+        // this connects the database to the start date drop down box.
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> years = jdbc.getWorldPopulationTemp();
+
+        //Dropdown to select start year which updates end year based on result
+        html = html + "<div class='form-group'>";
+        html = html + "     <label for='StartYear_drop'>Select the start year:</label>";
+        html = html + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        for (Climate year : years) {
+            html = html + "<option>" + year.getYear() + "</option>";
+        }
+        html = html + "     </select>";
+        html = html + " </div>";
+
+        // Using some javascript to change the value of the end year drop down section
+        // to be the same as the start year and vise versa
+        html = html + "<script>";
+        html = html + "var selectedStartYear = null;";
+        html = html + "var selectedEndYear = null;";
+        html = html + "function updateEndYearOptions() {";
+        html = html + "   var startYearDropdown = document.getElementById('StartYear_drop');";
+        html = html + "   var EndYearDropdown = document.getElementById('EndYear_drop');";
+        html = html + "   var startYear = parseInt(startYearDropdown.value);";
+        html = html + "   var endYear = " + years.get(years.size() - 1).getYear() + ";";
+        html = html + "   var selectedEndYear = parseInt(EndYearDropdown.value);"; // Store selected value
+        html = html + "   EndYearDropdown.innerHTML = '';"; // Clear existing options
+
+        // This javascript code effectively makes the data in the end year section must
+        // be in the range of the user selected date to the end of the avilable data in
+        // the database.
+        html = html + "   for (var year = startYear; year <= endYear; year++) {";
+        html = html + "       var option = document.createElement('option');";
+        html = html + "       option.text = year;";
+        html = html + "       option.value = year;";
+        html = html + "       EndYearDropdown.add(option);";
+        html = html + "   }";
+        html = html + "   if (selectedEndYear) EndYearDropdown.value = selectedEndYear;"; // Reapply selected value
+        html = html + "}";
+        // this code does the same for the start year value
+        html = html + "function updateStartYearOptions() {";
+        html = html + "   var startYearDropdown = document.getElementById('StartYear_drop');";
+        html = html + "   var EndYearDropdown = document.getElementById('EndYear_drop');";
+        html = html + "   var EndYear = parseInt(EndYearDropdown.value);";
+        html = html + "   var selectedStartYear = parseInt(startYearDropdown.value);"; // Store selected value
+        html = html + "   startYearDropdown.innerHTML = '';"; // Clear existing options
+        html = html + "   for (var year = " + years.get(0).getYear() + "; year <= EndYear; year++) {";
+        html = html + "       var option = document.createElement('option');";
+        html = html + "       option.text = year;";
+        html = html + "       option.value = year;";
+        html = html + "       startYearDropdown.add(option);";
+        html = html + "   }";
+        html = html + "   if (selectedStartYear) startYearDropdown.value = selectedStartYear;"; // Reapply selected
+                                                                                                // value
+        html = html + "}";
+        html = html + "</script>";
+
+        html = html + "   <div class='form-group'>";
+        html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
+        html = html
+                + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+
+        for (Climate year : years) {
+            html = html + "<option>" + year.getYear() + "</option>";
+        }
+        html = html + "      </select>";
+        html = html + "   </div>";
+
+        //Dropdown to select how to format the data
+        html = html + "<div class='form-group'>";
+        html = html + "      <label for='TypeOrder_drop'>Select how you want to order the data:</label>";
+        html = html + "      <select id='TypeOrder_drop' name='TypeOrder_drop' size='1'>";
+        html = html + "      <option>Population</option>";
+        html = html + "      <option>Temperature</option>";
+        html = html + "      </select>";
+        html = html + "</div>";
+
+        // Sorting order
+        html = html + """
+                <p>Sort By</p>
+                <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
+                <label class='radio-label' for='Ascending'>High to Low</label><br>
+                <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
+                 <label class='radio-label' for='Descending'>Low to High</label>
+                    """;
+        
+        // submit button
+        html = html + "<div>";
+        html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
+        html = html + "</div>";
+        html = html + "</form>";
+
         // Close Content div
         html = html + "</div>";
 

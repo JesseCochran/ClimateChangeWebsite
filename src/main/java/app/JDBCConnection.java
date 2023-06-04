@@ -814,7 +814,7 @@ public class JDBCConnection {
                 int year = results.getInt("Year");
                 String countryName = results.getString("CountryName");
                 long populationLevel = results.getLong("PopulationLevel");
-                float averageTemperature = results.getFloat("AvgTemp");
+                float averageTemperature = results.getFloat("AvgAirTemp");
 
                 // Create a Climate Object
                 Climate climate = new Climate();
