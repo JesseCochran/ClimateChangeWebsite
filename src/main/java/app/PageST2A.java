@@ -221,12 +221,13 @@ public class PageST2A implements Handler {
                                 <th>Correlation</th>
                               </tr>
                          """;
+            /* 
             for (int i = 0; i < populationTempData.size(); ++i) {
             html = html + " <tr> <td>" + worldPopulationTemp.() + "</td> " + "<td>"
                 + populationTempData.get(i).getPopulationLevel() + "</td>" + "<td>"
                 + populationTempData.get(i).getAverageTemperature() + "</td>" + "<td>"
                 + populationTempData.get(i).getMinimumTemperature() + "</td>" + "<td>"
-                + populationTempData.get(i).getMaximumTemperature() + "</td> </tr>";
+                + populationTempData.get(i).getMaximumTemperature() + "</td> </tr>";*/
         
         }
 
