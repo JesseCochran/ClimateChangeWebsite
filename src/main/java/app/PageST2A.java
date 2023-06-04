@@ -71,7 +71,7 @@ public class PageST2A implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <h1>Subtask 2.A page content</h1>
+                <h2>Focused view of temperature and population change by Country/Global</h2>
                 """;
 
         // Close Content div
