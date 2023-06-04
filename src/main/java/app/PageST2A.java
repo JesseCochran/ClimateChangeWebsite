@@ -175,6 +175,14 @@ public class PageST2A implements Handler {
         html = html + "</div>";
         html = html + "</form>";
 
+        String DataToOutput = context.formParam("CountryWorld_drop");
+        String StartYear_drop = context.formParam("StartYear_drop");
+        String EndYear_drop = context.formParam("EndYear_drop");
+        String TypeOrder = context.formParam("TypeOrder_drop");
+        String SortOrder = context.formParam("SortOrder");
+
+        html = html + outputData(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+
         // Close Content div
         html = html + "</div>";
 
@@ -193,4 +201,35 @@ public class PageST2A implements Handler {
         context.html(html);
     }
 
+    private String outputData(String dataToOutput, String startYear, String endYear, String type, String order) {
+        String html = "<div id='tableData'>";
+        html = html + "<h3>" + dataToOutput + " Population and Temperature Change from " + startYear + " to " + endYear + "</h3>";
+        JDBCConnection jdbc = new JDBCConnection();
+
+        if (dataToOutput.equals("World")) {
+            ArrayList<Climate> worldPopulationTemp = jdbc.getWorldPopulationTemp();
+            html = html+ """
+                        <table>
+                              <tr>
+                                <th>Country Name</th>
+                                <th>Start Year Population</th>
+                                <th>End Year Population</th>
+                                <th>Population Change</th>
+                                <th>Start Year Temperature</th>
+                                <th>End Year Temperature</th>
+                                <th>Temperature Change</th>
+                                <th>Correlation</th>
+                              </tr>
+                         """;
+            for (int i = 0; i < populationTempData.size(); ++i) {
+            html = html + " <tr> <td>" + worldPopulationTemp.() + "</td> " + "<td>"
+                + populationTempData.get(i).getPopulationLevel() + "</td>" + "<td>"
+                + populationTempData.get(i).getAverageTemperature() + "</td>" + "<td>"
+                + populationTempData.get(i).getMinimumTemperature() + "</td>" + "<td>"
+                + populationTempData.get(i).getMaximumTemperature() + "</td> </tr>";
+        
+        }
+
+        return html;
+    }
 }
