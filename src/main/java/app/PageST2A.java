@@ -216,10 +216,10 @@ public class PageST2A implements Handler {
             html = html + "<h3>Please Select Country or World Data</h3>";
         }
         else if(DataToOutput.equals("World")) {
-            html = html + outputWorld(html, DataToOutput, StartYear_drop, EndYear_drop);
+            html = html + outputWorld(DataToOutput, StartYear_drop, EndYear_drop);
         }
         else if(DataToOutput.equals("Country")) {
-            html = html + outputCountry(html, DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+            html = html + outputCountry(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
         }
         
 
@@ -241,8 +241,8 @@ public class PageST2A implements Handler {
         context.html(html);
     }
 
-    private String outputWorld(String html, String dataOutput, String startYear, String endYear) {
-        html = html + "<div id='tableData'>";
+    private String outputWorld(String dataOutput, String startYear, String endYear) {
+        String html = "<div id='tableData'>";
         html = html + "<h3>" + dataOutput + "data for " + startYear + " and " + endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> worldPopulationTemp = jdbc.getWorldPopulationTemp(startYear, endYear);
@@ -272,11 +272,129 @@ public class PageST2A implements Handler {
         return html;
     }
 
-    private String outputCountry(String html, String dataOutput, String startYear, String endYear, String type, String sort) {
+    private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
+        String html = "<div id='tableData'>";
         html = html + "<h3>" + dataOutput + "data for " + startYear + " and " + endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<Climate> CountryPopulationTemp;
+        ArrayList<Climate>  countryPopulationTemp;
 
+        if(type.equals("Population")) {
+            if (sort.equals("Ascending")) {
+                type = "percentagep";
+                sort = "ASC";
+                countryPopulationTemp = jdbc.getCountryPopulationTemp(startYear, endYear, type, sort);
+                
+                html = html + "<table> <tr>";
+                html = html + "<th>Country Name</th>";
+                html = html + "<th>Population at " + startYear + "</th>";
+                html = html + "<th>Population at " + endYear + "</th>";
+                html = html + "<th>Change in Population</th>";
+                html = html + "<th>Temperature at " + startYear + "</th>";
+                html = html + "<th>Temperature at " + endYear + "</th>";
+                html = html + "<th>Change in Temperature</th> </tr>";
+
+                for (int i = 0; i < countryPopulationTemp.size(); ++i) {
+                    html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
+                    + countryPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+                }
+
+                html = html + "</table>";
+                html = html + "</div>";
+
+            }
+            else if (sort.equals("Descending")) {
+                type = "percentagep";
+                sort = "DESC";
+                countryPopulationTemp = jdbc.getCountryPopulationTemp(startYear, endYear, type, sort);
+
+                html = html + "<table> <tr>";
+                html = html + "<th>Country Name</th>";
+                html = html + "<th>Population at " + startYear + "</th>";
+                html = html + "<th>Population at " + endYear + "</th>";
+                html = html + "<th>Change in Population</th>";
+                html = html + "<th>Temperature at " + startYear + "</th>";
+                html = html + "<th>Temperature at " + endYear + "</th>";
+                html = html + "<th>Change in Temperature</th> </tr>";
+
+                for (int i = 0; i < countryPopulationTemp.size(); ++i) {
+                    html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
+                    + countryPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+                }
+
+                html = html + "</table>";
+                html = html + "</div>";
+            }
+            
+        }
+
+        else if (type.equals("Temperature")) {
+            if (sort.equals("Ascending")) {
+                type = "percentaget";
+                sort = "ASC";
+                countryPopulationTemp = jdbc.getCountryPopulationTemp(startYear, endYear, type, sort);
+
+                html = html + "<table> <tr>";
+                html = html + "<th>Country Name</th>";
+                html = html + "<th>Population at " + startYear + "</th>";
+                html = html + "<th>Population at " + endYear + "</th>";
+                html = html + "<th>Change in Population</th>";
+                html = html + "<th>Temperature at " + startYear + "</th>";
+                html = html + "<th>Temperature at " + endYear + "</th>";
+                html = html + "<th>Change in Temperature</th> </tr>";
+
+                for (int i = 0; i < countryPopulationTemp.size(); ++i) {
+                    html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
+                    + countryPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+                }
+
+                html = html + "</table>";
+                html = html + "</div>";
+
+            }
+            else if (sort.equals("Descending")) {
+                type = "percentaget";
+                sort = "DESC";
+                countryPopulationTemp = jdbc.getCountryPopulationTemp(startYear, endYear, type, sort);
+
+                html = html + "<table> <tr>";
+                html = html + "<th>Country Name</th>";
+                html = html + "<th>Population at " + startYear + "</th>";
+                html = html + "<th>Population at " + endYear + "</th>";
+                html = html + "<th>Change in Population</th>";
+                html = html + "<th>Temperature at " + startYear + "</th>";
+                html = html + "<th>Temperature at " + endYear + "</th>";
+                html = html + "<th>Change in Temperature</th> </tr>";
+
+                for (int i = 0; i < countryPopulationTemp.size(); ++i) {
+                    html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
+                    + countryPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
+                    + countryPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+                }
+
+                html = html + "</table>";
+                html = html + "</div>";
+
+            }
+        }
 
         return html;
     }

@@ -713,7 +713,7 @@ public class JDBCConnection {
     }
 
 
-    public ArrayList<Climate> getCountryPopulationTemp() {
+    public ArrayList<Climate> getCountryPopulationTemp(String startYear, String endYear, String type, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -729,12 +729,18 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
 
             // The Query
-            String query = """
-                    SELECT cp.Year, c.CountryName, cp.PopulationLevel, ct.AvgTemp
-                    FROM CountryPopulation AS cp
-                    JOIN CountryTemp AS ct ON cp.Year = ct.Year AND cp.CountryId = ct.CountryId
-                    JOIN Country AS c ON cp.CountryId = c.CountryId;
-                        """;
+            String query = "SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp, ";
+            query = query + "(CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep, ";
+            query = query + "tstart.AvgTemp AS startt, tend.AvgTemp AS endt, ";
+            query = query + "(tend.AvgTemp - tstart.AvgTemp) / tstart.AvgTemp * 100 AS percentaget ";
+            query = query + "FROM CountryPopulation AS pstart ";
+            query = query + "JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId ";
+            query = query + "JOIN CountryTemp AS tstart ON tstart.Year = pstart.Year AND tstart.CountryId = pstart.CountryId ";
+            query = query + "JOIN CountryTemp AS tend ON tend.Year = pend.Year AND tend.CountryId = pend.CountryId ";
+            query = query + "JOIN Country AS c ON pstart.CountryId = c.CountryId ";
+            query = query + "WHERE pstart.Year = '" + startYear + "' ";
+            query = query + "AND pend.Year = '" + endYear + "' ";
+            query = query + "ORDER BY " + type + " " + sort + ";";
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -743,17 +749,23 @@ public class JDBCConnection {
             while (results.next()) {
                 // Lookup the columns we need
 
-                int year = results.getInt("Year");
                 String countryName = results.getString("CountryName");
-                long populationLevel = results.getLong("PopulationLevel");
-                float averageTemperature = results.getFloat("AvgTemp");
+                long startPopulationLevel = results.getLong("startp");
+                long endPopulationLevel = results.getLong("endp");
+                float populationPercent = results.getFloat("percentagep");
+                float startTemp = results.getFloat("startt");
+                float endTemp = results.getFloat("endt");
+                float tempPercent = results.getFloat("percentaget");
 
                 // Create a Climate Object
                 Climate climate = new Climate();
-                climate.setYear(year);
                 climate.setCountryName(countryName);
-                climate.setPopulationLevel(populationLevel);
-                climate.setAverageTemperature(averageTemperature);
+                climate.setStartPopulation(startPopulationLevel);
+                climate.setEndPopulation(endPopulationLevel);
+                climate.setPopulationPercent(populationPercent);
+                climate.setStartTemp(startTemp);
+                climate.setEndTemp(endTemp);
+                climate.setTempPercent(tempPercent);
 
                 // Add the lga object to the array
                 climates.add(climate);
@@ -796,17 +808,17 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
 
             // The Query
-            String query = "SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp,";
-            query = query + "(CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep,";   
-            query = query + "tstart.AvgAirTemp AS startt, tend.AvgAirTemp AS endt,";     
-            query = query + "(tend.AvgAirTemp - tstart.AvgAirTemp) / tstart.AvgAirTemp * 100 AS percentaget";     
-            query = query + "FROM CountryPopulation AS pstart";     
-            query = query + "JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId";     
+            String query = "SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp, ";
+            query = query + "(CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep, ";   
+            query = query + "tstart.AvgAirTemp AS startt, tend.AvgAirTemp AS endt, ";     
+            query = query + "(tend.AvgAirTemp - tstart.AvgAirTemp) / tstart.AvgAirTemp * 100 AS percentaget ";     
+            query = query + "FROM CountryPopulation AS pstart ";     
+            query = query + "JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId ";     
             query = query + "JOIN GlobalTemp AS tstart ON tstart.Year = pstart.Year ";    
-            query = query + "JOIN GlobalTemp AS tend ON tend.Year = pend.Year";     
-            query = query + "JOIN Country AS c ON pstart.CountryId = c.CountryId";     
-            query = query + "WHERE c.CountryName = 'World'";     
-            query = query + "AND pstart.Year = '" + startYear + "'";    
+            query = query + "JOIN GlobalTemp AS tend ON tend.Year = pend.Year ";     
+            query = query + "JOIN Country AS c ON pstart.CountryId = c.CountryId ";     
+            query = query + "WHERE c.CountryName = 'World' "; 
+            query = query + "AND pstart.Year = '" + startYear + "' ";    
             query = query + "AND pend.Year = '" + endYear + "';";     
 
             // Get Result
