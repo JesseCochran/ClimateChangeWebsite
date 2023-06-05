@@ -780,7 +780,7 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> getWorldPopulationTemp() {
+    public ArrayList<Climate> getWorldPopulationTemp(String startYear, String endYear) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -796,20 +796,18 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
 
             // The Query
-            String query = """
-                SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp,
-                (CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep,
-                tstart.AvgAirTemp AS startt, tend.AvgAirTemp AS endt,
-                (tend.AvgAirTemp - tstart.AvgAirTemp) / tstart.AvgAirTemp * 100 AS percentaget
-                FROM CountryPopulation AS pstart
-                JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId
-                JOIN GlobalTemp AS tstart ON tstart.Year = pstart.Year 
-                JOIN GlobalTemp AS tend ON tend.Year = pend.Year
-                JOIN Country AS c ON pstart.CountryId = c.CountryId
-                WHERE c.CountryName = 'World'
-                AND pstart.Year = '1960'
-                AND pend.Year = '1970';
-                        """;
+            String query = "SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp,";
+            query = query + "(CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep,";   
+            query = query + "tstart.AvgAirTemp AS startt, tend.AvgAirTemp AS endt,";     
+            query = query + "(tend.AvgAirTemp - tstart.AvgAirTemp) / tstart.AvgAirTemp * 100 AS percentaget";     
+            query = query + "FROM CountryPopulation AS pstart";     
+            query = query + "JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId";     
+            query = query + "JOIN GlobalTemp AS tstart ON tstart.Year = pstart.Year ";    
+            query = query + "JOIN GlobalTemp AS tend ON tend.Year = pend.Year";     
+            query = query + "JOIN Country AS c ON pstart.CountryId = c.CountryId";     
+            query = query + "WHERE c.CountryName = 'World'";     
+            query = query + "AND pstart.Year = '" + startYear + "'";    
+            query = query + "AND pend.Year = '" + endYear + "';";     
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
