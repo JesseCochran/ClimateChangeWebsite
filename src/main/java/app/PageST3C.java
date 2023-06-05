@@ -156,9 +156,9 @@ public class PageST3C implements Handler {
         html = html + "      <select id='lengthDropdown' name='lengthDropdown'>";
         for (int i = 1; i < years.size(); i++) {
             if (i != 1) {
-                html = html + " <option value= " + i + ">" + i + " years</option>";
+                html = html + " <option value='" + i + "'>" + i + " years</option>";
             } else {
-                html = html + " <option value= " + i + ">" + i + " year</option>";
+                html = html + " <option value='" + i + "'>" + i + " year</option>";
             }
         }
         html = html + "      </select>";
@@ -174,68 +174,99 @@ public class PageST3C implements Handler {
         html = html + "      </select>";
 
         html = html
-                + "   <button class='AnotherDataset' type='button' class='btn btn-NewDataset' onclick='incrementCounter()'' >Add Another Set Of Data</button>";
+                + "   <button class='AnotherDataset' type='button' class='btn btn-NewDataset' onclick='incrementCounter()'>Add Another Set Of Data</button>";
 
         html = html + "      </div>";
         html = html + " </div>";
 
-        html = html + """
-                <script>
-                var startYearDropdown = document.getElementById('StartYear_drop');
-                var lengthDropdown = document.getElementById('lengthDropdown');
-                var startYearOptions = [];
+        // Enforces the rule that the duration must be possible with the data
+        html = html + "<script>";
+        html = html + "var startYearDropdowns = document.querySelectorAll('[name^=\"StartYear_drop\"]');";
+        html = html + "var lengthDropdown = document.getElementById('lengthDropdown');";
+        html = html + "var originalStartYearOptions = [];";
 
-                // Populate start year options
-                function populateStartYearOptions() {
-                  var selectedLength = parseInt(lengthDropdown.value);
-                  """;
-        html = html + "var minStartYear = " + years.get(0).getYear() + ";";
-        html = html + "var maxStartYear = " + years.get(years.size() - 1).getYear() + "- selectedLength;";
-        html = html + """
-                    startYearOptions = [];
+        // Populate start year options
+        html = html + "function populateStartYearOptions() {";
+        html = html + "    var selectedLength = parseInt(lengthDropdown.value);";
+        html = html + "    var minStartYear = \"" + years.get(0).getYear() + "\";";
+        html = html + "    var maxStartYear = \"" + years.get(years.size() - 1).getYear() + "\" - selectedLength;";
 
-                    // Add options based on the selected length
-                    for (var year = maxStartYear; year >= minStartYear; year--) {
-                      startYearOptions.push(year);
-                    }
-                  }
+        html = html + "    originalStartYearOptions = [];";
 
-                  // Event listener for length dropdown
-                  lengthDropdown.addEventListener('change', function() {
-                    populateStartYearOptions();
-                    updateStartYearOptions();
-                  });
+        // Add options based on the selected length
+        html = html + "    for (var year = maxStartYear; year >= minStartYear; year--) {";
+        html = html + "        originalStartYearOptions.push(year);";
+        html = html + "    }";
 
-                  // Update start year options
-                  function updateStartYearOptions() {
-                    var selectedStartYear = startYearDropdown.value;
+        // Update start year options for all dropdowns
+        html = html + "    startYearDropdowns.forEach(function (dropdown) {";
+        html = html + "        updateStartYearOptions(dropdown, originalStartYearOptions);";
+        html = html + "    });";
 
-                    // Clear previous options
-                    startYearDropdown.innerHTML = '';
+        // Update selected value if out of range
+        html = html + "    startYearDropdowns.forEach(function (dropdown) {";
+        html = html + "        var selectedYear = dropdown.value;";
+        html = html + "        if (!originalStartYearOptions.includes(parseInt(selectedYear))) {";
+        html = html + "            var closestYear = originalStartYearOptions.find(function(year) {";
+        html = html + "                return year >= parseInt(selectedYear);";
+        html = html + "            });";
+        html = html + "            dropdown.value = closestYear || originalStartYearOptions[0];";
+        html = html + "        }";
+        html = html + "    });";
+        html = html + "}";
 
-                    // Add new options based on the selected length
-                    for (var i = 0; i < startYearOptions.length; i++) {
-                      var year = startYearOptions[i];
+        // Event listener for length dropdown
+        html = html + "lengthDropdown.addEventListener('change', function() {";
+        html = html + "    populateStartYearOptions();";
+        html = html + "});";
 
-                      var option = document.createElement('option');
-                      option.text = year;
-                      option.value = year;
-                      startYearDropdown.appendChild(option);
-                    }
+        // Update start year options
+        html = html + "function updateStartYearOptions(startYearDropdowns, startYearOptions) {";
+        html = html + "    var selectedStartYear = startYearDropdowns.value;";
+        html = html + "    var selectedIndex = startYearDropdowns.selectedIndex;";
 
-                    // Set selected start year if within the available range
-                    if (startYearOptions.includes(parseInt(selectedStartYear))) {
-                      startYearDropdown.value = selectedStartYear;
-                    }
-                  }
+        // Clear previous options
+        html = html + "    startYearDropdowns.innerHTML = '';";
 
-                  // Initial population and update of start year options
-                  populateStartYearOptions();
-                  updateStartYearOptions();
-                </script>
-                      """;
-        // everytime button is pressed it will reload form and increase counter that is
-        // at the top of document
+        // Add new options based on the original start year options
+        html = html + "    for (var i = 0; i < startYearOptions.length; i++) {";
+        html = html + "        var year = startYearOptions[i];";
+
+        html = html + "        var option = document.createElement('option');";
+        html = html + "        option.text = year;";
+        html = html + "        option.value = year;";
+        html = html + "        startYearDropdowns.appendChild(option);";
+        html = html + "    }";
+
+        // Set selected start year if within the available range
+        html = html + "    if (startYearOptions.includes(parseInt(selectedStartYear))) {";
+        html = html + "        startYearDropdowns.value = selectedStartYear;";
+        html = html + "    } else if (selectedIndex >= 0) {";
+        html = html + "        var closestYear = startYearOptions.find(function(year) {";
+        html = html + "            return year >= parseInt(selectedStartYear);";
+        html = html + "        });";
+        html = html + "        startYearDropdowns.value = closestYear || startYearOptions[0];";
+        html = html + "    }";
+        html = html + "}";
+
+        // Initial population of start year options
+        html = html + "populateStartYearOptions();";
+
+        // Function to update start year options in datasetContainer
+        html = html + "function updateStartYearOptionsMultiple(selectElement) {";
+        html = html + "    var selectedValue = selectElement.value;";
+        html = html
+                + "    var datasetStartYearDropdowns = document.querySelectorAll('#datasetContainer select[name^=\"StartYear_drop\"]');";
+
+        // Update start year options for datasetContainer dropdowns
+        html = html + "    datasetStartYearDropdowns.forEach(function(dropdown) {";
+        html = html + "        updateStartYearOptions(dropdown, originalStartYearOptions);";
+        html = html + "    });";
+        html = html + "}";
+        html = html + "</script>";
+
+        // Every time the button is pressed, it will reload the form and increase the
+        // counter that is at the top of the document
         html = html + "<script>";
         html = html + "function incrementCounter() {";
         html = html + "    var counter = sessionStorage.getItem('counter');";
@@ -261,8 +292,9 @@ public class PageST3C implements Handler {
 
             for (int i = 0; i < numberOfDatasets; i++) {
                 html = html + "<p>Please Select Another Set Of Data To Compare:</p>";
-                html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
-                html = html + "      <select id='StartYear_drop" + i + "'name='StartYear_drop'>";
+                html = html + "      <label for='StartYear_drop" + i + "'>Select the start year:</label>";
+                html = html + "      <select id='StartYear_drop" + i + "' name='StartYear_drop" + i
+                        + "' onchange='updateStartYearOptionsMultiple(this)'>";
 
                 years = jdbc.getLandOceanYears();
                 for (Climate year : years) {
@@ -270,14 +302,15 @@ public class PageST3C implements Handler {
                 }
                 html = html + "      </select>";
 
-                html = html + "      <label for='dataType'>Select data you wish to view:</label>";
-                html = html + "      <select id='dataType" + i + "'name='dataType' size='1'>";
+                html = html + "      <label for='dataType" + i + "'>Select data you wish to view:</label>";
+                html = html + "      <select id='dataType" + i + "' name='dataType" + i + "' size='1'>";
                 html = html + "<option>Land Data</option>";
                 html = html + "<option>Land-Ocean Data</option>";
                 html = html + "      </select><br>";
             }
             html = html + "</div>";
         }
+
         // Sorting order
         html = html + """
                 <p>Sort By</p>
