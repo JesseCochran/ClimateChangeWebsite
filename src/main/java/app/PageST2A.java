@@ -2,6 +2,8 @@ package app;
 
 import java.util.ArrayList;
 
+//import javax.xml.crypto.Data;
+
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
@@ -73,8 +75,37 @@ public class PageST2A implements Handler {
         html = html + """
                 <h2>Focused view of temperature and population change by Country/Global</h2>
                 """;
+        
+        html = html + "<form action='/page2A.html' method='post'>";
+        /* 
+        html = html + "<script>";
+        html = html + "   function ReenterData() {";
+        html = html + "       var dataToShow = document.getElementById('CountryWorld_drop').value;";
+        html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
+        html = html + "       var endYear = document.getElementById('EndYear_drop').value;";
+        html = html + "       var dataType = document.getElementById('TypeOrder_drop').value;";
+        html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
+        html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
+        html = html + "       sessionStorage.setItem('startYear', startYear);";
+        html = html + "       sessionStorage.setItem('endYear', endYear);";
+        html = html + "       sessionStorage.setItem('dataType', dataType);";
+        html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
+        html = html + "       return true;";
+        html = html + "   }";
+        html = html + " window.onload = function() {";
+        html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
+        html = html + " var startYear = sessionStorage.getItem('startYear');";
+        html = html + " var endYear = sessionStorage.getItem('endYear');";
+        html = html + " var dataType = sessionStorage.getItem('dataType');";
+        html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
+        html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
+        html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
+        html = html + " if (endYear) document.getElementById('EndYear_drop').value = endYear;";
+        html = html + " if (dataType) document.getElementById('TypeOrder_drop').value = dataType;";
+        html = html + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
+        html = html + " }";
+        html = html + "</script>";*/
 
-        html = html + "<form>";    
         //Dropdown to select country or world data
         html = html + "<div class='form-group'>";
         html = html + "     <label for='CountryWorld_drop'>Select World or Country data:</label>";
@@ -86,7 +117,7 @@ public class PageST2A implements Handler {
 
         // this connects the database to the start date drop down box.
         JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<Climate> years = jdbc.getWorldPopulationTemp();
+        ArrayList<Climate> years = jdbc.getPopulationYears();
 
         //Dropdown to select start year which updates end year based on result
         html = html + "<div class='form-group'>";
@@ -142,8 +173,7 @@ public class PageST2A implements Handler {
 
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
-        html = html
-                + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+        html = html + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
 
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
@@ -175,13 +205,23 @@ public class PageST2A implements Handler {
         html = html + "</div>";
         html = html + "</form>";
 
+        
         String DataToOutput = context.formParam("CountryWorld_drop");
         String StartYear_drop = context.formParam("StartYear_drop");
         String EndYear_drop = context.formParam("EndYear_drop");
         String TypeOrder = context.formParam("TypeOrder_drop");
         String SortOrder = context.formParam("SortOrder");
 
-        html = html + outputData(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+        if (DataToOutput == null) {
+            html = html + "<h3>Please Select Country or World Data</h3>";
+        }
+        else if(DataToOutput.equals("World")) {
+            html = html + outputWorld(html, DataToOutput, StartYear_drop, EndYear_drop);
+        }
+        else if(DataToOutput.equals("Country")) {
+            html = html + outputCountry(html, DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+        }
+        
 
         // Close Content div
         html = html + "</div>";
@@ -201,36 +241,45 @@ public class PageST2A implements Handler {
         context.html(html);
     }
 
-    private String outputData(String dataToOutput, String startYear, String endYear, String type, String order) {
-        String html = "<div id='tableData'>";
-        html = html + "<h3>" + dataToOutput + " Population and Temperature Change from " + startYear + " to " + endYear + "</h3>";
+    private String outputWorld(String html, String dataOutput, String startYear, String endYear) {
+        html = html + "<div id='tableData'>";
+        html = html + "<h3>" + dataOutput + "data for " + startYear + " and " + endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> worldPopulationTemp = jdbc.getWorldPopulationTemp(startYear, endYear);
 
-        if (dataToOutput.equals("World")) {
-            ArrayList<Climate> worldPopulationTemp = jdbc.getWorldPopulationTemp();
-            html = html+ """
-                        <table>
-                              <tr>
-                                <th>Country Name</th>
-                                <th>Start Year Population</th>
-                                <th>End Year Population</th>
-                                <th>Population Change</th>
-                                <th>Start Year Temperature</th>
-                                <th>End Year Temperature</th>
-                                <th>Temperature Change</th>
-                                <th>Correlation</th>
-                              </tr>
-                         """;
-            /* 
-            for (int i = 0; i < populationTempData.size(); ++i) {
-            html = html + " <tr> <td>" + worldPopulationTemp.() + "</td> " + "<td>"
-                + populationTempData.get(i).getPopulationLevel() + "</td>" + "<td>"
-                + populationTempData.get(i).getAverageTemperature() + "</td>" + "<td>"
-                + populationTempData.get(i).getMinimumTemperature() + "</td>" + "<td>"
-                + populationTempData.get(i).getMaximumTemperature() + "</td> </tr>";*/
-        
+        html = html + "<table> <tr>";
+        html = html + "<th>Country Name</th>";
+        html = html + "<th>Population at " + startYear + "</th>";
+        html = html + "<th>Population at " + endYear + "</th>";
+        html = html + "<th>Change in Population</th>";
+        html = html + "<th>Temperature at " + startYear + "</th>";
+        html = html + "<th>Temperature at " + endYear + "</th>";
+        html = html + "<th>Change in Temperature</th> </tr>";
+
+        for (int i = 0; i < worldPopulationTemp.size(); ++i) {
+            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
+                    + worldPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
+                    + worldPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
+                    + worldPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
+                    + worldPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
+                    + worldPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
+                    + worldPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
         }
+
+        html = html + "</table>";
+        html = html + "</div>";
+        
+        return html;
+    }
+
+    private String outputCountry(String html, String dataOutput, String startYear, String endYear, String type, String sort) {
+        html = html + "<h3>" + dataOutput + "data for " + startYear + " and " + endYear + "</h3>";
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> CountryPopulationTemp;
+
 
         return html;
     }
+
+
 }

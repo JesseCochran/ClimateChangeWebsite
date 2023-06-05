@@ -780,7 +780,7 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> getWorldPopulationTemp() {
+    public ArrayList<Climate> getWorldPopulationTemp(String startYear, String endYear) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -796,13 +796,18 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
 
             // The Query
-            String query = """
-                    SELECT p.Year, c.CountryName, p.PopulationLevel, t.AvgAirTemp
-                    FROM CountryPopulation AS p
-                    JOIN GlobalTemp AS t ON p.Year = t.Year
-                    JOIN Country As c ON p.CountryId = c.CountryId
-                    WHERE c.CountryName = 'World';
-                        """;
+            String query = "SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp,";
+            query = query + "(CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep,";   
+            query = query + "tstart.AvgAirTemp AS startt, tend.AvgAirTemp AS endt,";     
+            query = query + "(tend.AvgAirTemp - tstart.AvgAirTemp) / tstart.AvgAirTemp * 100 AS percentaget";     
+            query = query + "FROM CountryPopulation AS pstart";     
+            query = query + "JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId";     
+            query = query + "JOIN GlobalTemp AS tstart ON tstart.Year = pstart.Year ";    
+            query = query + "JOIN GlobalTemp AS tend ON tend.Year = pend.Year";     
+            query = query + "JOIN Country AS c ON pstart.CountryId = c.CountryId";     
+            query = query + "WHERE c.CountryName = 'World'";     
+            query = query + "AND pstart.Year = '" + startYear + "'";    
+            query = query + "AND pend.Year = '" + endYear + "';";     
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -811,17 +816,23 @@ public class JDBCConnection {
             while (results.next()) {
                 // Lookup the columns we need
 
-                int year = results.getInt("Year");
                 String countryName = results.getString("CountryName");
-                long populationLevel = results.getLong("PopulationLevel");
-                float averageTemperature = results.getFloat("AvgAirTemp");
+                long startPopulationLevel = results.getLong("startp");
+                long endPopulationLevel = results.getLong("endp");
+                float populationPercent = results.getFloat("percentagep");
+                float startTemp = results.getFloat("startt");
+                float endTemp = results.getFloat("endt");
+                float tempPercent = results.getFloat("percentaget");
 
                 // Create a Climate Object
                 Climate climate = new Climate();
-                climate.setYear(year);
                 climate.setCountryName(countryName);
-                climate.setPopulationLevel(populationLevel);
-                climate.setAverageTemperature(averageTemperature);
+                climate.setStartPopulation(startPopulationLevel);
+                climate.setEndPopulation(endPopulationLevel);
+                climate.setPopulationPercent(populationPercent);
+                climate.setStartTemp(startTemp);
+                climate.setEndTemp(endTemp);
+                climate.setTempPercent(tempPercent);
 
                 // Add the lga object to the array
                 climates.add(climate);
@@ -848,7 +859,64 @@ public class JDBCConnection {
         return climates;
     }
 
+    public ArrayList<Climate> getPopulationYears() {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
 
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = """
+                    SELECT DISTINCT Year 
+                    FROM CountryPopulation;
+                        """;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("Year");
+        
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
 
 }
 
