@@ -84,6 +84,7 @@ public class PageST3C implements Handler {
 
         // All the Drop down menu stuff for the data to eventually be retrieved from
         // html = html + "<form action='/page2C.html' method='post'>";
+        boolean GetInfo = true;
         int numberOfDatasets = 0;
         if (context.formParam("counter") != null) {
             String counterValue = context.formParam("counter");
@@ -322,13 +323,38 @@ public class PageST3C implements Handler {
                     """;
 
         // View table
-        html = html + "<input type='checkbox' id='Table' name='dataTable' value='dataTable'>";
-        html = html + "<label for='dataTable'> Do you wish to see table?</label><br>";
+        html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='dataTable'>";
+        html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
         // submit button
         html = html
                 + "   <button class='showTable' type='submit' class='btn btn-primary' onclick='getDataInformation()'>Get Information</button>";
 
         html = html + "</form>";
+        String viewTable = context.formParam("dataTable");
+        String startYear1 = context.formParam("StartYear_drop");
+        String duration = context.formParam("lengthDropdown");
+        String dataType1 = context.formParam("dataType");
+        String orderBy = context.formParam("SortOrder");
+        ArrayList<String> startYears = new ArrayList<String>();
+        ArrayList<String> dataTypes = new ArrayList<String>();
+        for (int i = 0; i < numberOfDatasets; i++) {
+            startYears.add(context.formParam("StartYear_drop" + i));
+            dataTypes.add(context.formParam("dataType" + i));
+
+            if (startYears.get(i) == null || duration == null) {
+                html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
+            }
+        }
+
+        if (startYear1 == null || duration == null) {
+            html = html + "<h3>Please select a start period and a time period</h3>";
+        }
+        if (dataType1 == null) {
+            html = html + "<h3>Please select the data you wish to view out of land data and land-ocean data</h3>";
+        }
+        if (orderBy == null) {
+            html = html + "<h3>Please select how you would like the data sorted</h3>";
+        }
 
         // Close Content div
         html = html + "</div>";
