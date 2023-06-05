@@ -185,8 +185,8 @@ public class PageST2A implements Handler {
         html = html + "<div class='form-group'>";
         html = html + "      <label for='TypeOrder_drop'>Select how you want to order the data:</label>";
         html = html + "      <select id='TypeOrder_drop' name='TypeOrder_drop' size='1'>";
-        html = html + "      <option>Population</option>";
-        html = html + "      <option>Temperature</option>";
+        html = html + "      <option>Population Change</option>";
+        html = html + "      <option>Temperature Change</option>";
         html = html + "      </select>";
         html = html + "</div>";
 
@@ -194,9 +194,9 @@ public class PageST2A implements Handler {
         html = html + """
                 <p>Sort By</p>
                 <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='Ascending'>High to Low</label><br>
+                <label class='radio-label' for='Ascending'>Low to High</label><br>
                 <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='Descending'>Low to High</label>
+                 <label class='radio-label' for='Descending'>High to Low</label>
                     """;
         
         // submit button
@@ -275,7 +275,7 @@ public class PageST2A implements Handler {
     private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
         String html = "<div id='tableData'>";
 
-        if(type.equals("Population")) {
+        if(type.equals("Population Change")) {
             if (sort.equals("Ascending")) {
                 type = "percentagep";
                 sort = "ASC";
@@ -291,7 +291,7 @@ public class PageST2A implements Handler {
             
         }
 
-        else if (type.equals("Temperature")) {
+        else if (type.equals("Temperature Change")) {
             if (sort.equals("Ascending")) {
                 type = "percentaget";
                 sort = "ASC";
@@ -325,12 +325,12 @@ public class PageST2A implements Handler {
 
         for (int i = 0; i < countryPopulationTemp.size(); ++i) {
             html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
-            + countryPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
+            + String.format("%,d", countryPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>"
+            + String.format("%,d", countryPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>"
+            + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>"
             + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
             + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+            + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td> </tr>";
         }
 
         html = html + "</table>";
