@@ -76,8 +76,9 @@ public class PageST2A implements Handler {
                 <h2>Focused view of temperature and population change by Country/Global</h2>
                 """;
         
-        html = html + "<form action='/page2A.html' method='post'>";
-        /* 
+        html = html + "<form action='/page2A.html' method='post' onsubmit='return ReenterData()'>";
+        
+        //Elements keep values on reload
         html = html + "<script>";
         html = html + "   function ReenterData() {";
         html = html + "       var dataToShow = document.getElementById('CountryWorld_drop').value;";
@@ -104,7 +105,7 @@ public class PageST2A implements Handler {
         html = html + " if (dataType) document.getElementById('TypeOrder_drop').value = dataType;";
         html = html + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
         html = html + " }";
-        html = html + "</script>";*/
+        html = html + "</script>";
 
         //Dropdown to select country or world data
         html = html + "<div class='form-group'>";
