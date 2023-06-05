@@ -325,13 +325,23 @@ public class PageST2A implements Handler {
         html = html + "<th>Change in Temperature</th> </tr>";
 
         for (int i = 0; i < countryPopulationTemp.size(); ++i) {
-            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
-            + String.format("%,d", countryPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>"
-            + String.format("%,d", countryPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>"
-            + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
-            + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td> </tr>";
+            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
+            html = html + String.format("%,d", countryPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>";
+            html = html + String.format("%,d", countryPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>";
+            if(countryPopulationTemp.get(i).getPopulationPercent() > 0) {
+                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            html = html + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>";
+            html = html + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>";
+            if(countryPopulationTemp.get(i).getTempPercent() > 0) {
+                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
         }
 
         html = html + "</table>";
