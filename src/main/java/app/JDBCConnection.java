@@ -797,11 +797,18 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                    SELECT p.Year, c.CountryName, p.PopulationLevel, t.AvgAirTemp
-                    FROM CountryPopulation AS p
-                    JOIN GlobalTemp AS t ON p.Year = t.Year
-                    JOIN Country As c ON p.CountryId = c.CountryId
-                    WHERE c.CountryName = 'World';
+                SELECT c.CountryName, pstart.PopulationLevel AS startp, pend.PopulationLevel AS endp,
+                (CAST(pend.PopulationLevel AS FLOAT) - CAST(pstart.PopulationLevel AS FLOAT)) / CAST(pstart.PopulationLevel AS FLOAT) * 100 AS percentagep,
+                tstart.AvgAirTemp AS startt, tend.AvgAirTemp AS endt,
+                (tend.AvgAirTemp - tstart.AvgAirTemp) / tstart.AvgAirTemp * 100 AS percentaget
+                FROM CountryPopulation AS pstart
+                JOIN CountryPopulation AS pend ON pstart.CountryId = pend.CountryId
+                JOIN GlobalTemp AS tstart ON tstart.Year = pstart.Year 
+                JOIN GlobalTemp AS tend ON tend.Year = pend.Year
+                JOIN Country AS c ON pstart.CountryId = c.CountryId
+                WHERE c.CountryName = 'World'
+                AND pstart.Year = '1960'
+                AND pend.Year = '1970';
                         """;
 
             // Get Result
@@ -811,17 +818,23 @@ public class JDBCConnection {
             while (results.next()) {
                 // Lookup the columns we need
 
-                int year = results.getInt("Year");
                 String countryName = results.getString("CountryName");
-                long populationLevel = results.getLong("PopulationLevel");
-                float averageTemperature = results.getFloat("AvgAirTemp");
+                long startPopulationLevel = results.getLong("startp");
+                long endPopulationLevel = results.getLong("endp");
+                float populationPercent = results.getFloat("percentagep");
+                float startTemp = results.getFloat("startt");
+                float endTemp = results.getFloat("endt");
+                float tempPercent = results.getFloat("percentaget");
 
                 // Create a Climate Object
                 Climate climate = new Climate();
-                climate.setYear(year);
                 climate.setCountryName(countryName);
-                climate.setPopulationLevel(populationLevel);
-                climate.setAverageTemperature(averageTemperature);
+                climate.setStartPopulation(startPopulationLevel);
+                climate.setEndPopulation(endPopulationLevel);
+                climate.setPopulationPercent(populationPercent);
+                climate.setStartTemp(startTemp);
+                climate.setEndTemp(endTemp);
+                climate.setTempPercent(tempPercent);
 
                 // Add the lga object to the array
                 climates.add(climate);

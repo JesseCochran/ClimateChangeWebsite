@@ -205,9 +205,10 @@ public class PageST2A implements Handler {
         String html = "<div id='tableData'>";
         html = html + "<h3>" + dataToOutput + " Population and Temperature Change from " + startYear + " to " + endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> worldPopulationData;
 
         if (dataToOutput.equals("World")) {
-            ArrayList<Climate> worldPopulationTemp = jdbc.getWorldPopulationTemp();
+            worldPopulationData = jdbc.getWorldPopulationTemp();
             html = html+ """
                         <table>
                               <tr>
@@ -221,13 +222,17 @@ public class PageST2A implements Handler {
                                 <th>Correlation</th>
                               </tr>
                          """;
-            /* 
-            for (int i = 0; i < populationTempData.size(); ++i) {
-            html = html + " <tr> <td>" + worldPopulationTemp.() + "</td> " + "<td>"
-                + populationTempData.get(i).getPopulationLevel() + "</td>" + "<td>"
-                + populationTempData.get(i).getAverageTemperature() + "</td>" + "<td>"
-                + populationTempData.get(i).getMinimumTemperature() + "</td>" + "<td>"
-                + populationTempData.get(i).getMaximumTemperature() + "</td> </tr>";*/
+            
+            for(int i = 0; i < worldPopulationData.size(); ++i) {
+                int year = worldPopulationData.get(i).getYear();
+                if(year == Integer.parseInt(startYear)) {
+                    html = html + "<tr> <td>" + worldPopulationData.get(i).getCountryName() + "</td>";
+                    html = html + "<td>" + worldPopulationData.get(i).getPopulationLevel() + "<td>";
+                }
+                if(year == Integer.parseInt(endYear)) {
+                    html = html + "<td>" + worldPopulationData.get(i).getPopulationLevel()
+                }
+            }
         
         }
 
