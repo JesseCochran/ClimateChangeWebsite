@@ -258,13 +258,23 @@ public class PageST2A implements Handler {
         html = html + "<th>Change in Temperature</th> </tr>";
 
         for (int i = 0; i < worldPopulationTemp.size(); ++i) {
-            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
-                    + worldPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
+            html = html + String.format("%,d", worldPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>";
+            html = html + String.format("%,d", worldPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>";
+            if(worldPopulationTemp.get(i).getPopulationPercent() > 0) {
+                html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            html = html + worldPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>";
+            html = html + worldPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>";
+            if(worldPopulationTemp.get(i).getTempPercent() > 0) {
+                html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
         }
 
         html = html + "</table>";
