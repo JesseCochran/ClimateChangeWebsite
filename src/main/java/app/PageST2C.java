@@ -136,6 +136,7 @@ public class PageST2C implements Handler {
         html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
         html = html
                 + "      <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select date--</option>";
         // This onchange section ^ makes the website more dynamic by using a java script
         // Used java script taught in this video
         // https://www.youtube.com/watch?v=SBmSRK3feww&t=7s and my own knowledge
@@ -196,6 +197,7 @@ public class PageST2C implements Handler {
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
         html = html
                 + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select date--</option>";
 
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
@@ -216,6 +218,7 @@ public class PageST2C implements Handler {
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View:</label>";
         html = html + "      <select id='TempSelection_drop' name='TempSelection_drop' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select data type--</option>";
         html = html + "<option>Only Average Land Ocean Temperature</option>";
         html = html + "<option>Only Minimum Land Ocean Temperature</option>";
         html = html + "<option>Only Maximum Land Ocean Temperature</option>";
@@ -284,7 +287,7 @@ public class PageST2C implements Handler {
         context.html(html);
     }
 
-    public String outputData(String startYear, String endYear, String DataToShow, String SortBy) {
+    private String outputData(String startYear, String endYear, String DataToShow, String SortBy) {
         String html = "<div id='tableData'>";
         html = html + "<h2>" + "Climate Data From " + startYear + " To " + endYear + "</h2>";
         JDBCConnection jdbc = new JDBCConnection();
@@ -484,7 +487,7 @@ public class PageST2C implements Handler {
         return html;
     }
 
-    public String getTemperatureChange(float startValue, float endValue, String dataType) {
+    private String getTemperatureChange(float startValue, float endValue, String dataType) {
         String tempChange = "";
         float difference = endValue - startValue;
         if (difference > 0) {
@@ -498,13 +501,13 @@ public class PageST2C implements Handler {
         return tempChange;
     }
 
-    public String getRoundDifferenceValue(float startValue, float endValue) {
+    private String getRoundDifferenceValue(float startValue, float endValue) {
         float difference = endValue - startValue;
         String roundDifferenceValue = String.format("%.2f", difference);
         return roundDifferenceValue;
     }
 
-    public String getPercentageChange(float startValue, float endValue) {
+    private String getPercentageChange(float startValue, float endValue) {
         float difference = endValue - startValue;
         float percentage = (difference / startValue) * 100;
         String percentageChange = String.format("%.2f", percentage) + "%";

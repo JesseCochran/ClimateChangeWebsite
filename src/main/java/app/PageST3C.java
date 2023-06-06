@@ -84,7 +84,7 @@ public class PageST3C implements Handler {
 
         // All the Drop down menu stuff for the data to eventually be retrieved from
         // html = html + "<form action='/page2C.html' method='post'>";
-        boolean GetInfo = true;
+        boolean getInfo = true;
         int numberOfDatasets = 0;
         if (context.formParam("counter") != null) {
             String counterValue = context.formParam("counter");
@@ -323,7 +323,7 @@ public class PageST3C implements Handler {
                     """;
 
         // View table
-        html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='dataTable'>";
+        html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
         html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
         // submit button
         html = html
@@ -343,17 +343,34 @@ public class PageST3C implements Handler {
 
             if (startYears.get(i) == null || duration == null) {
                 html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
+                getInfo = false;
+            } else {
+                if (dataTypes.get(i).equals("Land Data")) {
+
+                }
+                if (dataTypes.get(i).equals("Land-Ocean Data")) {
+
+                }
             }
         }
 
         if (startYear1 == null || duration == null) {
             html = html + "<h3>Please select a start period and a time period</h3>";
+            getInfo = false;
         }
         if (dataType1 == null) {
             html = html + "<h3>Please select the data you wish to view out of land data and land-ocean data</h3>";
+            getInfo = false;
         }
         if (orderBy == null) {
             html = html + "<h3>Please select how you would like the data sorted</h3>";
+            getInfo = false;
+        }
+        if (viewTable == null) {
+
+        } else if (viewTable.equals("seeTable") && getInfo == true) {
+            html = outputTable(html, startYear1, duration, dataType1);
+
         }
 
         // Close Content div
@@ -377,4 +394,13 @@ public class PageST3C implements Handler {
         context.html(html);
     }
 
+    private String outputTable(String html, String startYear, String duration, String dataType) {
+        int endYear = Integer.parseInt(startYear) + Integer.parseInt(duration);
+        html = html + "<h3>" + dataType + " data for " + startYear + " and " + endYear + "</h3>";
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
+                Integer.toString(endYear));
+
+        return html;
+    }
 }
