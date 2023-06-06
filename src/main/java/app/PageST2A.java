@@ -76,8 +76,9 @@ public class PageST2A implements Handler {
                 <h2>Focused view of temperature and population change by Country/Global</h2>
                 """;
         
-        html = html + "<form action='/page2A.html' method='post'>";
-        /* 
+        html = html + "<form action='/page2A.html' method='post' onsubmit='return ReenterData()'>";
+        
+        //Elements keep values on reload
         html = html + "<script>";
         html = html + "   function ReenterData() {";
         html = html + "       var dataToShow = document.getElementById('CountryWorld_drop').value;";
@@ -104,7 +105,7 @@ public class PageST2A implements Handler {
         html = html + " if (dataType) document.getElementById('TypeOrder_drop').value = dataType;";
         html = html + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
         html = html + " }";
-        html = html + "</script>";*/
+        html = html + "</script>";
 
         //Dropdown to select country or world data
         html = html + "<div class='form-group'>";
@@ -257,13 +258,23 @@ public class PageST2A implements Handler {
         html = html + "<th>Change in Temperature</th> </tr>";
 
         for (int i = 0; i < worldPopulationTemp.size(); ++i) {
-            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
-                    + worldPopulationTemp.get(i).getStartPopulation() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getEndPopulation() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getPopulationPercent() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
-                    + worldPopulationTemp.get(i).getTempPercent() + "</td> </tr>";
+            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
+            html = html + String.format("%,d", worldPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>";
+            html = html + String.format("%,d", worldPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>";
+            if(worldPopulationTemp.get(i).getPopulationPercent() > 0) {
+                html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            html = html + worldPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>";
+            html = html + worldPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>";
+            if(worldPopulationTemp.get(i).getTempPercent() > 0) {
+                html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
         }
 
         html = html + "</table>";
@@ -324,13 +335,23 @@ public class PageST2A implements Handler {
         html = html + "<th>Change in Temperature</th> </tr>";
 
         for (int i = 0; i < countryPopulationTemp.size(); ++i) {
-            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>"
-            + String.format("%,d", countryPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>"
-            + String.format("%,d", countryPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>"
-            + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>"
-            + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>"
-            + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td> </tr>";
+            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
+            html = html + String.format("%,d", countryPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>";
+            html = html + String.format("%,d", countryPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>";
+            if(countryPopulationTemp.get(i).getPopulationPercent() > 0) {
+                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            }
+            html = html + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>";
+            html = html + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>";
+            if(countryPopulationTemp.get(i).getTempPercent() > 0) {
+                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
+            else {
+                html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
+            }
         }
 
         html = html + "</table>";
