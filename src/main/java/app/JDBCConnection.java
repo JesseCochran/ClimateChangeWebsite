@@ -707,6 +707,59 @@ public class JDBCConnection {
         return tempByState;
     }
 
+
+
+   public static ArrayList<TempData> getTempByCity(String countryId, int fromDate, int toDate) {
+
+       ArrayList<TempData> tempByCity = new ArrayList<TempData>();
+
+
+       Connection connection = null;
+
+       try {
+           // Connect to JDBC data base
+           connection = DriverManager.getConnection(DATABASE);
+
+           // Prepare a new SQL Query & Set a timeout
+           Statement statement = connection.createStatement();
+           statement.setQueryTimeout(30);
+
+           // The Query
+           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + ";";
+
+
+           // Get Result
+           ResultSet results = statement.executeQuery(query);
+
+           // Process all of the results
+          while (results.next()) {
+               // Lookup the columns we need
+                TempData tempData = new TempData(results.getString("CityName"),
+                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
+                        results.getInt("Year"), results.getFloat("MaxTemp"));
+                tempByCity.add(tempData);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return tempByCity;
+    }
     public ArrayList<Climate> getCountryPopulationTemp(String startYear, String endYear, String type, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -999,57 +1052,3 @@ public class JDBCConnection {
     }
 
 }
-
-// public static ArrayList<TempData> getTempByCity(String countryId, String
-// fromDate, String toDate) {
-//
-// ArrayList<TempData> stateNames = new ArrayList<TempData>();
-//
-//
-// Connection connection = null;
-//
-// try {
-// // Connect to JDBC data base
-// connection = DriverManager.getConnection(DATABASE);
-//
-// // Prepare a new SQL Query & Set a timeout
-// Statement statement = connection.createStatement();
-// statement.setQueryTimeout(30);
-//
-// // The Query
-// String query = "SELECT cityName, Year, AvgTemp, MinTemp, MaxTemp from
-// StateTemp WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and
-// Year < " + toDate + ";";
-//
-//
-// // Get Result
-// ResultSet results = statement.executeQuery(query);
-//
-// // Process all of the results
-// while (results.next()) {
-// // Lookup the columns we need
-// stateNames.add(results.getString("CityName"));
-// }
-// statement.close();
-// }
-//
-// catch (SQLException e) {
-// // If there is an error, lets just pring the error
-// System.err.println(e.getMessage());
-// } finally {
-// // Safety code to cleanup
-// try {
-// if (connection != null) {
-// connection.close();
-// }
-// } catch (SQLException e) {
-// // connection close failed.
-// System.err.println(e.getMessage());
-// }
-// }
-//
-// // Finally we return all of the lga
-// return stateNames;
-// }
-//
-// }

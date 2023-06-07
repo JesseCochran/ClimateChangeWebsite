@@ -17,6 +17,8 @@ public class TempData {
         this.year = year;
         this.maxTemp = maxTemp;
     }
+    // CustomImage image 
+    // <img src="resources/images/" + image.getImagePath()
 
     public String getName() {
         return name;

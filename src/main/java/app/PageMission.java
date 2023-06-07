@@ -69,19 +69,30 @@ public class PageMission implements Handler {
         // Add Div for page Content
         html += "<div class='content'>";
 
+
+        String personaId;
+        String name;
+        String quote;
+
         // Add HTML for the page content more to be added to the mission statement
         html += """
-                <h1>Mission Statement</h1>
+                <h3>Mission Statement</h3>
                 """;
 
-                    html += """
+         html += """
                       
     
-                        <p> Our aim is to provide a platform in which we can raise awareness about climate change and provide an avenue to explore real world data. </p>
+            <p> Our aim is to provide a platform in which we can raise awareness about climate change and provide an avenue to explore real world data. </p>
 
                             """;
-
-
+                
+            html += """
+                     <h3>Who this site is built for</h3>
+                    """;
+            html += """
+                     <h3>Who are we</h3>
+                     """;
+  
         //
 
         // Finish the List HTML

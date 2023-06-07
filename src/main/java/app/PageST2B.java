@@ -45,6 +45,7 @@ public class PageST2B implements Handler {
         // Add the body
         html = html + "<body>";
 
+     
         // Add header content block
         html = html
                 + """
@@ -53,8 +54,8 @@ public class PageST2B implements Handler {
                         Climate Change Awareness</h1>
                     </div>
                 """;
-        // Add the topnav
-        // This uses a Java v15+ Text Block
+
+        // navigation bar
         html = html + """
                     <div class='topnav'>
                     <a href='/'>Homepage</a>
@@ -68,65 +69,13 @@ public class PageST2B implements Handler {
                     <a href='PageHelp.html'>Help Page</a>
                     </div>
                 """;
-        String country = context.req.getParameter("country");
 
+        //declaring variables
 
-        // Add header content block
-        html = html + """
-                    <div class='header'>
-                        <h3> A focused view of temperatures by states or city </h3>
-                    </div>
-                """;
-        HashMap<String, String> countries = JDBCConnection.getCountryNames();
-        html += "<form>";
-        html += """
-                <select name="country">
-                """;
-
-        for (Map.Entry<String, String> entry : countries.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if (country != null) {
-                if (country.equals(key)) {
-                    html += "<option selected='selected' value='";
-                    html += key + "'>" + value + "</option>";
-                }
-            }
-            html += "<option value='";
-            html += key + "'>" + value + "</option>";
-        }
-
-        html += "</select>";
-        html += """
-                <select name='type'>
-                <option value='states'>States</option> 
-                <option value='cities'>Cities</option> 
-                </select>
-                """;
-
-        html += "<select name='from'>";
-        for (int i = 1750; i < 2014; i++) {
-            html += "<option>" + i + "</option>";
-        }
-        html += "</select>";
-        html += "<select name='to'>";
-        for (int i = 1750; i < 2014; i++) {
-            html += "<option>" + i + "</option>";
-        }
-        html += "</select>";
-        html += """
-                <button type="submit">submit</button>""";
-        html += "</form>";
-
-        html = html + "<button class='reset' type='button' onclick='reload()'>Reset</button>";
-
-
-        String type = context.req.getParameter("type");
-
-        // Add Div for page Content
-        html = html + "<div class='content'>";
         int fromDate;
         int toDate;
+        String type = context.req.getParameter("type");
+
         try {
             fromDate = Integer.parseInt(context.req.getParameter("from"));
             toDate = Integer.parseInt(context.req.getParameter("to"));
@@ -134,17 +83,145 @@ public class PageST2B implements Handler {
             fromDate = 0;
             toDate = 0;
         }
+        String countryParameterFromURL = context.req.getParameter("country");
 
-        if (country != null) {
-            ArrayList<TempData> data = JDBCConnection.getTempByState(country, fromDate, toDate);
+
+        // header content block
+
+        html +=
+
+         """
+                    <div class='header'>
+                        <h3> Temperatures by States or Cities </h3>
+                    </div>
+         """;
+
+
+        html +=
+         """
+            <p> As the yearly maximum, minimum and average temperatures for cities and states across the wold
+            have been documented. The following table generator provides a means to explore and compare this data
+            for a range of years at the users discretion.  </p>
+                    
+         """;
+
+
+        HashMap<String, String> mapOfCountries = JDBCConnection.getCountryNames();
+        html += "<form>";
+        html +=  """
+                <select name="country">
+        """;
+
+
+        for (Map.Entry<String, String> entry : mapOfCountries.entrySet()) {
+           
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (countryParameterFromURL != null) {
+            if (countryParameterFromURL.equals(key)) {
+                                
+        html += "<option selected='selected' value='";
+        html += key + "'>" + value + "</option>";
+        }
+        
+        else {
+    
+        html += 
+        
+        "<option value='";
+                   
+        html += key + "'>" + value + "</option>";   
+                }  
+        }
+        else  {
+
+                html += "<option value='";
+                html += key + "'>" + value + "</option>";
+            }
+
+        }
+
+        html += 
+        "</select>";
+
+        html += 
+        """
+                <select name='type'>
+                <option value="" selected disabled hidden>City/State</option>
+                <option value='states'>States</option> 
+                <option value='cities'>Cities</option> 
+                </select>
+        """;
+
+        html += 
+        "</select>";
+        html += 
+        "<select name='from'>";
+        html +=  """
+                 <option value="" selected disabled hidden>Choose start date</option>        
+        """;
+
+        for (int i = 1750; i < 2014; i++) {
+            if (fromDate == i) {
+            html += "<option selected='selected' value='";
+            html += i + "'>" + i + "</option>";
+            } else {
+
+            html += "<option value='";
+            html += i + "'>" + i + "</option>";
+            }
+    }
+
+        html += "</select>";
+        html += "<select name='to'>";
+        html += """
+            <option value="" selected disabled hidden>Choose end date</option>        
+          """;
+
+        for (int i = 1750; i < 2014; i++) {
+            html += "<option>" + i + "</option>";
+            if (toDate == i) {
+                html += "<option selected ='selected' value='";
+                html += i + "'>" + i + "</option>";
+                 }
+                 else {
+        
+                html += "<option value='";
+                html += i + "'>" + i + "</option>";
+                 }
+        }
+        html += "</select>";
+        html += """
+                <button type="submit">submit</button>""";
+
+        // html = html + "<button class='reset' type='reset' >Reset</button>";
+
+        // html += "</form>";
+
+
+        // Add Div for page Content
+        html = html + "<div class='content'>";
+
+    
+        if (countryParameterFromURL != null) { ArrayList<TempData> data;
             html +=
                     "<table><tr> <th> Year </th> ";
-            if (type.equals("states")) {
-                html += "<th> State</th>";
-            } else {
-                html += "<th> City</th><";
 
+            if (type != null){
+            if (type.equals("states")) {
+             data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
+
+                html += "<th> State</th>";
+
+                
+            } else {
+             data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
+
+                html += "<th> City</th>";
+                
+            
             }
+         
 
             html +=
                     "<th> Average Temperature </th> ";
@@ -159,7 +236,7 @@ public class PageST2B implements Handler {
             }
             html += "<table>";
 //                     " <td> " + Years + "</td>";
-
+        }
 
         }
 
