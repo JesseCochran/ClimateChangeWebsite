@@ -355,7 +355,8 @@ public class PageST3C implements Handler {
         }
         ArrayList<String> startYears = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
-
+        startYears.add(context.formParam("StartYear_drop"));
+        dataTypes.add(context.formParam("dataType"));
         for (int i = 0; i < arrayLengthNum; i++) {
             startYears.add(context.formParam("StartYear_drop" + i));
             dataTypes.add(context.formParam("dataType" + i));
