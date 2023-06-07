@@ -71,12 +71,7 @@ public class PageIndex implements Handler {
         // Add Div for page Content
         html = html + "<div class='content'>";
 
-        // Add HTML for the page content
-        html = html + """
-                <h1>Homepage</h1>
-                """;
-
-        // Add HTML for the LGA list
+        // Add HTML for heading
         html = html + "<h2>Introduction to Climate Change Awareness</h2>";
 
         // Add HTML paragraph description

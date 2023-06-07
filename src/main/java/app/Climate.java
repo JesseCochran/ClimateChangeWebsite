@@ -21,6 +21,13 @@ public class Climate {
     private long populationLevel;
     private String question;
     private String answer;
+    private long startPopulation;
+    private long endPopulation;
+    private float populationPercent;
+    private float startTemp;
+    private float endTemp;
+    private float tempPercent;
+
 
     /**
      * Create an Climate object and set the fields
@@ -122,5 +129,55 @@ public class Climate {
     public void setPopulationLevel(long populationLevel) {
         this.populationLevel = populationLevel;
     }
+
+    public void setStartPopulation(long startPopulation) {
+        this.startPopulation = startPopulation;
+    }
+
+    public long getStartPopulation() {
+        return startPopulation;
+    }
+
+    public void setEndPopulation(long endPopulation) {
+        this.endPopulation = endPopulation;
+    }
+
+    public long getEndPopulation() {
+        return endPopulation;
+    }
+
+    public void setPopulationPercent(float populationPercent) {
+        this.populationPercent = populationPercent;
+    }
+
+    public float getPopulationPercent() {
+        return populationPercent;
+    }
+
+    public void setStartTemp(float startTemp) {
+        this.startTemp = startTemp;
+    }
+
+    public float getStartTemp() {
+        return startTemp;
+    }
+
+    public void setEndTemp(float endTemp) {
+        this.endTemp = endTemp;
+    }
+
+    public float getEndTemp() {
+        return endTemp;
+    }
+
+    public void setTempPercent(float tempPercent) {
+        this.tempPercent = tempPercent;
+    }
+
+    public float getTempPercent() {
+        return tempPercent;
+    }
+
+    
 
 }

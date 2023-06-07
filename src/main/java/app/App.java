@@ -47,12 +47,12 @@ public class App {
         app.get(PageST3C.URL, new PageST3C());
 
         // Add / uncomment POST commands for any pages that need web form POSTS
-        // app.post(PageIndex.URL, new PageIndex());
+        app.post(PageIndex.URL, new PageIndex());
         // app.post(PageMission.URL, new PageMission());
-        // app.post(PageST2A.URL, new PageST2A());
-        // app.post(PageST2B.URL, new PageST2B());
+        app.post(PageST2A.URL, new PageST2A());
+        app.post(PageST2B.URL, new PageST2B());
         app.post(PageST2C.URL, new PageST2C());
-        // app.post(PageST3A.URL, new PageST3A());
+        app.post(PageST3A.URL, new PageST3A());
         // app.post(PageST3B.URL, new PageST3B());
         app.post(PageST3C.URL, new PageST3C());
     }

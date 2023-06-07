@@ -71,8 +71,10 @@ public class PageST3A implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <h1>Subtask 3.A page content</h1>
+                <h2>Identify changed in temperature over extended periods</h2>
                 """;
+
+        html = html + "<form action='/page2A.html' method='post'>";
 
         // Close Content div
         html = html + "</div>";
