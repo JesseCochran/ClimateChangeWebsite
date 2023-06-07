@@ -85,21 +85,16 @@ public class PageST3C implements Handler {
         // All the Drop down menu stuff for the data to eventually be retrieved from
         // html = html + "<form action='/page2C.html' method='post'>";
         boolean getInfo = true;
-        int numberOfDatasets = 0;
 
-        if (context.formParam("counter") != null) {
-            String counterValue = context.formParam("counter");
-            numberOfDatasets = Integer.parseInt(counterValue);
-        } else {
-            Object storedCounter = context.sessionAttribute("counter");
-            if (storedCounter != null) {
-                numberOfDatasets = (int) storedCounter;
-            }
-        }
         // A version of the same thing with a javascript function to stop values entered
         // being cleared on reload
         html = html + "<form id='page3CForm' action='/page3C.html' method='post' onsubmit='return ReenterData()'>";
-
+        int numberOfDatasets = 0;
+        String counterValue = "";
+        if (context.formParam("counter") != null) {
+            counterValue = context.formParam("counter");
+            numberOfDatasets = Integer.parseInt(counterValue);
+        }
         // This bit of javascript makes it so the page keeps the same values leading to
         // less user confusion when the page reloads
         html = html + "<script>";
@@ -108,11 +103,13 @@ public class PageST3C implements Handler {
         html = html + "       var timeYears = document.getElementById('timeYears_drop').value;";
         html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
         html = html + "       var dataToShow = document.getElementById('TempSelection_drop').value;";
+        html = html + "       var counterValue = document.getElementById('counterValue').value;";
 
         html = html + "       sessionStorage.setItem('startYear', startYear);";
         html = html + "       sessionStorage.setItem('timeYears', timeYears);";
         html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
         html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
+        html = html + "       sessionStorage.setItem('counterValue', counterValue);";
         html = html + "       return true;";
         html = html + "   }";
         html = html + " window.onload = function() {";
@@ -331,6 +328,13 @@ public class PageST3C implements Handler {
         // View table
         html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
         html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
+        html = html + "<p>" + counterValue + "</p>";
+
+        // hidden field to save number of dropdowns
+        if (counterValue != null) {
+            html = html + "<input type='hidden' name='counterValue' id='counterValue' value='" + numberOfDatasets
+                    + "'>";
+        }
         // submit button
         html = html
                 + "   <button class='showTable' type='submit' class='btn btn-primary'>Get Information</button>";
@@ -341,10 +345,18 @@ public class PageST3C implements Handler {
         String duration = context.formParam("lengthDropdown");
         String dataType1 = context.formParam("dataType");
         String orderBy = context.formParam("SortOrder");
+
+        // testing code
+        // html = html + "<h2>" + context.formParam("counterValue") + "</h2>";
+        int arrayLengthNum = 0;
+        if (context.formParam("counterValue") != null) {
+            String arrayLength = context.formParam("counterValue");
+            arrayLengthNum = Integer.parseInt(arrayLength);
+        }
         ArrayList<String> startYears = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
 
-        for (int i = 0; i < numberOfDatasets; i++) {
+        for (int i = 0; i < arrayLengthNum; i++) {
             startYears.add(context.formParam("StartYear_drop" + i));
             dataTypes.add(context.formParam("dataType" + i));
 
