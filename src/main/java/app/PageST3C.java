@@ -86,9 +86,15 @@ public class PageST3C implements Handler {
         // html = html + "<form action='/page2C.html' method='post'>";
         boolean getInfo = true;
         int numberOfDatasets = 0;
+
         if (context.formParam("counter") != null) {
             String counterValue = context.formParam("counter");
             numberOfDatasets = Integer.parseInt(counterValue);
+        } else {
+            Object storedCounter = context.sessionAttribute("counter");
+            if (storedCounter != null) {
+                numberOfDatasets = (int) storedCounter;
+            }
         }
         // A version of the same thing with a javascript function to stop values entered
         // being cleared on reload
@@ -130,7 +136,7 @@ public class PageST3C implements Handler {
         html = html + "   function reload() {";
         html = html + "       document.getElementById('StartYear_drop').value = '';";
         html = html + "       document.getElementById('lengthDropdown').value = '';";
-        html = html + "    sessionStorage.removeItem('counter');";
+        html = html + " sessionStorage.removeItem('counter');";
         html = html + "    var datasetContainer = document.getElementById('datasetContainer');";
         html = html + "    datasetContainer.innerHTML = '';";
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
@@ -287,7 +293,7 @@ public class PageST3C implements Handler {
         html = html + "    form.submit();";
         html = html + "}";
         html = html + "</script>";
-
+        html = html + "<p>" + numberOfDatasets + "</p>";
         if (numberOfDatasets > 0) {
             html = html + "<div id='datasetContainer'>";
 
@@ -327,7 +333,7 @@ public class PageST3C implements Handler {
         html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
         // submit button
         html = html
-                + "   <button class='showTable' type='submit' class='btn btn-primary' onclick='getDataInformation()'>Get Information</button>";
+                + "   <button class='showTable' type='submit' class='btn btn-primary'>Get Information</button>";
 
         html = html + "</form>";
         String viewTable = context.formParam("dataTable");
@@ -337,20 +343,14 @@ public class PageST3C implements Handler {
         String orderBy = context.formParam("SortOrder");
         ArrayList<String> startYears = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
+
         for (int i = 0; i < numberOfDatasets; i++) {
             startYears.add(context.formParam("StartYear_drop" + i));
             dataTypes.add(context.formParam("dataType" + i));
 
-            if (startYears.get(i) == null || duration == null) {
+            if (startYears.get(i) == null || duration == null || dataTypes.get(i) == null) {
                 html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
                 getInfo = false;
-            } else {
-                if (dataTypes.get(i).equals("Land Data")) {
-
-                }
-                if (dataTypes.get(i).equals("Land-Ocean Data")) {
-
-                }
             }
         }
 
@@ -366,11 +366,9 @@ public class PageST3C implements Handler {
             html = html + "<h3>Please select how you would like the data sorted</h3>";
             getInfo = false;
         }
-        if (viewTable == null) {
 
-        } else if (viewTable.equals("seeTable") && getInfo == true) {
-            html = outputTable(html, startYear1, duration, dataType1);
-
+        if (viewTable != null && viewTable.equals("seeTable") && getInfo) {
+            html = html + outputTable(startYears, dataTypes, duration);
         }
 
         // Close Content div
@@ -392,15 +390,49 @@ public class PageST3C implements Handler {
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
         context.html(html);
+
     }
 
-    private String outputTable(String html, String startYear, String duration, String dataType) {
-        int endYear = Integer.parseInt(startYear) + Integer.parseInt(duration);
-        html = html + "<h3>" + dataType + " data for " + startYear + " and " + endYear + "</h3>";
+    private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration) {
+        String html = "<div id='tableData'>";
+        html = html + "<p>" + startYears.size() + "</p>";
+        // html = html + "<p>" + startYears.get(0) + "</p>";
+        // html = html + "<p>" + startYears.get(1) + "</p>";
+        // html = html + "<h3>" + dataType + " data for " + startYear + " and " +
+        // endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
-                Integer.toString(endYear));
+        // ArrayList<Climate> WorldData =
+        // jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
+        // Integer.toString(endYear),
+        // dataType);
 
+        html = html + "<table> <tr>";
+        html = html + "<th>Type of Data</th>";
+        html = html + "<th>start year</th>";
+        html = html + "<th>end year</th>";
+        html = html + "<th>Average temperature at start year</th>";
+        html = html + "<th>Average temperature at end year</th>";
+        html = html + "<th>Average temperature over selected time period</th> </tr>";
+
+        for (int i = 0; i < startYears.size(); ++i) {
+
+            String selectedStartYear = startYears.get(i);
+            String selectedDataType = dataTypes.get(i);
+            int endYear = Integer.parseInt(selectedStartYear) + Integer.parseInt(duration);
+            ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(selectedStartYear,
+                    Integer.toString(endYear), selectedDataType);
+
+            for (Climate data : WorldData) {
+                html = html + "<tr> <td>" + selectedDataType + "</td> " + "<td>";
+                html = html + selectedStartYear + "</td>" + "<td>";
+                html = html + Integer.toString(endYear) + "</td>" + "<td>";
+                html = html + data.getStartTemp() + "</td>" + "<td>";
+                html = html + data.getEndTemp() + "</td>" + "<td>";
+                html = html + data.getAverageTemperature() + "</td></tr>";
+            }
+        }
+
+        html = html + "</table></div>";
         return html;
     }
 }

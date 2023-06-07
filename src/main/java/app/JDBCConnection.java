@@ -868,7 +868,8 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> getWorldLandOceanAverageTempOverPeriod(String startYear, String endYear) {
+    public ArrayList<Climate> getWorldLandOceanAverageTempOverPeriod(String startYear, String endYear,
+            String dataType) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -883,39 +884,76 @@ public class JDBCConnection {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
 
-            // The Query
-            String query = "SELECT SY.StartYear, ";
-            query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
-            query = query
-                    + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod ";
-            query = query
-                    + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
-                    + startYear + "') AS SY ";
-            query = query
-                    + "JOIN (SELECT Year AS EndYear, AvgOceanTemp AS EndYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
-                    + endYear + "') AS EY JOIN GlobalLandOceanTemp AS ATOP ";
-            query = query + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear; ";
+            if (dataType.equals("Land Data")) {
+                // The Query
+                String query = "SELECT SY.StartYear, ";
+                query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
+                query = query
+                        + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod ";
+                query = query
+                        + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                        + startYear + "') AS SY ";
+                query = query
+                        + "JOIN (SELECT Year AS EndYear, AvgOceanTemp AS EndYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                        + endYear + "') AS EY JOIN GlobalLandOceanTemp AS ATOP ";
+                query = query + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear; ";
 
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
+                // Get Result
+                ResultSet results = statement.executeQuery(query);
 
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
+                // Process all of the results
+                while (results.next()) {
+                    // Lookup the columns we need
 
-                float startTemp = results.getFloat("StartYearAvg");
-                float endTemp = results.getFloat("EndYearAvg");
-                float averageTempOverPeriod = results.getFloat("AverageTempOverPeriod");
+                    float startTemp = results.getFloat("StartYearAvg");
+                    float endTemp = results.getFloat("EndYearAvg");
+                    float averageTempOverPeriod = results.getFloat("AverageTempOverPeriod");
 
-                // Create a Climate Object
-                Climate climate = new Climate();
+                    // Create a Climate Object
+                    Climate climate = new Climate();
+                    climate.setDataType(dataType);
+                    climate.setStartTemp(startTemp);
+                    climate.setEndTemp(endTemp);
+                    climate.setAverageTemperature(averageTempOverPeriod);
 
-                climate.setStartTemp(startTemp);
-                climate.setEndTemp(endTemp);
-                climate.setAverageTemperature(averageTempOverPeriod);
+                    // Add the lga object to the array
+                    climates.add(climate);
+                }
+            } else if (dataType.equals("Land-Ocean Data")) {
+                // The Query
+                String query = "SELECT SY.StartYear, ";
+                query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
+                query = query
+                        + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod ";
+                query = query
+                        + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                        + startYear + "') AS SY ";
+                query = query
+                        + "JOIN (SELECT Year AS EndYear, AvgOceanTemp AS EndYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                        + endYear + "') AS EY JOIN GlobalLandOceanTemp AS ATOP ";
+                query = query + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear; ";
 
-                // Add the lga object to the array
-                climates.add(climate);
+                // Get Result
+                ResultSet results = statement.executeQuery(query);
+
+                // Process all of the results
+                while (results.next()) {
+                    // Lookup the columns we need
+
+                    float startTemp = results.getFloat("StartYearAvg");
+                    float endTemp = results.getFloat("EndYearAvg");
+                    float averageTempOverPeriod = results.getFloat("AverageTempOverPeriod");
+
+                    // Create a Climate Object
+                    Climate climate = new Climate();
+                    climate.setDataType(dataType);
+                    climate.setStartTemp(startTemp);
+                    climate.setEndTemp(endTemp);
+                    climate.setAverageTemperature(averageTempOverPeriod);
+
+                    // Add the lga object to the array
+                    climates.add(climate);
+                }
             }
 
             // Close the statement because we are done with it

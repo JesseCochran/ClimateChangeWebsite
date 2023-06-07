@@ -27,7 +27,7 @@ public class Climate {
     private float startTemp;
     private float endTemp;
     private float tempPercent;
-
+    private String dataType;
 
     /**
      * Create an Climate object and set the fields
@@ -178,6 +178,12 @@ public class Climate {
         return tempPercent;
     }
 
-    
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 
 }
