@@ -39,23 +39,35 @@ public class PageST2B implements Handler {
                 "<title>Subtask 2.1</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        // html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "</head>";
+
+        // Add the body
+        // Create a simple HTML webpage in a String
+
+        // Add some Head information
+        html = html + "<head>" +
+                "<title>Subtask 2.1</title>";
+
+        // Add some CSS (external file)
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
         html = html + "</head>";
 
         // Add the body
         html = html + "<body>";
 
-     
         // Add header content block
         html = html
                 + """
-                    <div class='header'>
-                        <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                        Climate Change Awareness</h1>
-                    </div>
-                """;
+                            <div class='header'>
+                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                                Climate Change Awareness</h1>
+                            </div>
+                        """;
 
-        // navigation bar
+        // Add the topnav
+        // This uses a Java v15+ Text Block
         html = html + """
                     <div class='topnav'>
                     <a href='/'>Homepage</a>
@@ -69,6 +81,9 @@ public class PageST2B implements Handler {
                     <a href='PageHelp.html'>Help Page</a>
                     </div>
                 """;
+
+        // Add Div for page Content
+        html = html + "<div class='content'>";
 
         //declaring variables
 
@@ -107,11 +122,18 @@ public class PageST2B implements Handler {
 
 
         HashMap<String, String> mapOfCountries = JDBCConnection.getCountryNames();
-        html += "<form>";
+        html += "<form id='form-id'>";
         html +=  """
-                <select name="country">
+                <select name="country" onchange='document.getElementById("form-id").submit();'>
         """;
 
+        // html = html + """<script>
+        // document.getElementById('store').storeID.onchange = function() {
+        //     var newaction = this.value;
+        //     document.getElementById('store').action = newaction;
+        // };
+        // """;
+        html = html + "</script>";
 
         for (Map.Entry<String, String> entry : mapOfCountries.entrySet()) {
            
@@ -143,15 +165,32 @@ public class PageST2B implements Handler {
 
         html += 
         "</select>";
-
-        html += 
-        """
-                <select name='type'>
-                <option value="" selected disabled hidden>City/State</option>
-                <option value='states'>States</option> 
-                <option value='cities'>Cities</option> 
-                </select>
+        html +="""
+            <select name='type'>
+            <option value="" selected disabled hidden>City/State</option>
         """;
+            
+        
+        if (countryParameterFromURL != null){
+            // if (JDBCConnection.hasStates(countryParameterFromURL)){
+            //     html += 
+            //     """
+            //             <option value='states'>States</option> 
+
+            //     """;}
+                if (JDBCConnection.hasCities(countryParameterFromURL)){
+                    html += 
+                    """
+                            <option value='cities'>Cities</option> 
+    
+                    """;}
+                }
+                
+                html += "</select>";
+            
+        
+
+        
 
         html += 
         "</select>";
@@ -203,7 +242,9 @@ public class PageST2B implements Handler {
         html = html + "<div class='content'>";
 
     
-        if (countryParameterFromURL != null) { ArrayList<TempData> data;
+        if (countryParameterFromURL != null) { 
+            ArrayList<TempData> data;
+
             html +=
                     "<table><tr> <th> Year </th> ";
 
@@ -218,7 +259,9 @@ public class PageST2B implements Handler {
              data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
 
                 html += "<th> City</th>";
-                
+        
+                          
+                          
             
             }
          
@@ -271,4 +314,4 @@ public class PageST2B implements Handler {
 
     }
 
-}
+    }

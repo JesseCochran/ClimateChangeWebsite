@@ -633,7 +633,8 @@ public class JDBCConnection {
             // Process all of the results
             while (results.next()) {
                 // Lookup the columns we need
-                countryNames.put(results.getString("CountryId"), results.getString("CountryName"));
+                countryNames.put(results.getString("CountryId"), 
+                results.getString("CountryName"));
             }
 
             statement.close();
@@ -1049,6 +1050,162 @@ public class JDBCConnection {
 
         // Finally we return all of the lga
         return climates;
+    
     }
+    public static ArrayList<PersonaData> getPersonaData() {
 
+        ArrayList<PersonaData> personaInfo = new ArrayList<PersonaData>();
+ 
+ 
+        Connection connection = null;
+ 
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+ 
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+ 
+            // The Query
+            String query = "SELECT PersonaId, Name, Quote, ImagePath, Requirements, Experience FROM Persona;";
+ 
+ 
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+ 
+            // Process all of the results
+           while (results.next()) {
+                // Lookup the columns we need
+                 PersonaData personaData = new PersonaData(results.getInt("PersonaId"),
+                         results.getString("Name"), results.getString("Quote"),
+                         results.getString("ImagePath"), results.getString("Requirements"), results.getString("Experience"));
+                 personaInfo.add(personaData);
+             }
+             statement.close();
+         }
+         //
+         catch (SQLException e) {
+             // If there is an error, lets just pring the error
+             System.err.println(e.getMessage());
+         } finally {
+             // Safety code to cleanup
+             try {
+                 if (connection != null) {
+                     connection.close();
+                 }
+             } catch (SQLException e) {
+                 // connection close failed.
+                 System.err.println(e.getMessage());
+             }
+         }
+ 
+         // Finally we return all of the lga
+         return personaInfo;
+     }
+
+public static ArrayList<StudentInfo> getStudentInfo() {
+
+    ArrayList<StudentInfo> studentData = new ArrayList<StudentInfo>();
+
+
+    Connection connection = null;
+
+    try {
+        // Connect to JDBC data base
+        connection = DriverManager.getConnection(DATABASE);
+
+        // Prepare a new SQL Query & Set a timeout
+        Statement statement = connection.createStatement();
+        statement.setQueryTimeout(30);
+
+        // The Query
+        String query = "SELECT StudentNumber, Fname, Lname, Email FROM StudentInfo;";
+
+
+        // Get Result
+        ResultSet results = statement.executeQuery(query);
+
+        // Process all of the results
+       while (results.next()) {
+            // Lookup the columns we need
+             StudentInfo studentInfo = new StudentInfo(results.getString("StudentNumber"),
+                     results.getString("Fname"), results.getString("Lname"),
+                     results.getString("Email"));
+             studentData.add(studentInfo);
+         }
+         statement.close();
+     }
+     //
+     catch (SQLException e) {
+         // If there is an error, lets just pring the error
+         System.err.println(e.getMessage());
+     } finally {
+         // Safety code to cleanup
+         try {
+             if (connection != null) {
+                 connection.close();
+             }
+         } catch (SQLException e) {
+             // connection close failed.
+             System.err.println(e.getMessage());
+         }
+     }
+
+
+     // Finally we return all of the lga
+     return studentData;
+ }
+ public static boolean hasCities(String countryId) {
+
+
+    Connection connection = null;
+
+    try {
+        // Connect to JDBC data base
+        connection = DriverManager.getConnection(DATABASE);
+
+        // Prepare a new SQL Query & Set a timeout
+        Statement statement = connection.createStatement();
+        statement.setQueryTimeout(30);
+
+        // The Query
+        String query = "SELECT count(*) as total from CityTemp where CountryId='" + countryId + "';";
+
+
+        // Get Result
+        ResultSet results = statement.executeQuery(query);
+
+        // Process all of the results
+       while (results.next()) {
+            // Lookup the columns we need
+             if (results.getInt("total") > 0){
+                return true;
+             }else{
+                return false;
+             }
+         }
+         statement.close();
+     }
+     //
+     catch (SQLException e) {
+         // If there is an error, lets just pring the error
+         System.err.println(e.getMessage());
+     } finally {
+         // Safety code to cleanup
+         try {
+             if (connection != null) {
+                 connection.close();
+             }
+         } catch (SQLException e) {
+             // connection close failed.
+             System.err.println(e.getMessage());
+         }
+     }
+
+     // Finally we return all of the lga
+     return false;
+ }
 }
+
+
