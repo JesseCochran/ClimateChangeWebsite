@@ -251,9 +251,7 @@ public class PageST2B implements Handler {
 
             if (type != null){
             if (type.equals("states")) {
-            
              data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
-             
 
                 html += "<th> State</th>";
 
@@ -262,7 +260,9 @@ public class PageST2B implements Handler {
              data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
 
                 html += "<th> City</th>";
-                       
+        
+                          
+                          
             
             }
          
@@ -284,7 +284,11 @@ public class PageST2B implements Handler {
 
         }
 
-    
+        // Add HTML for the page content
+        html = html + """
+                <p>Subtask 2.B page content</p>
+                """;
+
         // Close Content div
         html = html + "</div>";
 
