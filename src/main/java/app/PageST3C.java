@@ -381,7 +381,7 @@ public class PageST3C implements Handler {
         }
 
         if (viewTable != null && viewTable.equals("seeTable") && getInfo) {
-            html = html + outputTable(startYears, dataTypes, duration);
+            html = html + outputTable(startYears, dataTypes, duration, orderBy);
         }
 
         // Close Content div
@@ -406,13 +406,13 @@ public class PageST3C implements Handler {
 
     }
 
-    private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration) {
+    private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration,
+            String orderBy) {
         String html = "<div id='tableData'>";
         html = html + "<p>" + startYears.size() + "</p>";
         // html = html + "<p>" + startYears.get(0) + "</p>";
         // html = html + "<p>" + startYears.get(1) + "</p>";
-        // html = html + "<h3>" + dataType + " data for " + startYear + " and " +
-        // endYear + "</h3>";
+        html = html + "<h3> Temperature data over " + duration + " years</h3>";
         JDBCConnection jdbc = new JDBCConnection();
         // ArrayList<Climate> WorldData =
         // jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
@@ -425,24 +425,26 @@ public class PageST3C implements Handler {
         html = html + "<th>end year</th>";
         html = html + "<th>Average temperature at start year</th>";
         html = html + "<th>Average temperature at end year</th>";
-        html = html + "<th>Average temperature over selected time period</th> </tr>";
-
+        html = html + "<th>Average temperature over selected time period</th>";
+        html = html + "<th>Change in average temperature</th> </tr>";
+        ArrayList<String> endYears = new ArrayList<String>();
         for (int i = 0; i < startYears.size(); ++i) {
 
             String selectedStartYear = startYears.get(i);
-            String selectedDataType = dataTypes.get(i);
-            int endYear = Integer.parseInt(selectedStartYear) + Integer.parseInt(duration);
-            ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(selectedStartYear,
-                    Integer.toString(endYear), selectedDataType);
+            int endYear = Integer.parseInt(selectedStartYear) + Integer.parseInt(duration) - 1;
+            endYears.add(Integer.toString(endYear));
+        }
+        ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYears,
+                endYears, dataTypes, orderBy);
 
-            for (Climate data : WorldData) {
-                html = html + "<tr> <td>" + selectedDataType + "</td> " + "<td>";
-                html = html + selectedStartYear + "</td>" + "<td>";
-                html = html + Integer.toString(endYear) + "</td>" + "<td>";
-                html = html + data.getStartTemp() + "</td>" + "<td>";
-                html = html + data.getEndTemp() + "</td>" + "<td>";
-                html = html + data.getAverageTemperature() + "</td></tr>";
-            }
+        for (int j = 0; j < WorldData.size(); j++) {
+            html = html + "<tr> <td>" + WorldData.get(j).getDataType() + "</td> " + "<td>";
+            html = html + WorldData.get(j).getStartYear() + "</td>" + "<td>";
+            html = html + WorldData.get(j).getEndYear() + "</td>" + "<td>";
+            html = html + String.format("%.2f", WorldData.get(j).getStartTemp()) + "</td>" + "<td>";
+            html = html + String.format("%.2f", WorldData.get(j).getEndTemp()) + "</td>" + "<td>";
+            html = html + String.format("%.2f", WorldData.get(j).getAverageTemperature()) + "</td>" + "<td>";
+            html = html + String.format("%.2f%%", WorldData.get(j).getTempPercent()) + "</td></tr>";
         }
 
         html = html + "</table></div>";

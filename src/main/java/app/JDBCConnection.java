@@ -707,33 +707,30 @@ public class JDBCConnection {
         return tempByState;
     }
 
+    public static ArrayList<TempData> getTempByCity(String countryId, int fromDate, int toDate) {
 
+        ArrayList<TempData> tempByCity = new ArrayList<TempData>();
 
-   public static ArrayList<TempData> getTempByCity(String countryId, int fromDate, int toDate) {
+        Connection connection = null;
 
-       ArrayList<TempData> tempByCity = new ArrayList<TempData>();
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
 
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
 
-       Connection connection = null;
+            // The Query
+            String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='"
+                    + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + ";";
 
-       try {
-           // Connect to JDBC data base
-           connection = DriverManager.getConnection(DATABASE);
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
 
-           // Prepare a new SQL Query & Set a timeout
-           Statement statement = connection.createStatement();
-           statement.setQueryTimeout(30);
-
-           // The Query
-           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + ";";
-
-
-           // Get Result
-           ResultSet results = statement.executeQuery(query);
-
-           // Process all of the results
-          while (results.next()) {
-               // Lookup the columns we need
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
                 TempData tempData = new TempData(results.getString("CityName"),
                         results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
                         results.getInt("Year"), results.getFloat("MaxTemp"));
@@ -760,6 +757,7 @@ public class JDBCConnection {
         // Finally we return all of the lga
         return tempByCity;
     }
+
     public ArrayList<Climate> getCountryPopulationTemp(String startYear, String endYear, String type, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -921,7 +919,142 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> getWorldLandOceanAverageTempOverPeriod(String startYear, String endYear,
+    public ArrayList<Climate> getWorldLandOceanAverageTempOverPeriod(ArrayList<String> startYears,
+            ArrayList<String> endYears,
+            ArrayList<String> dataTypes, String OrderBy) {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            String query = "";
+            for (int i = 0; i < startYears.size(); i++) {
+                if (startYears.size() == 1 || i == startYears.size() - 1) {
+                    if (dataTypes.get(i).equals("Land Data")) {
+                        query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
+                        query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
+                        query = query
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                        query = query
+                                + "FROM (SELECT Year AS StartYear, AvgAirTemp AS StartYearAvg FROM GlobalTemp WHERE Year = '"
+                                + startYears.get(i) + "') AS SY ";
+                        query = query
+                                + "JOIN (SELECT Year AS EndYear, AvgAirTemp AS EndYearAvg FROM GlobalTemp WHERE Year = '"
+                                + endYears.get(i) + "') AS EY JOIN GlobalTemp AS ATOP ";
+                        query = query
+                                + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear ";
+                    } else if (dataTypes.get(i).equals("Land-Ocean Data")) {
+                        // The Query
+                        query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
+                        query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
+                        query = query
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                        query = query
+                                + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                                + startYears.get(i) + "') AS SY ";
+                        query = query
+                                + "JOIN (SELECT Year AS EndYear, AvgOceanTemp AS EndYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                                + endYears.get(i) + "') AS EY JOIN GlobalLandOceanTemp AS ATOP ";
+                        query = query
+                                + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear ";
+                    }
+                } else {
+
+                    if (dataTypes.get(i).equals("Land Data")) {
+                        query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
+                        query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
+                        query = query
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                        query = query
+                                + "FROM (SELECT Year AS StartYear, AvgAirTemp AS StartYearAvg FROM GlobalTemp WHERE Year = '"
+                                + startYears.get(i) + "') AS SY ";
+                        query = query
+                                + "JOIN (SELECT Year AS EndYear, AvgAirTemp AS EndYearAvg FROM GlobalTemp WHERE Year = '"
+                                + endYears.get(i) + "') AS EY JOIN GlobalTemp AS ATOP ";
+                        query = query
+                                + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear ";
+                        query = query + "UNION ";
+
+                    } else if (dataTypes.get(i).equals("Land-Ocean Data")) {
+                        // The Query
+                        query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
+                        query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
+                        query = query
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                        query = query
+                                + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                                + startYears.get(i) + "') AS SY ";
+                        query = query
+                                + "JOIN (SELECT Year AS EndYear, AvgOceanTemp AS EndYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                                + endYears.get(i) + "') AS EY JOIN GlobalLandOceanTemp AS ATOP ";
+                        query = query
+                                + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear ";
+                        query = query + "UNION ";
+                    }
+                }
+            }
+            if (OrderBy.equals("Descending")) {
+                query = query + "ORDER BY ChangeInAvgTempPercentage DESC ";
+            } else if (OrderBy.equals("Ascending")) {
+                query = query + "ORDER BY ChangeInAvgTempPercentage ";
+            }
+            query = query + "; ";
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                String dataType = results.getString("DataType");
+                int startYear = results.getInt("StartYear");
+                float startTemp = results.getFloat("StartYearAvg");
+                int endYear = results.getInt("EndYear");
+                float endTemp = results.getFloat("EndYearAvg");
+                float averageTempOverPeriod = results.getFloat("AverageTempOverPeriod");
+                float tempPercentage = results.getFloat("ChangeInAvgTempPercentage");
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setDataType(dataType);
+                climate.setStartYear(startYear);
+                climate.setStartTemp(startTemp);
+                climate.setEndYear(endYear);
+                climate.setEndTemp(endTemp);
+                climate.setAverageTemperature(averageTempOverPeriod);
+                climate.setTempPercent(tempPercentage);
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
+    public ArrayList<Climate> OLDgetWorldLandOceanAverageTempOverPeriod(String startYear, String endYear,
             String dataType) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -942,13 +1075,13 @@ public class JDBCConnection {
                 String query = "SELECT SY.StartYear, ";
                 query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
                 query = query
-                        + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod ";
+                        + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
                 query = query
-                        + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
+                        + "FROM (SELECT Year AS StartYear, AvgAirTemp AS StartYearAvg FROM GlobalTemp WHERE Year = '"
                         + startYear + "') AS SY ";
                 query = query
-                        + "JOIN (SELECT Year AS EndYear, AvgOceanTemp AS EndYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
-                        + endYear + "') AS EY JOIN GlobalLandOceanTemp AS ATOP ";
+                        + "JOIN (SELECT Year AS EndYear, AvgAirTemp AS EndYearAvg FROM GlobalTemp WHERE Year = '"
+                        + endYear + "') AS EY JOIN GlobalTemp AS ATOP ";
                 query = query + "ON ATOP.Year BETWEEN SY.StartYear AND EY.EndYear GROUP BY SY.StartYear, EY.EndYear; ";
 
                 // Get Result
@@ -961,14 +1094,14 @@ public class JDBCConnection {
                     float startTemp = results.getFloat("StartYearAvg");
                     float endTemp = results.getFloat("EndYearAvg");
                     float averageTempOverPeriod = results.getFloat("AverageTempOverPeriod");
-
+                    float tempPercentage = results.getFloat("ChangeInAvgTempPercentage");
                     // Create a Climate Object
                     Climate climate = new Climate();
                     climate.setDataType(dataType);
                     climate.setStartTemp(startTemp);
                     climate.setEndTemp(endTemp);
                     climate.setAverageTemperature(averageTempOverPeriod);
-
+                    climate.setTempPercent(tempPercentage);
                     // Add the lga object to the array
                     climates.add(climate);
                 }
@@ -977,7 +1110,7 @@ public class JDBCConnection {
                 String query = "SELECT SY.StartYear, ";
                 query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
                 query = query
-                        + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod ";
+                        + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
                 query = query
                         + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
                         + startYear + "') AS SY ";
@@ -996,6 +1129,7 @@ public class JDBCConnection {
                     float startTemp = results.getFloat("StartYearAvg");
                     float endTemp = results.getFloat("EndYearAvg");
                     float averageTempOverPeriod = results.getFloat("AverageTempOverPeriod");
+                    float tempPercentage = results.getFloat("ChangeInAvgTempPercentage");
 
                     // Create a Climate Object
                     Climate climate = new Climate();
@@ -1003,6 +1137,7 @@ public class JDBCConnection {
                     climate.setStartTemp(startTemp);
                     climate.setEndTemp(endTemp);
                     climate.setAverageTemperature(averageTempOverPeriod);
+                    climate.setTempPercent(tempPercentage);
 
                     // Add the lga object to the array
                     climates.add(climate);

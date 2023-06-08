@@ -21,6 +21,8 @@ public class Climate {
     private long populationLevel;
     private String question;
     private String answer;
+    private int startYear;
+    private int endYear;
     private long startPopulation;
     private long endPopulation;
     private float populationPercent;
@@ -52,6 +54,22 @@ public class Climate {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public void setEndYear(int endYear) {
+        this.endYear = endYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public int getEndYear() {
+        return endYear;
+    }
+
+    public int getStartYear() {
+        return startYear;
     }
 
     public String getQuestion() {
