@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Year;
 
 /**
  * Example Index HTML class using Javalin
@@ -156,48 +157,77 @@ public class PageIndex implements Handler {
         // Testing for the extension graph we need to do
         jdbc = new JDBCConnection();
         ArrayList<Climate> Countries = jdbc.getCountryClimateData();
-        // jdbc = new JDBCConnection(); Found out you only need one of these
         ArrayList<Climate> Years = jdbc.getCountryYearsOfData();
         int currentYearIndex = 0;
-        html = html + "<h4> Average Temperature Of The World In " +
-                Years.get(0).getYear() + ".</h4>";
-        html = html
-                + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
-        html = html + "<button onclick='updateGraph()'>Next Year</button>";
-        // attempt at a geo graph
+        html = html + "<form action='/' method='post'>";
+        if (context.formParam("year_dropdown") != null) {
+            html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
+                    context.formParam("year_dropdown") + ".</h4>";
+        } else {
+            html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
+                    Years.get(0).getYear() + ".</h4>";
+        }
+
+        html = html + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
+
+        // Create dropdown menu for selecting year
+        html = html + "<select id='year_dropdown' name='year_dropdown'>";
+        for (Climate year : Years) {
+            html = html + "<option value='" + year.getYear() + "'>" + year.getYear() + "</option>";
+        }
+        html = html + "</select>";
+
+        // Add submit button to update the graph
+        html = html + "<button onclick='submitForm()'>Submit</button>";
+        html = html + "</form>";
+
+        String Year = context.formParam("year_dropdown");
+        if (Year == null) {
+            Year = "1750"; // Set a default value if the selected value is null
+        }
         html = html + "<div id='regions_div'></div>";
-        html = html + """
-                        <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
-                <script type='text/javascript'>
-                  google.charts.load('current', {
-                    'packages':['geochart'],
-                  });
-                  google.charts.setOnLoadCallback(drawRegionsMap);
+        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+        html = html + "<script type='text/javascript'>";
+        html = html + "google.charts.load('current', { 'packages':['geochart'] });";
+        html = html + "google.charts.setOnLoadCallback(drawRegionsMap);";
+        html = html + "var currentYearIndex = " + currentYearIndex + ";";
+        html = html + "function submitForm() {";
+        html = html + "var dropdown = document.getElementById('year_dropdown');";
+        html = html + "currentYearIndex = dropdown.selectedIndex;";
+        html = html + "var currentYear = dropdown.value;";
+        html = html
+                + "document.getElementById('year_heading').innerText = 'Average Temperature Of The World In ' + currentYear + '.';";
+        html = html + "drawRegionsMap();";
+        html = html + "}";
+        html = html + "function drawRegionsMap() {";
+        html = html + "var data = google.visualization.arrayToDataTable([";
+        html = html + "['Country', 'Average Temperature'],";
+        for (Climate country : Countries) {
+            if (Year != null) {
 
-                  function drawRegionsMap() {
-                    var data = google.visualization.arrayToDataTable([
-                        ['Country', 'Average Temperature'],
-                        """;
-
-        for (Climate Country : Countries) {
-            // this is to display the first year of data from the db eg just change the
-            // number 0 to something else to show another year
-
-            if (Country.getYear() == Years.get(0).getYear()) {
-                html = html + "['" + Country.getCountryName() + "', " + Country.getAverageTemperature() + "],";
+                if (country.getYear() == Integer.parseInt(Year)) {
+                    html = html + "['" + country.getCountryName() + "', " + country.getAverageTemperature() + "],";
+                }
+                // else {
+                // html = html + "['" + country.getCountryName() + "', " +
+                // country.getAverageTemperature() + "],";
+                // }
+            } else {
+                html = html + "['" + Countries.get(0).getCountryName() + "', "
+                        + Countries.get(0).getAverageTemperature() + "],";
             }
         }
-        html = html + """
-                    ]);
+        html = html + "]);";
+        html = html + "var options = {colorAxis: {colors: ['#00FF00', '#FFFF00', '#FF0000']},};";
+        html = html + "var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));";
+        html = html + "chart.draw(data, options);";
+        html = html + "}";
+        html = html + "</script>";
+        // *Testing */
+        // html = html + "<p>" + currentYearIndex + "</p>";
 
-                    var options = {};
+        // html = html + "<p>" + Year + "</p>";
 
-                    var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-
-                    chart.draw(data, options);
-                  }
-                </script>
-                """;
         // TESTING html = html + "<p>" + Countries.get(0).getYear() + "</p>";
         // Footer
         html = html + """

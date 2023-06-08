@@ -496,11 +496,7 @@ public class JDBCConnection {
             // The Query
 
             String query = """
-                    CREATE VIEW HeatMapView AS
-                    SELECT country.CountryName, countryTemp.Year, countryTemp.AvgTemp, countryTemp.MinTemp, countrytemp.MaxTemp
-                    FROM CountryTemp
-                    JOIN country ON countryTemp.CountryId = country.CountryId
-                    ORDER BY Year;
+                    Select * From HeatMapView;
                                 """;
 
             // Get Result
