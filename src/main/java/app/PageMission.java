@@ -67,20 +67,17 @@ public class PageMission implements Handler {
                     </div>
                 """;
 
-
-        //declaring variables
-
        
-
-
         // Add Div for page Content
         html += "<div class='content'>";
 
+        html += """
+                <h2>Our Mission</h2>
+                """;
+
 
         // Add HTML for the page content more to be added to the mission statement
-        html += """
-                <h3>Mission Statement</h3>
-                """;
+       
 
          html += """
                       

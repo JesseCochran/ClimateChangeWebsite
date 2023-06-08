@@ -673,7 +673,7 @@ public class JDBCConnection {
 
             // The Query
             String query = "SELECT StateName, Year, AvgTemp, MinTemp, MaxTemp from StateTemp WHERE CountryId='"
-                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + ";";
+                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp IS NOT NULL, MinTemp IS NOT NULL, MaxTemp IS NOT NULL;";
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -726,7 +726,7 @@ public class JDBCConnection {
            statement.setQueryTimeout(30);
 
            // The Query
-           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + ";";
+           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + " ;";
 
 
            // Get Result
@@ -1206,6 +1206,57 @@ public static ArrayList<StudentInfo> getStudentInfo() {
      // Finally we return all of the lga
      return false;
  }
+ public static boolean hasStates(String countryId) {
+
+
+    Connection connection = null;
+
+    try {
+        // Connect to JDBC data base
+        connection = DriverManager.getConnection(DATABASE);
+
+        // Prepare a new SQL Query & Set a timeout
+        Statement statement = connection.createStatement();
+        statement.setQueryTimeout(30);
+
+        // The Query
+        String query = "SELECT count(*) as total from StateTemp where CountryId='" + countryId + "';";
+
+
+        // Get Result
+        ResultSet results = statement.executeQuery(query);
+
+        // Process all of the results
+       while (results.next()) {
+            // Lookup the columns we need
+             if (results.getInt("total") > 0){
+                return true;
+             }else{
+                return false;
+             }
+         }
+         statement.close();
+     }
+     //
+     catch (SQLException e) {
+         // If there is an error, lets just pring the error
+         System.err.println(e.getMessage());
+     } finally {
+         // Safety code to cleanup
+         try {
+             if (connection != null) {
+                 connection.close();
+             }
+         } catch (SQLException e) {
+             // connection close failed.
+             System.err.println(e.getMessage());
+         }
+     }
+
+     // Finally we return all of the lga
+     return false;
+ }
 }
+
 
 

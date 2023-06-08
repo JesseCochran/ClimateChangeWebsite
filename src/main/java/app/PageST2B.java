@@ -85,12 +85,15 @@ public class PageST2B implements Handler {
         // Add Div for page Content
         html = html + "<div class='content'>";
 
+        html = html + """
+            <h2>Focused view of temperature by Cities or States</h2>
+            """;
+
         //declaring variables
 
         int fromDate;
         int toDate;
         String type = context.req.getParameter("type");
-
         try {
             fromDate = Integer.parseInt(context.req.getParameter("from"));
             toDate = Integer.parseInt(context.req.getParameter("to"));
@@ -100,18 +103,16 @@ public class PageST2B implements Handler {
         }
         String countryParameterFromURL = context.req.getParameter("country");
 
-
         // header content block
 
         html +=
-
          """
                     <div class='header'>
                         <h3> Temperatures by States or Cities </h3>
                     </div>
          """;
 
-
+        // brief description of info on page
         html +=
          """
             <p> As the yearly maximum, minimum and average temperatures for cities and states across the wold
@@ -120,19 +121,20 @@ public class PageST2B implements Handler {
                     
          """;
 
+         // hashmap to get country names for dropdown menu 
 
         HashMap<String, String> mapOfCountries = JDBCConnection.getCountryNames();
         html += "<form id='form-id'>";
-        html +=  """
-                <select name="country" onchange='document.getElementById("form-id").submit();'>
-        """;
+        
+        html = html += "<label for>Select County:</label>";
 
-        // html = html + """<script>
-        // document.getElementById('store').storeID.onchange = function() {
-        //     var newaction = this.value;
-        //     document.getElementById('store').action = newaction;
-        // };
-        // """;
+                
+        html +=  """       
+             <select name="country" onchange='document.getElementById("form-id").submit();'>
+        """;
+        html +=  """
+            <option value="" selected disabled hidden>Country</option>        
+   """;
         html = html + "</script>";
 
         for (Map.Entry<String, String> entry : mapOfCountries.entrySet()) {
@@ -141,64 +143,59 @@ public class PageST2B implements Handler {
             String value = entry.getValue();
             if (countryParameterFromURL != null) {
             if (countryParameterFromURL.equals(key)) {
-                                
+        
+    // part of code that makes the selected option stay after the page is refereshed
+       
         html += "<option selected='selected' value='";
         html += key + "'>" + value + "</option>";
         }
         
         else {
-    
         html += 
-        
         "<option value='";
-                   
         html += key + "'>" + value + "</option>";   
                 }  
         }
-        else  {
-
-                html += "<option value='";
+        else {  html += "<option value='";
                 html += key + "'>" + value + "</option>";
             }
-
         }
+
+        // dropdown menu for cites or states
 
         html += 
         "</select>";
+        html = html += "<br> <label for>Select Cities or States:</label>";
         html +="""
             <select name='type'>
             <option value="" selected disabled hidden>City/State</option>
         """;
-            
         
         if (countryParameterFromURL != null){
-            // if (JDBCConnection.hasStates(countryParameterFromURL)){
-            //     html += 
-            //     """
-            //             <option value='states'>States</option> 
-
-            //     """;}
+            if (JDBCConnection.hasStates(countryParameterFromURL)){
+                html += 
+                """
+                        <option value='States'>States</option> 
+                """;}
+                
                 if (JDBCConnection.hasCities(countryParameterFromURL)){
                     html += 
                     """
-                            <option value='cities'>Cities</option> 
-    
+                            <option value='Cities'>Cities</option> 
                     """;}
                 }
                 
                 html += "</select>";
-            
-        
-
-        
-
         html += 
         "</select>";
+        html = html += "<br> <label for>Select Start Year:</label>";
         html += 
         "<select name='from'>";
         html +=  """
-                 <option value="" selected disabled hidden>Choose start date</option>        
+                 <option value="" selected disabled hidden>Year</option>        
         """;
+
+        // dropdown menues for start and end dates
 
         for (int i = 1750; i < 2014; i++) {
             if (fromDate == i) {
@@ -212,12 +209,13 @@ public class PageST2B implements Handler {
     }
 
         html += "</select>";
+        html = html += "<br> <label for>Select End Year:</label>";
         html += "<select name='to'>";
         html += """
-            <option value="" selected disabled hidden>Choose end date</option>        
+            <option value="" selected disabled hidden>Year</option>        
           """;
 
-        for (int i = 1750; i < 2014; i++) {
+        for (int i = 1749; i < 2014; i++) {
             html += "<option>" + i + "</option>";
             if (toDate == i) {
                 html += "<option selected ='selected' value='";
@@ -229,19 +227,22 @@ public class PageST2B implements Handler {
                 html += i + "'>" + i + "</option>";
                  }
         }
+        
         html += "</select>";
-        html += """
-                <button type="submit">submit</button>""";
 
-        // html = html + "<button class='reset' type='reset' >Reset</button>";
+        html +=  "<div>";
+        html += "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
+        html += "</div>";
+        html += "</form>";
 
-        // html += "</form>";
+
+        html +=  "<div>";
+        html = html + "<br> <button class='reset' type='reset' >Reset</button>";
+        html += "</form>";
+        html += "</div>";
 
 
-        // Add Div for page Content
         html = html + "<div class='content'>";
-
-    
         if (countryParameterFromURL != null) { 
             ArrayList<TempData> data;
 
@@ -250,7 +251,9 @@ public class PageST2B implements Handler {
 
             if (type != null){
             if (type.equals("states")) {
+            
              data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
+             
 
                 html += "<th> State</th>";
 
@@ -259,9 +262,7 @@ public class PageST2B implements Handler {
              data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
 
                 html += "<th> City</th>";
-        
-                          
-                          
+                       
             
             }
          
@@ -283,11 +284,7 @@ public class PageST2B implements Handler {
 
         }
 
-        // Add HTML for the page content
-        html = html + """
-                <p>Subtask 2.B page content</p>
-                """;
-
+    
         // Close Content div
         html = html + "</div>";
 
@@ -296,7 +293,6 @@ public class PageST2B implements Handler {
 
                 + """
                     <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p
                         <p style='display: flex; gap: 10px;'><a 
                   href='PageHelp.html#help-section'> Help </a><a   
                         href='PageHelp.html#faq-section'> FAQ </a><a 
