@@ -290,7 +290,8 @@ public class PageST3C implements Handler {
         html = html + "    form.submit();";
         html = html + "}";
         html = html + "</script>";
-        html = html + "<p>" + numberOfDatasets + "</p>";
+        // testing
+        // html = html + "<p>" + numberOfDatasets + "</p>";
         if (numberOfDatasets > 0) {
             html = html + "<div id='datasetContainer'>";
 
@@ -328,7 +329,7 @@ public class PageST3C implements Handler {
         // View table
         html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
         html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
-        html = html + "<p>" + counterValue + "</p>";
+        // html = html + "<p>" + counterValue + "</p>";
 
         // hidden field to save number of dropdowns
         if (counterValue != null) {
@@ -409,7 +410,8 @@ public class PageST3C implements Handler {
     private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration,
             String orderBy) {
         String html = "<div id='tableData'>";
-        html = html + "<p>" + startYears.size() + "</p>";
+        // testing
+        // html = html + "<p>" + startYears.size() + "</p>";
         // html = html + "<p>" + startYears.get(0) + "</p>";
         // html = html + "<p>" + startYears.get(1) + "</p>";
         html = html + "<h3> Temperature data over " + duration + " years</h3>";
