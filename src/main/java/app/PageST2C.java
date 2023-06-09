@@ -510,6 +510,7 @@ public class PageST2C implements Handler {
     private String getPercentageChange(float startValue, float endValue) {
         float difference = endValue - startValue;
         float percentage = (difference / startValue) * 100;
+        percentage = Math.abs(percentage);
         String percentageChange = String.format("%.2f", percentage) + "%";
         return percentageChange;
     }

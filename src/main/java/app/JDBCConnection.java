@@ -1013,7 +1013,7 @@ public class JDBCConnection {
                         query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
                         query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
                         query = query
-                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(ABS((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
                         query = query
                                 + "FROM (SELECT Year AS StartYear, AvgAirTemp AS StartYearAvg FROM GlobalTemp WHERE Year = '"
                                 + startYears.get(i) + "') AS SY ";
@@ -1027,7 +1027,7 @@ public class JDBCConnection {
                         query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
                         query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
                         query = query
-                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(ABS((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
                         query = query
                                 + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
                                 + startYears.get(i) + "') AS SY ";
@@ -1043,7 +1043,7 @@ public class JDBCConnection {
                         query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
                         query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
                         query = query
-                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgAirTemp), 2) AS AverageTempOverPeriod, ROUND(ABS((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
                         query = query
                                 + "FROM (SELECT Year AS StartYear, AvgAirTemp AS StartYearAvg FROM GlobalTemp WHERE Year = '"
                                 + startYears.get(i) + "') AS SY ";
@@ -1059,7 +1059,7 @@ public class JDBCConnection {
                         query = query + "SELECT '" + dataTypes.get(i) + "' AS DataType, SY.StartYear, ";
                         query = query + "ROUND(SY.StartYearAvg, 2) AS StartYearAvg, ";
                         query = query
-                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
+                                + "EY.EndYear, ROUND(EY.EndYearAvg, 2) AS EndYearAvg, ROUND(AVG(ATOP.AvgOceanTemp), 2) AS AverageTempOverPeriod, ROUND(ABS((EY.EndYearAvg - SY.StartYearAvg) / SY.StartYearAvg) * 100, 2) AS ChangeInAvgTempPercentage ";
                         query = query
                                 + "FROM (SELECT Year AS StartYear, AvgOceanTemp AS StartYearAvg FROM GlobalLandOceanTemp WHERE Year = '"
                                 + startYears.get(i) + "') AS SY ";
