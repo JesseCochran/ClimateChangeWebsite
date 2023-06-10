@@ -116,6 +116,7 @@ public class PageST2B implements Handler {
                    temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing 
                    temperatures.
                      </p>           
+ 
                 """;
 
         // hashmap to get country names for dropdown menu

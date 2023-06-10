@@ -1605,6 +1605,3 @@ public static ArrayList<String> distinctCityNames(String countryId, int fromDate
 
 
 }
-
-
-
