@@ -610,9 +610,9 @@ public class JDBCConnection {
         return climates;
     }
 
-    public static HashMap<String, String> getCountryNames() {
+    public static ArrayList<Country> getCountryNames() {
 
-        HashMap<String, String> countryNames = new HashMap<String, String>();
+        ArrayList<Country> countryNames = new ArrayList<>();
 
         Connection connection = null;
 
@@ -633,8 +633,8 @@ public class JDBCConnection {
             // Process all of the results
             while (results.next()) {
                 // Lookup the columns we need
-                countryNames.put(results.getString("CountryId"), 
-                results.getString("CountryName"));
+                countryNames.add(new Country(results.getString("CountryId"),
+                results.getString("CountryName")));
             }
 
             statement.close();
@@ -673,12 +673,12 @@ public class JDBCConnection {
 
             // The Query
             String query = "SELECT StateName, Year, AvgTemp, MinTemp, MaxTemp from StateTemp WHERE CountryId='"
-                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp IS NOT NULL, MinTemp IS NOT NULL, MaxTemp IS NOT NULL;";
+                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
 
-            // Process all of the results
+
             while (results.next()) {
                 // Lookup the columns we need
                 TempData tempData = new TempData(results.getString("StateName"),
@@ -693,7 +693,7 @@ public class JDBCConnection {
             // If there is an error, lets just pring the error
             System.err.println(e.getMessage());
         } finally {
-            // Safety code to cleanup
+
             try {
                 if (connection != null) {
                     connection.close();
@@ -726,7 +726,7 @@ public class JDBCConnection {
            statement.setQueryTimeout(30);
 
            // The Query
-           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + " ;";
+           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " ;";
 
 
            // Get Result
