@@ -7,6 +7,7 @@ import java.util.Map;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -250,23 +251,22 @@ public class PageST2B implements Handler {
                     "<table><tr> <th> Year </th> ";
 
             if (type != null){
-            if (type.equals("states")) {
+            if (type.equals("States")) {
              data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
-
-                html += "<th> State</th>";
+                this.getMaximumTemperatures(data);
+                this.getMinimumTemperatures(data);
+                 html += "<th> State</th>";
 
                 
             } else {
              data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
-
+             this.getMaximumTemperatures(data);
+             this.getMinimumTemperatures(data);
                 html += "<th> City</th>";
         
-                          
-                          
-            
             }
+            
          
-
             html +=
                     "<th> Average Temperature </th> ";
             html += "<th> Minimum Temperature </th> <th> Maximum Temperature </th> </tr>";
@@ -313,5 +313,54 @@ public class PageST2B implements Handler {
         context.html(html);
 
     }
+    public ArrayList<TempData> getMinimumTemperatures(ArrayList<TempData> data){
+        ArrayList<TempData> tmp = new ArrayList<TempData>();
+        for (TempData d: data){
+            boolean exists = false;
+            for (TempData t: tmp){
+            if (d.getName().equals(t.getName())){
+                exists = true;
+            } 
+            }
+            if (exists == true){
+                return tmp;
+            } 
+            else {
+                tmp.add(d);
+            }
+        }
+        return tmp;
+    }
+    public ArrayList<TempData> getMaximumTemperatures(ArrayList<TempData> data){
+        ArrayList<TempData> tmp = new ArrayList<TempData>();
+        for (int i = data.size()-1; i > 0; i--){
+            boolean exists = false;
+            for (TempData t: tmp){
+            if (data.get(i).getName().equals(t.getName())){
+                exists = true;
+            } 
+            }
+            if (exists == true){
+                return tmp;
+            } 
+            else {
+                tmp.add(data.get(i));
+            }
+        }
+        return tmp;
+    }
+        public String getProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max){
+            String html = "";
 
+            for (TempData m: min){
+                for (TempData x: max){
+                    if (m.getName().equals(x.getName())){
+                        html += "";
+
+                }
+
+            }
+
+            }
+        }
     }
