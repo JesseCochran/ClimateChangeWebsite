@@ -35,7 +35,7 @@ public class PageMission implements Handler {
                 "<title>Our Mission</title>";
 
         // Add some CSS (external file)
-        html += "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
         html += "</head>";
 
 
@@ -46,6 +46,7 @@ public class PageMission implements Handler {
         // Add header content block
         html += """
                     <div class='header'>
+                    <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
                         <h1>Climate Change Awareness</h1>
                     </div>
                 """;
@@ -66,18 +67,17 @@ public class PageMission implements Handler {
                     </div>
                 """;
 
+       
         // Add Div for page Content
         html += "<div class='content'>";
 
+        html += """
+                <h2>Our Mission</h2>
+                """;
 
-        String personaId;
-        String name;
-        String quote;
 
         // Add HTML for the page content more to be added to the mission statement
-        html += """
-                <h3>Mission Statement</h3>
-                """;
+       
 
          html += """
                       
@@ -85,15 +85,45 @@ public class PageMission implements Handler {
             <p> Our aim is to provide a platform in which we can raise awareness about climate change and provide an avenue to explore real world data. </p>
 
                             """;
+
+        // Personas Sections
                 
             html += """
                      <h3>Who this site is built for</h3>
                     """;
+
+            ArrayList<PersonaData> data = JDBCConnection.getPersonaData();
+
+            for (PersonaData p : data) {
+               
+              html += "<h3>" + p.getName()+ "</h3>";
+                html += String.format("<img style='width: 200px; height: 200px; float: right;' src='%s'/>",p.getImagePath());
+                html += "<p>" + p.getQuote()+ "</p>";
+                html += " <h4> Experience </h4>";
+                html +=  "<p>" + p.getExperience()+ "</p>";
+                html += " <h4> Requirements </h4>";
+                html += "<p>" + p.getRequirements()+ "</p>";
+                       
+            }
+            
+        // Student info section
+                
             html += """
                      <h3>Who are we</h3>
                      """;
-  
-        //
+
+            ArrayList<StudentInfo> info = JDBCConnection.getStudentInfo();
+
+                for (StudentInfo s : info) {
+
+                    html += "<h3>" + s.getFname()  + " " + s.getLname() + "</h3>";
+                    html += " <h4> Student Number </h4>";
+                    html += "<p>" + s.getStudentNumber() + "</p>";
+                    html += " <h4>  Email </h4>";
+                    html += "<p>" + s.getEmail()+ "</p>";
+
+                }
+
 
         // Finish the List HTML
         html += "</ul>";

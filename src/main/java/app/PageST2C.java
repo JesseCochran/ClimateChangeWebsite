@@ -418,6 +418,8 @@ public class PageST2C implements Handler {
         String tempChange = "";
         String roundDifferenceValue = "";
         String percentageChange = "";
+        html = html
+                + "<div style='width: 350px; margin-left: 630px; margin-top: -360px; position: absolute; border: 2px solid black; text-align: center;'>";
         html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
 
         if (dataType.equals("Average")) {
@@ -472,6 +474,7 @@ public class PageST2C implements Handler {
             html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
                     + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                     + ". </p>";
+            html = html + "</div>";
             return html;
 
         } else {
@@ -483,7 +486,7 @@ public class PageST2C implements Handler {
         html = html + "<p> There was" + tempChange + " from " + startYear + " to " + endYear
                 + " of " + roundDifferenceValue + "°C. This is a percentage change of  " + percentageChange
                 + ". </p>";
-
+        html = html + "</div>";
         return html;
     }
 
