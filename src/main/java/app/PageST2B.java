@@ -108,9 +108,14 @@ public class PageST2B implements Handler {
         // brief description of info on page
         html +=
                 """
-                   <p> As the yearly maximum, minimum and average temperatures for cities and states across the wold
-                   have been documented. The following table generator provides a means to explore and compare this data
-                   for a range of years at the users discretion.  </p>           
+                   <p> While climate change is an issue that effects the world on a global scale, 
+                   it can often be benificial to explore the changes on a smaller scale - 
+                   such as that of cities and states. The following table generator 
+                   provides a means to explore and compare this data. Additionally the respective cities and
+                   states are ranked by the proportional change in temperature for the average, minimum and maximum
+                   temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing 
+                   temperatures.
+                     </p>           
                 """;
 
         // hashmap to get country names for dropdown menu
@@ -211,7 +216,6 @@ public class PageST2B implements Handler {
                 """;
 
         for (int i = 1749; i < 2014; i++) {
-            html += "<option>" + i + "</option>";
             if (toDate == i) {
                 html += "<option selected ='selected' value='";
                 html += i + "'>" + i + "</option>";
@@ -255,18 +259,6 @@ public class PageST2B implements Handler {
                     html += "<th> City</th>";
 
                 }
-                ArrayList<TempData> minYearTemp = getMaximumTemperatures(data);
-                ArrayList<TempData> maxYearTemp = getMinimumTemperatures(data);
-
-                ArrayList<Stat> stats = getAvgTempProportionalValues(minYearTemp, maxYearTemp);
-                ArrayList<Stat> statsMin = getMinTempProportionalValues(minYearTemp, maxYearTemp);
-                ArrayList<Stat> statsMax = getMaxTempProportionalValues(minYearTemp, maxYearTemp);
-                html += "<h1> AVG TEMP CHANGE</h1>";
-                html += printOutRanking(stats);
-                html += "<h1> Min TEMP CHANGE</h1>";
-                html += printOutRanking(statsMin);
-                html += "<h1> Max TEMP CHANGE</h1>";
-                html += printOutRanking(statsMax);
 
                 html +=
                         "<th> Average Temperature </th> ";
@@ -281,14 +273,22 @@ public class PageST2B implements Handler {
                 }
                 html += "<table>";
 //                     " <td> " + Years + "</td>";
+
+                    ArrayList<TempData> minYearTemp = getMaximumTemperatures(data);
+                    ArrayList<TempData> maxYearTemp = getMinimumTemperatures(data);
+
+                    ArrayList<Stat> stats = getAvgTempProportionalValues(minYearTemp, maxYearTemp);
+                    ArrayList<Stat> statsMin = getMinTempProportionalValues(minYearTemp, maxYearTemp);
+                    ArrayList<Stat> statsMax = getMaxTempProportionalValues(minYearTemp, maxYearTemp);
+                    html += "<h3> The Proportional Change of Average Temperatures</h3>";
+                    html += printOutRanking(stats);
+                    html += "<h3> The Proportional Change of Minimum Temperatures</h3>";
+                    html += printOutRanking(statsMin);
+                    html += "<h3> The Proportional Change of Maximum Temperatures</h3>";
+                    html += printOutRanking(statsMax);
             }
 
         }
-
-        // Add HTML for the page content
-        html = html + """
-                <p>Subtask 2.B page content</p>
-                """;
 
         // Close Content div
         html = html + "</div>";
@@ -397,7 +397,7 @@ public class PageST2B implements Handler {
         String html = "";
         int i=1;
         for (Stat s:stats){
-            html += "<li>Rank " + i + ". " + s.getName() + " Proportion: " + s.getProportion() +"</li>";
+            html += "<li>Rank " + i + ". " + s.getName() + " has a change in proportion of: " + s.getProportion() +"</li>";
             i++;
         }
         return html;

@@ -796,7 +796,7 @@ public class JDBCConnection {
             // The Query
 
            // The Query
-           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " ;";
+           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
 
 
            // Get Result
@@ -1602,56 +1602,6 @@ public static ArrayList<String> distinctCityNames(String countryId, int fromDate
     // Finally we return all of the lga
     return distinctCityName;
 }
-
-// public static ArrayList<TempData> getStateTempsbyYear(String countryId, int fromDate, int toDate) {
-
-//     ArrayList<TempData> stateTempByYear = new ArrayList<TempData>();
- 
- 
-//     Connection connection = null;
- 
-//     try {
-//         // Connect to JDBC data base
-//         connection = DriverManager.getConnection(DATABASE);
- 
-//         // Prepare a new SQL Query & Set a timeout
-//         Statement statement = connection.createStatement();
-//         statement.setQueryTimeout(30);
- 
-//         // The Query
-//         String query = "SELECT  From State WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + " ;";
- 
- 
-//         // Get Result
-//         ResultSet results = statement.executeQuery(query);
- 
-//         // Process all of the results
-//        while (results.next()) {
-//             // Lookup the columns we need
-//              String distinctCityNames = new String(results.getString("CityName"));
-//                      distinctCityName.add(distinctCityNames);
-//          }
-//          statement.close();
-//      }
-//      //
-//      catch (SQLException e) {
-//          // If there is an error, lets just pring the error
-//          System.err.println(e.getMessage());
-//      } finally {
-//          // Safety code to cleanup
-//          try {
-//              if (connection != null) {
-//                  connection.close();
-//              }
-//          } catch (SQLException e) {
-//              // connection close failed.
-//              System.err.println(e.getMessage());
-//          }
-//      }
- 
-//      // Finally we return all of the lga
-//      return distinctCityName;
-//  } 
 
 
 }
