@@ -349,18 +349,18 @@ public class PageST2B implements Handler {
         }
         return tmp;
     }
-        public String getProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max){
-            String html = "";
+        // public String getProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max){
+        //     String html = "";
 
-            for (TempData m: min){
-                for (TempData x: max){
-                    if (m.getName().equals(x.getName())){
-                        html += "";
+        //     for (TempData m: min){
+        //         for (TempData x: max){
+        //             if (m.getName().equals(x.getName())){
+        //                 html += "";
 
-                }
+        //         }
 
-            }
+        //     }
 
-            }
-        }
+        //     }
+        // }
     }
