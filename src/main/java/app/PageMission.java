@@ -94,7 +94,7 @@ public class PageMission implements Handler {
                             """;
 
         // Personas Sections
-                giy
+                
             html += """
                      <h3>Who this site is built for</h3>
                     """;
