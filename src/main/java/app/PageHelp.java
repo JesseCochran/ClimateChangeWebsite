@@ -59,6 +59,35 @@ public class PageHelp implements Handler {
                         <a href='PageHelp.html'>Help Page</a>
                     </div>
                 """;
+        // nice scroll affect i found **This offsets the scroll a bit as the top stuff
+        // is fixed to the screen
+        html = html
+                + """
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Get all anchor links in the document
+                                    var anchorLinks = document.querySelectorAll('a[href^="#"]');
+
+                                    // Attach click event listener to each anchor link
+                                    anchorLinks.forEach(function(link) {
+                                        link.addEventListener('click', function(e) {
+                                            e.preventDefault(); // Prevent default link behavior
+
+                                            var targetId = this.getAttribute('href'); // Get the target section id
+                                            var targetSection = document.querySelector(targetId); // Get the target section
+
+                                            if (targetSection) {
+                                                var topOffset = targetSection.offsetTop -65; // Calculate the top offset of the target section
+                                                window.scrollTo({
+                                                    top: topOffset,
+                                                    behavior: 'smooth' // Smooth scroll to the target section
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                        """;
 
         // Add header content block
         html = html + """
@@ -82,7 +111,11 @@ public class PageHelp implements Handler {
                 """;
 
         // FAQ section of the page
-        // In the future this will take data from the database
+        html = html
+                + """
+                        <section id='faq-section'>
+                            <h2>Frequently Asked Questions (FAQ)</h2>
+                            """;
 
         // Prints each question and answer from the database and formats the answer
         // properly by spliting up the answer after each fullstop and a space.
@@ -90,11 +123,7 @@ public class PageHelp implements Handler {
         ArrayList<Climate> QnA = jdbc.getFAQ();
         String answerStructure = "";
         String[] lineByLine;
-        html = html
-                + """
-                        <section id='faq-section'>
-                            <h2>Frequently Asked Questions (FAQ)</h2>
-                            """;
+
         for (int i = 0; i <= QnA.size() - 1; i++) {
             html = html + "<h3>" + QnA.get(i).getQuestion() + "</h3>";
             answerStructure = QnA.get(i).getAnswer();
@@ -104,34 +133,93 @@ public class PageHelp implements Handler {
             }
 
         }
+        html = html + "<section>";
+        // html = html
+        // + """
 
-        html = html
-                + """
+        // <h3> Question 1 </h3>
+        // <p> Answer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
+        // vulputate dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque,
+        // a pretium urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis
+        // vestibulum, placerat lectus et, fermentum nisl. Pellentesque felis nisi,
+        // pulvinar sed magna eu, fermentum malesuada ex. Pellentesque iaculis pretium
+        // orci eget bibendum. Nullam a leo nunc.
 
+        // Duis venenatis justo ligula, ut convallis odio lacinia at. Vestibulum
+        // tristique elementum urna a feugiat. Nunc iaculis erat efficitur, tempor
+        // mauris at, lacinia nibh. Sed sed hendrerit orci. Etiam vehicula malesuada
+        // aliquet. Aliquam blandit tellus eu dui gravida, quis pretium purus posuere.
+        // Proin arcu sem, imperdiet ac cursus at, posuere nec massa. Nunc ullamcorper
+        // tellus vitae turpis mattis, dapibus placerat nibh tincidunt. Mauris eu
+        // rhoncus augue, non malesuada erat.
 
-                                <h3> Question 1 </h3>
-                                <p> Answer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque, a pretium urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis vestibulum, placerat lectus et, fermentum nisl. Pellentesque felis nisi, pulvinar sed magna eu, fermentum malesuada ex. Pellentesque iaculis pretium orci eget bibendum. Nullam a leo nunc.
+        // Mauris felis nibh, molestie vitae commodo sed, faucibus hendrerit sapien.
+        // Mauris malesuada rutrum semper. Vivamus ut lobortis justo, at condimentum
+        // eros. Aenean in mi malesuada, facilisis ipsum sit amet, placerat risus.
+        // Suspendisse sed libero eu dolor pharetra porta. Mauris consequat dolor vitae
+        // diam scelerisque dictum. Nunc et ex ipsum. Pellentesque facilisis velit
+        // lacus, ac porttitor nibh ultrices ac. Aliquam interdum efficitur tellus, eu
+        // aliquet libero tincidunt at. Suspendisse pellentesque molestie urna a
+        // porttitor. Sed vitae sem ut dui finibus ornare. Ut blandit, nisl eu pretium
+        // dignissim, nibh lorem ultrices tellus, ut eleifend ex leo ac nunc. Fusce
+        // pellentesque ex in ipsum consequat consequat.
+        // </p>
+        // <p>
+        // </p>
+        // <h3> Question 2 </h3>
+        // <p> Answer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
+        // vulputate dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque,
+        // a pretium urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis
+        // vestibulum, placerat lectus et, fermentum nisl. Pellentesque felis nisi,
+        // pulvinar sed magna eu, fermentum malesuada ex. Pellentesque iaculis pretium
+        // orci eget bibendum. Nullam a leo nunc.
 
-                                Duis venenatis justo ligula, ut convallis odio lacinia at. Vestibulum tristique elementum urna a feugiat. Nunc iaculis erat efficitur, tempor mauris at, lacinia nibh. Sed sed hendrerit orci. Etiam vehicula malesuada aliquet. Aliquam blandit tellus eu dui gravida, quis pretium purus posuere. Proin arcu sem, imperdiet ac cursus at, posuere nec massa. Nunc ullamcorper tellus vitae turpis mattis, dapibus placerat nibh tincidunt. Mauris eu rhoncus augue, non malesuada erat.
+        // Duis venenatis justo ligula, ut convallis odio lacinia at. Vestibulum
+        // tristique elementum urna a feugiat. Nunc iaculis erat efficitur, tempor
+        // mauris at, lacinia nibh. Sed sed hendrerit orci. Etiam vehicula malesuada
+        // aliquet. Aliquam blandit tellus eu dui gravida, quis pretium purus posuere.
+        // Proin arcu sem, imperdiet ac cursus at, posuere nec massa. Nunc ullamcorper
+        // tellus vitae turpis mattis, dapibus placerat nibh tincidunt. Mauris eu
+        // rhoncus augue, non malesuada erat.
 
-                                Mauris felis nibh, molestie vitae commodo sed, faucibus hendrerit sapien. Mauris malesuada rutrum semper. Vivamus ut lobortis justo, at condimentum eros. Aenean in mi malesuada, facilisis ipsum sit amet, placerat risus. Suspendisse sed libero eu dolor pharetra porta. Mauris consequat dolor vitae diam scelerisque dictum. Nunc et ex ipsum. Pellentesque facilisis velit lacus, ac porttitor nibh ultrices ac. Aliquam interdum efficitur tellus, eu aliquet libero tincidunt at. Suspendisse pellentesque molestie urna a porttitor. Sed vitae sem ut dui finibus ornare. Ut blandit, nisl eu pretium dignissim, nibh lorem ultrices tellus, ut eleifend ex leo ac nunc. Fusce pellentesque ex in ipsum consequat consequat.
-                                </p>
-                                <p>
-                                </p>
-                                <h3> Question 2 </h3>
-                                <p> Answer: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque, a pretium urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis vestibulum, placerat lectus et, fermentum nisl. Pellentesque felis nisi, pulvinar sed magna eu, fermentum malesuada ex. Pellentesque iaculis pretium orci eget bibendum. Nullam a leo nunc.
+        // Mauris felis nibh, molestie vitae commodo sed, faucibus hendrerit sapien.
+        // Mauris malesuada rutrum semper. Vivamus ut lobortis justo, at condimentum
+        // eros. Aenean in mi malesuada, facilisis ipsum sit amet, placerat risus.
+        // Suspendisse sed libero eu dolor pharetra porta. Mauris consequat dolor vitae
+        // diam scelerisque dictum. Nunc et ex ipsum. Pellentesque facilisis velit
+        // lacus, ac porttitor nibh ultrices ac. Aliquam interdum efficitur tellus, eu
+        // aliquet libero tincidunt at. Suspendisse pellentesque molestie urna a
+        // porttitor. Sed vitae sem ut dui finibus ornare. Ut blandit, nisl eu pretium
+        // dignissim, nibh lorem ultrices tellus, ut eleifend ex leo ac nunc. Fusce
+        // pellentesque ex in ipsum consequat consequat.
+        // Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate
+        // dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque, a pretium
+        // urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis vestibulum,
+        // placerat lectus et, fermentum nisl. Pellentesque felis nisi, pulvinar sed
+        // magna eu, fermentum malesuada ex. Pellentesque iaculis pretium orci eget
+        // bibendum. Nullam a leo nunc.
 
-                                Duis venenatis justo ligula, ut convallis odio lacinia at. Vestibulum tristique elementum urna a feugiat. Nunc iaculis erat efficitur, tempor mauris at, lacinia nibh. Sed sed hendrerit orci. Etiam vehicula malesuada aliquet. Aliquam blandit tellus eu dui gravida, quis pretium purus posuere. Proin arcu sem, imperdiet ac cursus at, posuere nec massa. Nunc ullamcorper tellus vitae turpis mattis, dapibus placerat nibh tincidunt. Mauris eu rhoncus augue, non malesuada erat.
+        // Duis venenatis justo ligula, ut convallis odio lacinia at. Vestibulum
+        // tristique elementum urna a feugiat. Nunc iaculis erat efficitur, tempor
+        // mauris at, lacinia nibh. Sed sed hendrerit orci. Etiam vehicula malesuada
+        // aliquet. Aliquam blandit tellus eu dui gravida, quis pretium purus posuere.
+        // Proin arcu sem, imperdiet ac cursus at, posuere nec massa. Nunc ullamcorper
+        // tellus vitae turpis mattis, dapibus placerat nibh tincidunt. Mauris eu
+        // rhoncus augue, non malesuada erat.
 
-                                Mauris felis nibh, molestie vitae commodo sed, faucibus hendrerit sapien. Mauris malesuada rutrum semper. Vivamus ut lobortis justo, at condimentum eros. Aenean in mi malesuada, facilisis ipsum sit amet, placerat risus. Suspendisse sed libero eu dolor pharetra porta. Mauris consequat dolor vitae diam scelerisque dictum. Nunc et ex ipsum. Pellentesque facilisis velit lacus, ac porttitor nibh ultrices ac. Aliquam interdum efficitur tellus, eu aliquet libero tincidunt at. Suspendisse pellentesque molestie urna a porttitor. Sed vitae sem ut dui finibus ornare. Ut blandit, nisl eu pretium dignissim, nibh lorem ultrices tellus, ut eleifend ex leo ac nunc. Fusce pellentesque ex in ipsum consequat consequat.
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vulputate dolor ut euismod cursus. Sed elementum odio nec nulla scelerisque, a pretium urna dapibus. Ut ac efficitur elit, a rutrum enim. Duis eu turpis vestibulum, placerat lectus et, fermentum nisl. Pellentesque felis nisi, pulvinar sed magna eu, fermentum malesuada ex. Pellentesque iaculis pretium orci eget bibendum. Nullam a leo nunc.
-
-                                Duis venenatis justo ligula, ut convallis odio lacinia at. Vestibulum tristique elementum urna a feugiat. Nunc iaculis erat efficitur, tempor mauris at, lacinia nibh. Sed sed hendrerit orci. Etiam vehicula malesuada aliquet. Aliquam blandit tellus eu dui gravida, quis pretium purus posuere. Proin arcu sem, imperdiet ac cursus at, posuere nec massa. Nunc ullamcorper tellus vitae turpis mattis, dapibus placerat nibh tincidunt. Mauris eu rhoncus augue, non malesuada erat.
-
-                                Mauris felis nibh, molestie vitae commodo sed, faucibus hendrerit sapien. Mauris malesuada rutrum semper. Vivamus ut lobortis justo, at condimentum eros. Aenean in mi malesuada, facilisis ipsum sit amet, placerat risus. Suspendisse sed libero eu dolor pharetra porta. Mauris consequat dolor vitae diam scelerisque dictum. Nunc et ex ipsum. Pellentesque facilisis velit lacus, ac porttitor nibh ultrices ac. Aliquam interdum efficitur tellus, eu aliquet libero tincidunt at. Suspendisse pellentesque molestie urna a porttitor. Sed vitae sem ut dui finibus ornare. Ut blandit, nisl eu pretium dignissim, nibh lorem ultrices tellus, ut eleifend ex leo ac nunc. Fusce pellentesque ex in ipsum consequat consequat.
-                                </p>
-                            </section>
-                        """;
+        // Mauris felis nibh, molestie vitae commodo sed, faucibus hendrerit sapien.
+        // Mauris malesuada rutrum semper. Vivamus ut lobortis justo, at condimentum
+        // eros. Aenean in mi malesuada, facilisis ipsum sit amet, placerat risus.
+        // Suspendisse sed libero eu dolor pharetra porta. Mauris consequat dolor vitae
+        // diam scelerisque dictum. Nunc et ex ipsum. Pellentesque facilisis velit
+        // lacus, ac porttitor nibh ultrices ac. Aliquam interdum efficitur tellus, eu
+        // aliquet libero tincidunt at. Suspendisse pellentesque molestie urna a
+        // porttitor. Sed vitae sem ut dui finibus ornare. Ut blandit, nisl eu pretium
+        // dignissim, nibh lorem ultrices tellus, ut eleifend ex leo ac nunc. Fusce
+        // pellentesque ex in ipsum consequat consequat.
+        // </p>
+        // </section>
+        // """;
 
         // Advanced features section of the page
         html = html + """
@@ -155,18 +243,18 @@ public class PageHelp implements Handler {
                     </section>
                                     """;
 
-        // Add Div for page Content
-        html = html + "<div class='content'>";
-
         // Close Content div
         html = html + "</div>";
 
         // Footer
-        html = html + """
-                    <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-                    </div>
-                """;
+        html = html
+                + """
+                            <div class='footer'>
+                                <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
+                                <a href='PageHelp.html'>Help Page</a>
+                                <p style='display: flex; gap: 10px;'><a href='PageHelp.html#help-section'>Help</a><a href='PageHelp.html#faq-section'>FAQ</a><a href='PageHelp.html#advanced-section'>Advanced Features</a></p>
+                            </div>
+                        """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";

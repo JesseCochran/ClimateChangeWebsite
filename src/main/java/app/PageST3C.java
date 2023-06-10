@@ -38,7 +38,9 @@ public class PageST3C implements Handler {
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
-        // html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+
+        html = html
+                + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
         html = html + "</head>";
 
         // Add the body
@@ -56,15 +58,46 @@ public class PageST3C implements Handler {
         // Add the topnav
         html = html + """
                     <div class='topnav'>
-                    <a href='/'>Homepage</a>
+                    <a href='/'>Home</a>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>Shallow View Of Climate Change
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                    <a href='page2B.html'>Temperature Change By State/City</a>
+                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                    </div>
+                    </div>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>In-Depth View Of Climate Change
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                    </div>
+                    </div>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>About Us
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
                     <a href='mission.html'>Our Mission</a>
-                    <a href='page2A.html'>Sub Task 2.A</a>
-                    <a href='page2B.html'>Sub Task 2.B</a>
-                    <a href='page2C.html'>Sub Task 2.C</a>
-                    <a href='page3A.html'>Sub Task 3.A</a>
-                    <a href='page3B.html'>Sub Task 3.B</a>
-                    <a href='page3C.html'>Sub Task 3.C</a>
-                    <a href='PageHelp.html'>Help Page</a>
+
+                    </div>
+                    </div>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>Help & Support
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='PageHelp.html#help-section'>Page Assistance</a>
+                    <a href='PageHelp.html#faq-section'>FAQ</a>
+                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                    </div>
+                    </div>
                     </div>
                 """;
 
@@ -85,15 +118,16 @@ public class PageST3C implements Handler {
         // All the Drop down menu stuff for the data to eventually be retrieved from
         // html = html + "<form action='/page2C.html' method='post'>";
         boolean getInfo = true;
-        int numberOfDatasets = 0;
-        if (context.formParam("counter") != null) {
-            String counterValue = context.formParam("counter");
-            numberOfDatasets = Integer.parseInt(counterValue);
-        }
+
         // A version of the same thing with a javascript function to stop values entered
         // being cleared on reload
         html = html + "<form id='page3CForm' action='/page3C.html' method='post' onsubmit='return ReenterData()'>";
-
+        int numberOfDatasets = 0;
+        String counterValue = "";
+        if (context.formParam("counter") != null) {
+            counterValue = context.formParam("counter");
+            numberOfDatasets = Integer.parseInt(counterValue);
+        }
         // This bit of javascript makes it so the page keeps the same values leading to
         // less user confusion when the page reloads
         html = html + "<script>";
@@ -102,11 +136,13 @@ public class PageST3C implements Handler {
         html = html + "       var timeYears = document.getElementById('timeYears_drop').value;";
         html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
         html = html + "       var dataToShow = document.getElementById('TempSelection_drop').value;";
+        html = html + "       var counterValue = document.getElementById('counterValue').value;";
 
         html = html + "       sessionStorage.setItem('startYear', startYear);";
         html = html + "       sessionStorage.setItem('timeYears', timeYears);";
         html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
         html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
+        html = html + "       sessionStorage.setItem('counterValue', counterValue);";
         html = html + "       return true;";
         html = html + "   }";
         html = html + " window.onload = function() {";
@@ -130,7 +166,7 @@ public class PageST3C implements Handler {
         html = html + "   function reload() {";
         html = html + "       document.getElementById('StartYear_drop').value = '';";
         html = html + "       document.getElementById('lengthDropdown').value = '';";
-        html = html + "    sessionStorage.removeItem('counter');";
+        html = html + " sessionStorage.removeItem('counter');";
         html = html + "    var datasetContainer = document.getElementById('datasetContainer');";
         html = html + "    datasetContainer.innerHTML = '';";
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
@@ -287,7 +323,8 @@ public class PageST3C implements Handler {
         html = html + "    form.submit();";
         html = html + "}";
         html = html + "</script>";
-
+        // testing
+        // html = html + "<p>" + numberOfDatasets + "</p>";
         if (numberOfDatasets > 0) {
             html = html + "<div id='datasetContainer'>";
 
@@ -325,9 +362,16 @@ public class PageST3C implements Handler {
         // View table
         html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
         html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
+        // html = html + "<p>" + counterValue + "</p>";
+
+        // hidden field to save number of dropdowns
+        if (counterValue != null) {
+            html = html + "<input type='hidden' name='counterValue' id='counterValue' value='" + numberOfDatasets
+                    + "'>";
+        }
         // submit button
         html = html
-                + "   <button class='showTable' type='submit' class='btn btn-primary' onclick='getDataInformation()'>Get Information</button>";
+                + "   <button class='showTable' type='submit' class='btn btn-primary'>Get Information</button>";
 
         html = html + "</form>";
         String viewTable = context.formParam("dataTable");
@@ -335,22 +379,25 @@ public class PageST3C implements Handler {
         String duration = context.formParam("lengthDropdown");
         String dataType1 = context.formParam("dataType");
         String orderBy = context.formParam("SortOrder");
+
+        // testing code
+        // html = html + "<h2>" + context.formParam("counterValue") + "</h2>";
+        int arrayLengthNum = 0;
+        if (context.formParam("counterValue") != null) {
+            String arrayLength = context.formParam("counterValue");
+            arrayLengthNum = Integer.parseInt(arrayLength);
+        }
         ArrayList<String> startYears = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
-        for (int i = 0; i < numberOfDatasets; i++) {
+        startYears.add(context.formParam("StartYear_drop"));
+        dataTypes.add(context.formParam("dataType"));
+        for (int i = 0; i < arrayLengthNum; i++) {
             startYears.add(context.formParam("StartYear_drop" + i));
             dataTypes.add(context.formParam("dataType" + i));
 
-            if (startYears.get(i) == null || duration == null) {
+            if (startYears.get(i) == null || duration == null || dataTypes.get(i) == null) {
                 html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
                 getInfo = false;
-            } else {
-                if (dataTypes.get(i).equals("Land Data")) {
-
-                }
-                if (dataTypes.get(i).equals("Land-Ocean Data")) {
-
-                }
             }
         }
 
@@ -366,11 +413,9 @@ public class PageST3C implements Handler {
             html = html + "<h3>Please select how you would like the data sorted</h3>";
             getInfo = false;
         }
-        if (viewTable == null) {
 
-        } else if (viewTable.equals("seeTable") && getInfo == true) {
-            html = outputTable(html, startYear1, duration, dataType1);
-
+        if (viewTable != null && viewTable.equals("seeTable") && getInfo) {
+            html = html + outputTable(startYears, dataTypes, duration, orderBy);
         }
 
         // Close Content div
@@ -392,15 +437,52 @@ public class PageST3C implements Handler {
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
         context.html(html);
+
     }
 
-    private String outputTable(String html, String startYear, String duration, String dataType) {
-        int endYear = Integer.parseInt(startYear) + Integer.parseInt(duration);
-        html = html + "<h3>" + dataType + " data for " + startYear + " and " + endYear + "</h3>";
+    private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration,
+            String orderBy) {
+        String html = "<div id='tableData'>";
+        // testing
+        // html = html + "<p>" + startYears.size() + "</p>";
+        // html = html + "<p>" + startYears.get(0) + "</p>";
+        // html = html + "<p>" + startYears.get(1) + "</p>";
+        html = html + "<h3> Temperature data over " + duration + " years</h3>";
         JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
-                Integer.toString(endYear));
+        // ArrayList<Climate> WorldData =
+        // jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
+        // Integer.toString(endYear),
+        // dataType);
 
+        html = html + "<table> <tr>";
+        html = html + "<th>Type of Data</th>";
+        html = html + "<th>start year</th>";
+        html = html + "<th>end year</th>";
+        html = html + "<th>Average temperature at start year</th>";
+        html = html + "<th>Average temperature at end year</th>";
+        html = html + "<th>Average temperature over selected time period</th>";
+        html = html + "<th>Change in average temperature</th> </tr>";
+        ArrayList<String> endYears = new ArrayList<String>();
+        for (int i = 0; i < startYears.size(); ++i) {
+
+            String selectedStartYear = startYears.get(i);
+            int endYear = Integer.parseInt(selectedStartYear) + Integer.parseInt(duration) - 1;
+            endYears.add(Integer.toString(endYear));
+        }
+        ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYears,
+                endYears, dataTypes, orderBy);
+
+        for (int j = 0; j < WorldData.size(); j++) {
+            html = html + "<tr> <td>" + WorldData.get(j).getDataType() + "</td> " + "<td>";
+            html = html + WorldData.get(j).getStartYear() + "</td>" + "<td>";
+            html = html + WorldData.get(j).getEndYear() + "</td>" + "<td>";
+            html = html + String.format("%.2f", WorldData.get(j).getStartTemp()) + "</td>" + "<td>";
+            html = html + String.format("%.2f", WorldData.get(j).getEndTemp()) + "</td>" + "<td>";
+            html = html + String.format("%.2f", WorldData.get(j).getAverageTemperature()) + "</td>" + "<td>";
+            html = html + String.format("%.2f%%", WorldData.get(j).getTempPercent()) + "</td></tr>";
+        }
+
+        html = html + "</table></div>";
         return html;
     }
 }

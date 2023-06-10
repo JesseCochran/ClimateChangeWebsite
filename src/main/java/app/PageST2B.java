@@ -177,7 +177,7 @@ public class PageST2B implements Handler {
                         html += "<option value='Cities'>Cities</option>";
                     }
                 }else{
-                    html += "<option value='States'>States</option> ";
+                    html += "<option value='Cities'>Cities</option> ";
                 }
             }
         }

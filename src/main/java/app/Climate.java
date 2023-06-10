@@ -21,13 +21,15 @@ public class Climate {
     private long populationLevel;
     private String question;
     private String answer;
+    private int startYear;
+    private int endYear;
     private long startPopulation;
     private long endPopulation;
     private float populationPercent;
     private float startTemp;
     private float endTemp;
     private float tempPercent;
-
+    private String dataType;
 
     /**
      * Create an Climate object and set the fields
@@ -52,6 +54,22 @@ public class Climate {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public void setEndYear(int endYear) {
+        this.endYear = endYear;
+    }
+
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
+
+    public int getEndYear() {
+        return endYear;
+    }
+
+    public int getStartYear() {
+        return startYear;
     }
 
     public String getQuestion() {
@@ -178,6 +196,12 @@ public class Climate {
         return tempPercent;
     }
 
-    
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 
 }
