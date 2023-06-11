@@ -1,6 +1,9 @@
 package app;
 
+import java.lang.Math;
 import java.util.ArrayList;
+
+import io.javalin.apibuilder.EndpointGroup;
 
 //import javax.xml.crypto.Data;
 
@@ -324,6 +327,7 @@ public class PageST2A implements Handler {
         html = html + "<h3>" + dataOutput + " data for " + startYear + " and " + endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> countryPopulationTemp = jdbc.getCountryPopulationTemp(startYear, endYear, type, sort);
+        
                 
         html = html + "<table> <tr>";
         html = html + "<th>Country Name</th>";
@@ -332,32 +336,56 @@ public class PageST2A implements Handler {
         html = html + "<th>Change in Population</th>";
         html = html + "<th>Temperature at " + startYear + "</th>";
         html = html + "<th>Temperature at " + endYear + "</th>";
-        html = html + "<th>Change in Temperature</th> </tr>";
+        html = html + "<th>Change in Temperature</th>";
+        html = html + "<th>Correlation</th> </tr>";
 
         for (int i = 0; i < countryPopulationTemp.size(); ++i) {
+            long startPop = countryPopulationTemp.get(i).getStartPopulation();
+            long endPop = countryPopulationTemp.get(i).getEndPopulation();
+            float startTemp = countryPopulationTemp.get(i).getStartTemp();
+            float endTemp = countryPopulationTemp.get(i).getEndTemp();
+
             html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
-            html = html + String.format("%,d", countryPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>";
-            html = html + String.format("%,d", countryPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>";
+            html = html + String.format("%,d", startPop) + "</td>" + "<td>";
+            html = html + String.format("%,d", endPop) + "</td>" + "<td>";
             if(countryPopulationTemp.get(i).getPopulationPercent() > 0) {
                 html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
             }
             else {
                 html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
             }
-            html = html + countryPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>";
-            html = html + countryPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>";
+            html = html + startTemp + "</td>" + "<td>";
+            html = html + endTemp + "</td>" + "<td>";
             if(countryPopulationTemp.get(i).getTempPercent() > 0) {
                 html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
             }
             else {
                 html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
             }
+            html = html + String.format("%.3f", correlationCalc(startPop, endPop, startTemp, endTemp)) + "</td> </tr>";
         }
 
         html = html + "</table>";
         html = html + "</div>";
 
         return html;
+    }
+
+    private float correlationCalc(long startPop, long endPop, float startTemp, float endTemp) {
+        float corr;
+        int n = 2;
+
+        long sumX = startPop + endPop;
+        float sumY = startTemp + endTemp;
+        float sumXY = (float)((startPop * startTemp) + (endPop * endTemp));
+        long squareSumX = (startPop * startPop) + (endPop * endPop);
+        float squareSumY = (startTemp * startTemp) + (endTemp * endTemp);
+
+        float numerator = (n * sumXY) - (sumX * sumY);
+        float denominator = (float)(Math.sqrt((n * squareSumX - sumX * sumX) * (n * squareSumY - sumY * sumY)));
+        corr = numerator / denominator;
+
+        return corr;
     }
 
 }
