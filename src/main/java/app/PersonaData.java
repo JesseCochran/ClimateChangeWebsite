@@ -10,7 +10,8 @@ public class PersonaData {
     private String requirements;
     private String experience;
 
-    public PersonaData(int personaId, String name, String quote, String imagePath, String requirements, String experience) {
+    public PersonaData(int personaId, String name, String quote, String imagePath, String requirements,
+            String experience) {
         this.personaId = personaId;
         this.name = name;
         this.quote = quote;
@@ -18,7 +19,6 @@ public class PersonaData {
         this.requirements = requirements;
         this.experience = experience;
     }
-    
 
     public int getPersonaId() {
         return personaId;
@@ -27,7 +27,7 @@ public class PersonaData {
     public void setPersonaId(int personaId) {
         this.personaId = personaId;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -47,9 +47,11 @@ public class PersonaData {
     public String getImagePath() {
         return imagePath;
     }
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
     public String getRequirements() {
         return requirements;
     }
@@ -66,6 +68,4 @@ public class PersonaData {
         this.experience = experience;
     }
 
-   
 }
-

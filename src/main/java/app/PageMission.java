@@ -89,7 +89,7 @@ public class PageMission implements Handler {
                                 """;
 
         // Personas Sections
-
+        html = html + "<section id='persona-section'>";
         html += """
                  <h3>Who this site is built for</h3>
                 """;
@@ -108,9 +108,9 @@ public class PageMission implements Handler {
             html += "<p>" + p.getRequirements() + "</p>";
 
         }
-
+        html = html + "</section>";
         // Student info section
-
+        html = html + "<section id='aboutUs-section'>";
         html += """
                 <h3>Who are we</h3>
                 """;
@@ -129,7 +129,7 @@ public class PageMission implements Handler {
 
         // Finish the List HTML
         html += "</ul>";
-
+        html = html + "</section>";
         // Close Content div
         html += "</div>";
 

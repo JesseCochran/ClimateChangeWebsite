@@ -85,7 +85,8 @@ public class PageST3C implements Handler {
                     </button>
                     <div class='dropdown-content'>
                     <a href='mission.html'>Our Mission</a>
-
+                    <a href='mission.html#persona-section'>Personas</a>
+                    <a href='mission.html#aboutUs-section'>Contact Us</a>
                     </div>
                     </div>
                     <div class='dropDown'>
@@ -93,7 +94,7 @@ public class PageST3C implements Handler {
                     <i class='fa fa-caret-down'></i>
                     </button>
                     <div class='dropdown-content'>
-                    <a href='PageHelp.html#help-section'>Page Assistance</a>
+                    <a href='PageHelp.html'>Page Assistance</a>
                     <a href='PageHelp.html#faq-section'>FAQ</a>
                     <a href='PageHelp.html#advanced-section'>Advanced Features</a>
                     </div>
