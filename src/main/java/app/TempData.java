@@ -10,6 +10,7 @@ public class TempData {
     private int year;
     private float maxTemp;
 
+
     public TempData(String name, float avgTemp, float minTemp, int year, float maxTemp) {
         this.name = name;
         this.avgTemp = avgTemp;

@@ -3,17 +3,10 @@ package app;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.*;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import static app.JDBCConnection.getTempByState;
 
 /**
  * Example Index HTML class using Javalin
@@ -39,13 +32,24 @@ public class PageST2B implements Handler {
                 "<title>Subtask 2.1</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        // html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "</head>";
+
+        // Add the body
+        // Create a simple HTML webpage in a String
+
+        // Add some Head information
+        html = html + "<head>" +
+                "<title>Subtask 2.1</title>";
+
+        // Add some CSS (external file)
+        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
         html = html + "</head>";
 
         // Add the body
         html = html + "<body>";
 
-     
         // Add header content block
         html = html
                 + """
@@ -55,7 +59,8 @@ public class PageST2B implements Handler {
                     </div>
                 """;
 
-        // navigation bar
+        // Add the topnav
+        // This uses a Java v15+ Text Block
         html = html + """
                     <div class='topnav'>
                     <a href='/'>Homepage</a>
@@ -70,12 +75,18 @@ public class PageST2B implements Handler {
                     </div>
                 """;
 
+        // Add Div for page Content
+        html = html + "<div class='content'>";
+
+        html = html + """
+                <h2>Focused view of temperature by Cities or States</h2>
+                """;
+
         //declaring variables
 
         int fromDate;
         int toDate;
         String type = context.req.getParameter("type");
-
         try {
             fromDate = Integer.parseInt(context.req.getParameter("from"));
             toDate = Integer.parseInt(context.req.getParameter("to"));
@@ -85,165 +96,200 @@ public class PageST2B implements Handler {
         }
         String countryParameterFromURL = context.req.getParameter("country");
 
-
         // header content block
 
         html +=
+                """
+                   <div class='header'>
+                       <h3> Temperatures by States or Cities </h3>
+                   </div>
+                """;
 
-         """
-                    <div class='header'>
-                        <h3> Temperatures by States or Cities </h3>
-                    </div>
-         """;
-
-
+        // brief description of info on page
         html +=
-         """
-            <p> As the yearly maximum, minimum and average temperatures for cities and states across the wold
-            have been documented. The following table generator provides a means to explore and compare this data
-            for a range of years at the users discretion.  </p>
-                    
-         """;
+                """
+                   <p> While climate change is an issue that effects the world on a global scale, 
+                   it can often be benificial to explore the changes on a smaller scale - 
+                   such as that of cities and states. The following table generator 
+                   provides a means to explore and compare this data. Additionally the respective cities and
+                   states are ranked by the proportional change in temperature for the average, minimum and maximum
+                   temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing 
+                   temperatures.
+                     </p>           
+ 
+                """;
 
+        // hashmap to get country names for dropdown menu
 
-        HashMap<String, String> mapOfCountries = JDBCConnection.getCountryNames();
-        html += "<form>";
-        html +=  """
-                <select name="country">
-        """;
+        ArrayList<Country> mapOfCountries = JDBCConnection.getCountryNames();
+        html += """
+                    <form id='form-id'>
+                    <label for>Select County:</label>
+                    <select name="country" onchange='document.getElementById("form-id").submit();'>
+                    <option value="" selected disabled hidden>Country</option>        
+                """;
 
+        for (Country c:mapOfCountries) {
 
-        for (Map.Entry<String, String> entry : mapOfCountries.entrySet()) {
-           
-            String key = entry.getKey();
-            String value = entry.getValue();
+            String key = c.getId();
+            String value = c.getName();
             if (countryParameterFromURL != null) {
-            if (countryParameterFromURL.equals(key)) {
-                                
-        html += "<option selected='selected' value='";
-        html += key + "'>" + value + "</option>";
-        }
-        
-        else {
-    
-        html += 
-        
-        "<option value='";
-                   
-        html += key + "'>" + value + "</option>";   
-                }  
-        }
-        else  {
+                if (countryParameterFromURL.equals(key)) {
 
+                    // part of code that makes the selected option stay after the page is refereshed
+
+                    html += "<option selected='selected' value='";
+                    html += key + "'>" + value + "</option>";
+                } else {
+                    html +=
+                            "<option value='";
+                    html += key + "'>" + value + "</option>";
+                }
+            } else {
                 html += "<option value='";
                 html += key + "'>" + value + "</option>";
             }
-
         }
 
-        html += 
-        "</select>";
+        // dropdown menu for cites or states
 
-        html += 
-        """
-                <select name='type'>
-                <option value="" selected disabled hidden>City/State</option>
-                <option value='states'>States</option> 
-                <option value='cities'>Cities</option> 
-                </select>
-        """;
+        html +=
+                "</select>";
+        html = html += "<br> <label for>Select Cities or States:</label>";
+        html += """
+                    <select name='type'>
+                    <option value="" selected disabled hidden>City/State</option>
+                """;
 
-        html += 
-        "</select>";
-        html += 
-        "<select name='from'>";
-        html +=  """
-                 <option value="" selected disabled hidden>Choose start date</option>        
-        """;
+        if (countryParameterFromURL != null) {
+            if (JDBCConnection.hasStates(countryParameterFromURL)) {
+                if (type != null) {
+                    if (type.equals("States")) {
+                        html += "<option selected=selected value='States'>States</option> ";
+                    } else {
+                        html += "<option value='States'>States</option> ";
+                    }
+                }else{
+                    html += "<option value='States'>States</option> ";
+                }
+            }
+
+            if (JDBCConnection.hasCities(countryParameterFromURL)) {
+                if (type != null) {
+
+                    if (type.equals("Cities")) {
+                        html += "<option selected=selected value='Cities'>Cities</option>";
+                    } else {
+                        html += "<option value='Cities'>Cities</option>";
+                    }
+                }else{
+                    html += "<option value='Cities'>Cities</option> ";
+                }
+            }
+        }
+
+        html += """
+                    </select>
+                    <br> <label for>Select Start Year:</label>
+                    <select name='from'>
+                    <option value='' selected disabled hidden>Year</option>
+                """;
+
+
+        // dropdown menues for start and end dates
 
         for (int i = 1750; i < 2014; i++) {
             if (fromDate == i) {
-            html += "<option selected='selected' value='";
-            html += i + "'>" + i + "</option>";
+                html += "<option selected='selected' value='";
+                html += i + "'>" + i + "</option>";
             } else {
 
-            html += "<option value='";
-            html += i + "'>" + i + "</option>";
+                html += "<option value='";
+                html += i + "'>" + i + "</option>";
             }
-    }
+        }
 
         html += "</select>";
+        html = html += "<br> <label for>Select End Year:</label>";
         html += "<select name='to'>";
         html += """
-            <option value="" selected disabled hidden>Choose end date</option>        
-          """;
+                  <option value="" selected disabled hidden>Year</option>        
+                """;
 
-        for (int i = 1750; i < 2014; i++) {
-            html += "<option>" + i + "</option>";
+        for (int i = 1749; i < 2014; i++) {
             if (toDate == i) {
                 html += "<option selected ='selected' value='";
                 html += i + "'>" + i + "</option>";
-                 }
-                 else {
-        
+            } else {
+
                 html += "<option value='";
                 html += i + "'>" + i + "</option>";
-                 }
+            }
         }
+
         html += "</select>";
-        html += """
-                <button type="submit">submit</button>""";
 
-        // html = html + "<button class='reset' type='reset' >Reset</button>";
+        html += "<div>";
+        html += "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
+        html += "</div>";
+        html += "<div>";
+        html = html + "<br> <button class='reset' type='reset' >Reset</button>";
+        html += "</div>";
+        html += "</form>";
 
-        // html += "</form>";
 
 
-        // Add Div for page Content
-        html = html + "<div class='content'>";
 
-    
-        if (countryParameterFromURL != null) { ArrayList<TempData> data;
+
+        html = html + "<div class='content' style='margin-top:10px;'>";
+        if (countryParameterFromURL != null) {
+            ArrayList<TempData> data;
+
             html +=
                     "<table><tr> <th> Year </th> ";
 
-            if (type != null){
-            if (type.equals("states")) {
-             data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
+            if (type != null) {
+                if (type.equals("States")) {
+                    data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
+                    html += "<th> State</th>";
 
-                html += "<th> State</th>";
 
-                
-            } else {
-             data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
+                } else {
+                    data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
 
-                html += "<th> City</th>";
-                
-            
-            }
-         
+                    html += "<th> City</th>";
 
-            html +=
-                    "<th> Average Temperature </th> ";
-            html += "<th> Minimum Temperature </th> <th> Maximum Temperature </th> </tr>";
+                }
 
-            for (TempData d : data) {
-                html += "<tr><td>" + d.getYear() + "</td>";
-                html += "<td>" + d.getName() + "</td>";
-                html += "<td>" + d.getAvgTemp() + "</td>";
-                html += "<td>" + d.getMinTemp() + "</td>";
-                html += "<td>" + d.getMaxTemp() + "</td></tr>";
-            }
-            html += "<table>";
+                html +=
+                        "<th> Average Temperature </th> ";
+                html += "<th> Minimum Temperature </th> <th> Maximum Temperature </th> </tr>";
+
+                for (TempData d : data) {
+                    html += "<tr><td>" + d.getYear() + "</td>";
+                    html += "<td>" + d.getName() + "</td>";
+                    html += "<td>" + d.getAvgTemp() + "</td>";
+                    html += "<td>" + d.getMinTemp() + "</td>";
+                    html += "<td>" + d.getMaxTemp() + "</td></tr>";
+                }
+                html += "<table>";
 //                     " <td> " + Years + "</td>";
-        }
+
+                    ArrayList<TempData> minYearTemp = getMaximumTemperatures(data);
+                    ArrayList<TempData> maxYearTemp = getMinimumTemperatures(data);
+
+                    ArrayList<Stat> stats = getAvgTempProportionalValues(minYearTemp, maxYearTemp);
+                    ArrayList<Stat> statsMin = getMinTempProportionalValues(minYearTemp, maxYearTemp);
+                    ArrayList<Stat> statsMax = getMaxTempProportionalValues(minYearTemp, maxYearTemp);
+                    html += "<h3> The Proportional Change of Average Temperatures</h3>";
+                    html += printOutRanking(stats);
+                    html += "<h3> The Proportional Change of Minimum Temperatures</h3>";
+                    html += printOutRanking(statsMin);
+                    html += "<h3> The Proportional Change of Maximum Temperatures</h3>";
+                    html += printOutRanking(statsMax);
+            }
 
         }
-
-        // Add HTML for the page content
-        html = html + """
-                <p>Subtask 2.B page content</p>
-                """;
 
         // Close Content div
         html = html + "</div>";
@@ -253,14 +299,15 @@ public class PageST2B implements Handler {
 
                 + """
                     <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p
                         <p style='display: flex; gap: 10px;'><a 
                   href='PageHelp.html#help-section'> Help </a><a   
                         href='PageHelp.html#faq-section'> FAQ </a><a 
                         href='PageHelp.html#advanced-section'> Advanced Features </a></p>
                     </div>
                 """;
-
+        html +="<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
+                "    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1\n" +
+                "}))</script>";
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
 
@@ -271,4 +318,89 @@ public class PageST2B implements Handler {
 
     }
 
+    public ArrayList<TempData> getMinimumTemperatures(ArrayList<TempData> data) {
+        ArrayList<TempData> tmp = new ArrayList<TempData>();
+        for (TempData d : data) {
+            boolean exists = false;
+            for (TempData t : tmp) {
+                if (d.getName().equals(t.getName())) {
+                    exists = true;
+                }
+            }
+            if (exists == true) {
+                return tmp;
+            } else {
+                tmp.add(d);
+            }
+        }
+        return tmp;
+    }
+
+    public ArrayList<TempData> getMaximumTemperatures(ArrayList<TempData> data) {
+        ArrayList<TempData> tmp = new ArrayList<TempData>();
+        for (int i = data.size() - 1; i > 0; i--) {
+            boolean exists = false;
+            for (TempData t : tmp) {
+                if (data.get(i).getName().equals(t.getName())) {
+                    exists = true;
+                }
+            }
+            if (exists == true) {
+                return tmp;
+            } else {
+                tmp.add(data.get(i));
+            }
+        }
+        return tmp;
+    }
+
+    public ArrayList<Stat> getAvgTempProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (TempData m : min) {
+            for (TempData x : max) {
+                if (m.getName().equals(x.getName())) {
+                    stats.add(new Stat(x.getName(), ((m.getAvgTemp() - x.getAvgTemp()) / m.getAvgTemp()) * 100));
+                }
+            }
+        }
+        return stats;
+    }
+    public ArrayList<Stat> getMinTempProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (TempData m : min) {
+            for (TempData x : max) {
+                if (m.getName().equals(x.getName())) {
+                    stats.add(new Stat(x.getName(), ((m.getMinTemp() - x.getMinTemp()) / m.getMinTemp()) * 100));
+                }
+            }
+        }
+        return stats;
+    }
+    public ArrayList<Stat> getMaxTempProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (TempData m : min) {
+            for (TempData x : max) {
+                if (m.getName().equals(x.getName())) {
+                    stats.add(new Stat(x.getName(), ((m.getMaxTemp() - x.getMaxTemp()) / m.getMaxTemp()) * 100));
+                }
+            }
+        }
+        return stats;
+    }
+    public static void sort(ArrayList<Stat> list) {
+
+        list.sort((o2, o1)
+                -> Float.compare(o1.getProportion(), o2.getProportion()));
+    }
+
+    public String printOutRanking(ArrayList<Stat> stats){
+        sort(stats);
+        String html = "";
+        int i=1;
+        for (Stat s:stats){
+            html += "<li>Rank " + i + ". " + s.getName() + " has a change in proportion of: " + s.getProportion() +"</li>";
+            i++;
+        }
+        return html;
+    }
 }
