@@ -138,7 +138,20 @@ text-align: left;
    display: block;
    text-align: left;
  }
- 
+ .footerLinks {
+  display: inline-block;
+    white-space: nowrap; /* Prevent line breaks within the links */
+    margin: 0; /* Remove any default margin */
+}
+.footerBlock {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+}
  /* Add a grey background color to dropdown links on hover */
  .dropdown-content a:hover {
    background-color: #ddd;
