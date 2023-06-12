@@ -273,11 +273,35 @@ public class PageST2C implements Handler {
         html = html
                 + """
                             <div class='footer'>
-                                <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-                                <a href='PageHelp.html'>Help Page</a>
-                                <p style='display: flex; gap: 10px;'><a href='PageHelp.html#help-section'>Help</a><a href='PageHelp.html#faq-section'>FAQ</a><a href='PageHelp.html#advanced-section'>Advanced Features</a></p>
-                            </div>
-                        """;
+                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+                        <div class='footerBlock'>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='page2B.html'>Temperature Change By State/City</a>
+                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                                      <a href='mission.html'>Our Mission</a>
+                                      <a href='mission.html#persona-section'>Personas</a>
+                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                                      <a href='PageHelp.html'>Page Assistance</a>
+                                      <a href='PageHelp.html#faq-section'>FAQ</a>
+                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                                    </div>
+                                  </div>
+                                </div>
+                                """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";

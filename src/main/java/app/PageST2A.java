@@ -78,10 +78,10 @@ public class PageST2A implements Handler {
         html = html + """
                 <h2>Focused view of temperature and population change by Country/Global</h2>
                 """;
-        
+
         html = html + "<form action='/page2A.html' method='post' onsubmit='return ReenterData()'>";
-        
-        //Elements keep values on reload
+
+        // Elements keep values on reload
         html = html + "<script>";
         html = html + "   function ReenterData() {";
         html = html + "       var dataToShow = document.getElementById('CountryWorld_drop').value;";
@@ -106,11 +106,12 @@ public class PageST2A implements Handler {
         html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
         html = html + " if (endYear) document.getElementById('EndYear_drop').value = endYear;";
         html = html + " if (dataType) document.getElementById('TypeOrder_drop').value = dataType;";
-        html = html + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
+        html = html
+                + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
         html = html + " }";
         html = html + "</script>";
 
-        //Dropdown to select country or world data
+        // Dropdown to select country or world data
         html = html + "<div class='form-group'>";
         html = html + "     <label for='CountryWorld_drop'>Select World or Country data:</label>";
         html = html + "     <select id='CountryWorld_drop' name='CountryWorld_drop' size='1'>";
@@ -123,10 +124,11 @@ public class PageST2A implements Handler {
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> years = jdbc.getPopulationYears();
 
-        //Dropdown to select start year which updates end year based on result
+        // Dropdown to select start year which updates end year based on result
         html = html + "<div class='form-group'>";
         html = html + "     <label for='StartYear_drop'>Select the start year:</label>";
-        html = html + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html
+                + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
@@ -177,7 +179,8 @@ public class PageST2A implements Handler {
 
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
-        html = html + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+        html = html
+                + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
 
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
@@ -185,7 +188,7 @@ public class PageST2A implements Handler {
         html = html + "      </select>";
         html = html + "   </div>";
 
-        //Dropdown to select how to format the data
+        // Dropdown to select how to format the data
         html = html + "<div class='form-group'>";
         html = html + "      <label for='TypeOrder_drop'>Select how you want to order the data:</label>";
         html = html + "      <select id='TypeOrder_drop' name='TypeOrder_drop' size='1'>";
@@ -202,14 +205,13 @@ public class PageST2A implements Handler {
                 <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
                  <label class='radio-label' for='Descending'>High to Low</label>
                     """;
-        
+
         // submit button
         html = html + "<div>";
         html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
         html = html + "</div>";
         html = html + "</form>";
 
-        
         String DataToOutput = context.formParam("CountryWorld_drop");
         String StartYear_drop = context.formParam("StartYear_drop");
         String EndYear_drop = context.formParam("EndYear_drop");
@@ -218,24 +220,48 @@ public class PageST2A implements Handler {
 
         if (DataToOutput == null) {
             html = html + "<h3>Please Select Country or World Data</h3>";
-        }
-        else if(DataToOutput.equals("World")) {
+        } else if (DataToOutput.equals("World")) {
             html = html + outputWorld(DataToOutput, StartYear_drop, EndYear_drop);
-        }
-        else if(DataToOutput.equals("Country")) {
+        } else if (DataToOutput.equals("Country")) {
             html = html + outputCountry(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
         }
-        
 
         // Close Content div
         html = html + "</div>";
 
         // Footer
-        html = html + """
-                    <div class='footer'>
-                        <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-                    </div>
-                """;
+        html = html
+                + """
+                            <div class='footer'>
+                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+                        <div class='footerBlock'>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='page2B.html'>Temperature Change By State/City</a>
+                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                                      <a href='mission.html'>Our Mission</a>
+                                      <a href='mission.html#persona-section'>Personas</a>
+                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                                      <a href='PageHelp.html'>Page Assistance</a>
+                                      <a href='PageHelp.html#faq-section'>FAQ</a>
+                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                                    </div>
+                                  </div>
+                                </div>
+                                """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
@@ -261,48 +287,47 @@ public class PageST2A implements Handler {
         html = html + "<th>Change in Temperature</th> </tr>";
 
         for (int i = 0; i < worldPopulationTemp.size(); ++i) {
-            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
+            html = html + "<tr> <td>" + worldPopulationTemp.get(i).getCountryName() + "</td> " + "<td>";
             html = html + String.format("%,d", worldPopulationTemp.get(i).getStartPopulation()) + "</td>" + "<td>";
             html = html + String.format("%,d", worldPopulationTemp.get(i).getEndPopulation()) + "</td>" + "<td>";
-            if(worldPopulationTemp.get(i).getPopulationPercent() > 0) {
-                html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
-            }
-            else {
-                html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            if (worldPopulationTemp.get(i).getPopulationPercent() > 0) {
+                html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>"
+                        + "<td>";
+            } else {
+                html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getPopulationPercent()) + "</td>"
+                        + "<td>";
             }
             html = html + worldPopulationTemp.get(i).getStartTemp() + "</td>" + "<td>";
             html = html + worldPopulationTemp.get(i).getEndTemp() + "</td>" + "<td>";
-            if(worldPopulationTemp.get(i).getTempPercent() > 0) {
+            if (worldPopulationTemp.get(i).getTempPercent() > 0) {
                 html = html + String.format("+%.2f%%", worldPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
-            }
-            else {
+            } else {
                 html = html + String.format("%.2f%%", worldPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
             }
         }
 
         html = html + "</table>";
         html = html + "</div>";
-        
+
         return html;
     }
 
     private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
         String html = "<div id='tableData'>";
 
-        if(type.equals("Population Change")) {
+        if (type.equals("Population Change")) {
             if (sort.equals("Ascending")) {
                 type = "percentagep";
                 sort = "ASC";
                 html = html + countryTableFormat(html, dataOutput, startYear, endYear, type, sort);
 
-            }
-            else if (sort.equals("Descending")) {
+            } else if (sort.equals("Descending")) {
                 type = "percentagep";
                 sort = "DESC";
                 html = html + countryTableFormat(html, dataOutput, startYear, endYear, type, sort);
 
             }
-            
+
         }
 
         else if (type.equals("Temperature Change")) {
@@ -311,8 +336,7 @@ public class PageST2A implements Handler {
                 sort = "ASC";
                 html = html + countryTableFormat(html, dataOutput, startYear, endYear, type, sort);
 
-            }
-            else if (sort.equals("Descending")) {
+            } else if (sort.equals("Descending")) {
                 type = "percentaget";
                 sort = "DESC";
                 html = html + countryTableFormat(html, dataOutput, startYear, endYear, type, sort);
@@ -323,12 +347,12 @@ public class PageST2A implements Handler {
         return html;
     }
 
-    private String countryTableFormat(String html, String dataOutput, String startYear, String endYear, String type, String sort) {
+    private String countryTableFormat(String html, String dataOutput, String startYear, String endYear, String type,
+            String sort) {
         html = html + "<h3>" + dataOutput + " data for " + startYear + " and " + endYear + "</h3>";
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> countryPopulationTemp = jdbc.getCountryPopulationTemp(startYear, endYear, type, sort);
-        
-                
+
         html = html + "<table> <tr>";
         html = html + "<th>Country Name</th>";
         html = html + "<th>Population at " + startYear + "</th>";
@@ -345,21 +369,22 @@ public class PageST2A implements Handler {
             float startTemp = countryPopulationTemp.get(i).getStartTemp();
             float endTemp = countryPopulationTemp.get(i).getEndTemp();
 
-            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName()  + "</td> " + "<td>";
+            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName() + "</td> " + "<td>";
             html = html + String.format("%,d", startPop) + "</td>" + "<td>";
             html = html + String.format("%,d", endPop) + "</td>" + "<td>";
-            if(countryPopulationTemp.get(i).getPopulationPercent() > 0) {
-                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
-            }
-            else {
-                html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>" + "<td>";
+            if (countryPopulationTemp.get(i).getPopulationPercent() > 0) {
+                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>"
+                        + "<td>";
+            } else {
+                html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getPopulationPercent()) + "</td>"
+                        + "<td>";
             }
             html = html + startTemp + "</td>" + "<td>";
             html = html + endTemp + "</td>" + "<td>";
-            if(countryPopulationTemp.get(i).getTempPercent() > 0) {
-                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
-            }
-            else {
+            if (countryPopulationTemp.get(i).getTempPercent() > 0) {
+                html = html + String.format("+%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>"
+                        + "<td>";
+            } else {
                 html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
             }
             html = html + String.format("%.3f", correlationCalc(startPop, endPop, startTemp, endTemp)) + "</td> </tr>";
@@ -377,12 +402,12 @@ public class PageST2A implements Handler {
 
         long sumX = startPop + endPop;
         float sumY = startTemp + endTemp;
-        float sumXY = (float)((startPop * startTemp) + (endPop * endTemp));
+        float sumXY = (float) ((startPop * startTemp) + (endPop * endTemp));
         long squareSumX = (startPop * startPop) + (endPop * endPop);
         float squareSumY = (startTemp * startTemp) + (endTemp * endTemp);
 
         float numerator = (n * sumXY) - (sumX * sumY);
-        float denominator = (float)(Math.sqrt((n * squareSumX - sumX * sumX) * (n * squareSumY - sumY * sumY)));
+        float denominator = (float) (Math.sqrt((n * squareSumX - sumX * sumX) * (n * squareSumY - sumY * sumY)));
         corr = numerator / denominator;
 
         return corr;

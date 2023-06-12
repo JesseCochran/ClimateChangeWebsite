@@ -430,15 +430,15 @@ public class PageST3C implements Handler {
                         <div class='footerBlock'>
                                     <div class='footerColumn'>
                                       <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
-                                      <a href='PageIndex.html'>Temperature & Population Change By Country/World</a>
-                                      <a href='mission.html#persona-section'>Temperature Change By State/City</a>
-                                      <a href='mission.html#aboutUs-section'>Global Land-Ocean Temperature Change</a>
+                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='page2B.html'>Temperature Change By State/City</a>
+                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
                                     </div>
                                     <div class='footerColumn'>
                                       <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
-                                      <a href='PageIndex.html'>Change In Temperature Over Extended Periods</a>
-                                      <a href='mission.html#persona-section'>Time Periods With Similar Temperature/Population</a>
-                                      <a href='mission.html#aboutUs-section'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
                                     </div>
                                     <div class='footerColumn'>
                                       <p style='margin-bottom: 0; margin-top: 0;'>About</p>

@@ -170,6 +170,7 @@ text-align: left;
    background-color: #f1f1f1;
    padding: 50px;
    z-index: 9994;
+   min-height: 100vh;
  }
  .footer a {
   text-decoration: none;
@@ -187,6 +188,11 @@ text-align: left;
    font-size: 18px;
    background-color: #cccccc;
    padding: 10px;
+
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-end;
+
  }
 
  .reset {

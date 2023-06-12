@@ -53,11 +53,11 @@ public class PageST2B implements Handler {
         // Add header content block
         html = html
                 + """
-                    <div class='header'>
-                        <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                        Climate Change Awareness</h1>
-                    </div>
-                """;
+                            <div class='header'>
+                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                                Climate Change Awareness</h1>
+                            </div>
+                        """;
 
         // Add the topnav
         // This uses a Java v15+ Text Block
@@ -82,7 +82,7 @@ public class PageST2B implements Handler {
                 <h2>Focused view of temperature by Cities or States</h2>
                 """;
 
-        //declaring variables
+        // declaring variables
 
         int fromDate;
         int toDate;
@@ -98,25 +98,23 @@ public class PageST2B implements Handler {
 
         // header content block
 
-        html +=
-                """
+        html += """
                    <div class='header'>
                        <h3> Temperatures by States or Cities </h3>
                    </div>
                 """;
 
         // brief description of info on page
-        html +=
-                """
-                   <p> While climate change is an issue that effects the world on a global scale, 
-                   it can often be benificial to explore the changes on a smaller scale - 
-                   such as that of cities and states. The following table generator 
+        html += """
+                   <p> While climate change is an issue that effects the world on a global scale,
+                   it can often be benificial to explore the changes on a smaller scale -
+                   such as that of cities and states. The following table generator
                    provides a means to explore and compare this data. Additionally the respective cities and
                    states are ranked by the proportional change in temperature for the average, minimum and maximum
-                   temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing 
+                   temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing
                    temperatures.
-                     </p>           
- 
+                     </p>
+
                 """;
 
         // hashmap to get country names for dropdown menu
@@ -126,10 +124,10 @@ public class PageST2B implements Handler {
                     <form id='form-id'>
                     <label for>Select County:</label>
                     <select name="country" onchange='document.getElementById("form-id").submit();'>
-                    <option value="" selected disabled hidden>Country</option>        
+                    <option value="" selected disabled hidden>Country</option>
                 """;
 
-        for (Country c:mapOfCountries) {
+        for (Country c : mapOfCountries) {
 
             String key = c.getId();
             String value = c.getName();
@@ -141,8 +139,7 @@ public class PageST2B implements Handler {
                     html += "<option selected='selected' value='";
                     html += key + "'>" + value + "</option>";
                 } else {
-                    html +=
-                            "<option value='";
+                    html += "<option value='";
                     html += key + "'>" + value + "</option>";
                 }
             } else {
@@ -153,8 +150,7 @@ public class PageST2B implements Handler {
 
         // dropdown menu for cites or states
 
-        html +=
-                "</select>";
+        html += "</select>";
         html = html += "<br> <label for>Select Cities or States:</label>";
         html += """
                     <select name='type'>
@@ -169,7 +165,7 @@ public class PageST2B implements Handler {
                     } else {
                         html += "<option value='States'>States</option> ";
                     }
-                }else{
+                } else {
                     html += "<option value='States'>States</option> ";
                 }
             }
@@ -182,7 +178,7 @@ public class PageST2B implements Handler {
                     } else {
                         html += "<option value='Cities'>Cities</option>";
                     }
-                }else{
+                } else {
                     html += "<option value='Cities'>Cities</option> ";
                 }
             }
@@ -194,7 +190,6 @@ public class PageST2B implements Handler {
                     <select name='from'>
                     <option value='' selected disabled hidden>Year</option>
                 """;
-
 
         // dropdown menues for start and end dates
 
@@ -213,7 +208,7 @@ public class PageST2B implements Handler {
         html = html += "<br> <label for>Select End Year:</label>";
         html += "<select name='to'>";
         html += """
-                  <option value="" selected disabled hidden>Year</option>        
+                  <option value="" selected disabled hidden>Year</option>
                 """;
 
         for (int i = 1749; i < 2014; i++) {
@@ -237,22 +232,16 @@ public class PageST2B implements Handler {
         html += "</div>";
         html += "</form>";
 
-
-
-
-
         html = html + "<div class='content' style='margin-top:10px;'>";
         if (countryParameterFromURL != null) {
             ArrayList<TempData> data;
 
-            html +=
-                    "<table><tr> <th> Year </th> ";
+            html += "<table><tr> <th> Year </th> ";
 
             if (type != null) {
                 if (type.equals("States")) {
                     data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
                     html += "<th> State</th>";
-
 
                 } else {
                     data = JDBCConnection.getTempByCity(countryParameterFromURL, fromDate, toDate);
@@ -261,8 +250,7 @@ public class PageST2B implements Handler {
 
                 }
 
-                html +=
-                        "<th> Average Temperature </th> ";
+                html += "<th> Average Temperature </th> ";
                 html += "<th> Minimum Temperature </th> <th> Maximum Temperature </th> </tr>";
 
                 for (TempData d : data) {
@@ -273,20 +261,20 @@ public class PageST2B implements Handler {
                     html += "<td>" + d.getMaxTemp() + "</td></tr>";
                 }
                 html += "<table>";
-//                     " <td> " + Years + "</td>";
+                // " <td> " + Years + "</td>";
 
-                    ArrayList<TempData> minYearTemp = getMaximumTemperatures(data);
-                    ArrayList<TempData> maxYearTemp = getMinimumTemperatures(data);
+                ArrayList<TempData> minYearTemp = getMaximumTemperatures(data);
+                ArrayList<TempData> maxYearTemp = getMinimumTemperatures(data);
 
-                    ArrayList<Stat> stats = getAvgTempProportionalValues(minYearTemp, maxYearTemp);
-                    ArrayList<Stat> statsMin = getMinTempProportionalValues(minYearTemp, maxYearTemp);
-                    ArrayList<Stat> statsMax = getMaxTempProportionalValues(minYearTemp, maxYearTemp);
-                    html += "<h3> The Proportional Change of Average Temperatures</h3>";
-                    html += printOutRanking(stats);
-                    html += "<h3> The Proportional Change of Minimum Temperatures</h3>";
-                    html += printOutRanking(statsMin);
-                    html += "<h3> The Proportional Change of Maximum Temperatures</h3>";
-                    html += printOutRanking(statsMax);
+                ArrayList<Stat> stats = getAvgTempProportionalValues(minYearTemp, maxYearTemp);
+                ArrayList<Stat> statsMin = getMinTempProportionalValues(minYearTemp, maxYearTemp);
+                ArrayList<Stat> statsMax = getMaxTempProportionalValues(minYearTemp, maxYearTemp);
+                html += "<h3> The Proportional Change of Average Temperatures</h3>";
+                html += printOutRanking(stats);
+                html += "<h3> The Proportional Change of Minimum Temperatures</h3>";
+                html += printOutRanking(statsMin);
+                html += "<h3> The Proportional Change of Maximum Temperatures</h3>";
+                html += printOutRanking(statsMax);
             }
 
         }
@@ -296,21 +284,42 @@ public class PageST2B implements Handler {
 
         // Footer
         html = html
-
                 + """
-                    <div class='footer'>
-                        <p style='display: flex; gap: 10px;'><a 
-                  href='PageHelp.html#help-section'> Help </a><a   
-                        href='PageHelp.html#faq-section'> FAQ </a><a 
-                        href='PageHelp.html#advanced-section'> Advanced Features </a></p>
-                    </div>
-                """;
-        html +="<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
+                            <div class='footer'>
+                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+                        <div class='footerBlock'>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='page2B.html'>Temperature Change By State/City</a>
+                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                                      <a href='mission.html'>Our Mission</a>
+                                      <a href='mission.html#persona-section'>Personas</a>
+                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                                      <a href='PageHelp.html'>Page Assistance</a>
+                                      <a href='PageHelp.html#faq-section'>FAQ</a>
+                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                                    </div>
+                                  </div>
+                                </div>
+                                """;
+        html += "<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
                 "    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1\n" +
                 "}))</script>";
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
-
 
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
@@ -365,6 +374,7 @@ public class PageST2B implements Handler {
         }
         return stats;
     }
+
     public ArrayList<Stat> getMinTempProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (TempData m : min) {
@@ -376,6 +386,7 @@ public class PageST2B implements Handler {
         }
         return stats;
     }
+
     public ArrayList<Stat> getMaxTempProportionalValues(ArrayList<TempData> min, ArrayList<TempData> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (TempData m : min) {
@@ -387,18 +398,19 @@ public class PageST2B implements Handler {
         }
         return stats;
     }
+
     public static void sort(ArrayList<Stat> list) {
 
-        list.sort((o2, o1)
-                -> Float.compare(o1.getProportion(), o2.getProportion()));
+        list.sort((o2, o1) -> Float.compare(o1.getProportion(), o2.getProportion()));
     }
 
-    public String printOutRanking(ArrayList<Stat> stats){
+    public String printOutRanking(ArrayList<Stat> stats) {
         sort(stats);
         String html = "";
-        int i=1;
-        for (Stat s:stats){
-            html += "<li>Rank " + i + ". " + s.getName() + " has a change in proportion of: " + s.getProportion() +"</li>";
+        int i = 1;
+        for (Stat s : stats) {
+            html += "<li>Rank " + i + ". " + s.getName() + " has a change in proportion of: " + s.getProportion()
+                    + "</li>";
             i++;
         }
         return html;
