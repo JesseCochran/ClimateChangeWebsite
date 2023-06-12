@@ -130,12 +130,25 @@ public class PageHelp implements Handler {
                                 </p>
 
                                 <h3>Show Table Button</h3>
-                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
-                                <p>Steps to help you around the website:  </p>
+                                <img src='showtablebutton.png' alt='show table example button' aspect-ratio: auto; width = '120''>
+                                <p>By pressing this button it will take the inputs you have entered in the drop downs and radio buttons above it and get the data you asked for.<br>
+                                Step 1: Ensure you have filled out all the required information before clicking, if you haven't no data will be displayed.<br>
+                                Step 2: Left click/tap button to get results.</p>
 
                                 <h3>Reset Button</h3>
-                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
-                                <p>Steps to help you around the website:  </p>
+                                <img src='resetbutton.png' alt='example reset button' aspect-ratio: auto; width = '120''>
+                                <p>This button when pressed will clear all your previously entered values. <br>
+                                This is necessary because on some pages when you reload the page it may not clear responses and as such you must press this button. <br>
+                                Step 1: If you have data you want cleared, locate this button and left click/tap it. </p>
+
+                                <h3>Heat Map</h3>
+                                <img src='heatMap1.png' alt='example heat map' aspect-ratio: auto; width = '840''>
+                                <p>The featured heat map on our website home page can be used by selecting the year from the drop down you wish to view and pressing the submit button. <br>
+                                This heat map is colour coded from green being low/coldest temperatures to red being the warmest temperatures. <br>
+                                If you wish to view a particular value/country on the map in a year, you can hover over it and it should tell you the average temperature of that country during the year.<br>
+                                Please note some data may not be present especially in earlier years such as 1750 to 1850. We apologies if we don't have the particular country data you are looking for.
+                                </p>
+
 
 
                             </section>
