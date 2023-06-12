@@ -425,25 +425,36 @@ public class PageST3C implements Handler {
         // Footer
         html = html
                 + """
-                                                                            <div class='footer'>
-                                                                                <p>Index</p>
-
-                                                                               <div class='footerBlock'>
-                          <div class='footerColumn'>
-                            <a href='mission.html'>About</a>
-                            <a href='mission.html'>Our Mission</a>
-                            <a href='mission.html#persona-section'>Personas</a>
-                            <a href='mission.html#aboutUs-section'>Contact Us</a>
-                          </div>
-                          <div class='footerColumn'>
-                            <a href='PageHelp.html'>Help & Support</a>
-                            <a href='PageHelp.html#help-section'>Help</a>
-                            <a href='PageHelp.html#faq-section'>FAQ</a>
-                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                          </div>
-                        </div>
-                                                </div>
-                                                                        """;
+                            <div class='footer'>
+                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+                        <div class='footerBlock'>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                                      <a href='PageIndex.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='mission.html#persona-section'>Temperature Change By State/City</a>
+                                      <a href='mission.html#aboutUs-section'>Global Land-Ocean Temperature Change</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                                      <a href='PageIndex.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='mission.html#persona-section'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='mission.html#aboutUs-section'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                                      <a href='mission.html'>Our Mission</a>
+                                      <a href='mission.html#persona-section'>Personas</a>
+                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                                      <a href='PageHelp.html'>Page Assistance</a>
+                                      <a href='PageHelp.html#faq-section'>FAQ</a>
+                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                                    </div>
+                                  </div>
+                                </div>
+                                """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
