@@ -37,6 +37,9 @@ public class PageIndex implements Handler {
 
         // Add some CSS (external file)
         html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        // adds a cool icon on the nav menu
+        html = html
+                + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
         html = html + "</head>";
 
         // Add the body
@@ -54,20 +57,51 @@ public class PageIndex implements Handler {
                         """;
 
         // Add the topnav
-        // This uses a Java v15+ Text Block
         html = html + """
-                <div class='topnav'>
-                <a href='/'>Homepage</a>
-                <a href='mission.html'>Our Mission</a>
-                <a href='page2A.html'>Sub Task 2.A</a>
-                <a href='page2B.html'>Sub Task 2.B</a>
-                <a href='page2C.html'>Sub Task 2.C</a>
-                <a href='page3A.html'>Sub Task 3.A</a>
-                <a href='page3B.html'>Sub Task 3.B</a>
-                <a href='page3C.html'>Sub Task 3.C</a>
-                <a href='PageHelp.html'>Help Page</a>
-                </div>
-                        """;
+                    <div class='topnav'>
+                    <a href='/'>Home</a>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>Shallow View Of Climate Change
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                    <a href='page2B.html'>Temperature Change By State/City</a>
+                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                    </div>
+                    </div>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>In-Depth View Of Climate Change
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                    </div>
+                    </div>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>About Us
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='mission.html'>Our Mission</a>
+                    <a href='mission.html#persona-section'>Personas</a>
+                    <a href='mission.html#aboutUs-section'>Contact Us</a>
+                    </div>
+                    </div>
+                    <div class='dropDown'>
+                    <button class='dropbtn'>Help & Support
+                    <i class='fa fa-caret-down'></i>
+                    </button>
+                    <div class='dropdown-content'>
+                    <a href='PageHelp.html'>Page Assistance</a>
+                    <a href='PageHelp.html#faq-section'>FAQ</a>
+                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                    </div>
+                    </div>
+                    </div>
+                """;
 
         // Add Div for page Content
         html = html + "<div class='content'>";
@@ -133,7 +167,8 @@ public class PageIndex implements Handler {
         html = html + "</table>";
 
         // Close Content div
-        html = html + "</div>";
+        // moved further down
+        // html = html + "</div>";
 
         // Bar chart for temperature range
         html = html + "<div id='barchart'></div>";
@@ -223,6 +258,10 @@ public class PageIndex implements Handler {
         html = html + "chart.draw(data, options);";
         html = html + "}";
         html = html + "</script>";
+
+        // end content section
+        html = html + "</div>";
+
         // *Testing */
         // html = html + "<p>" + currentYearIndex + "</p>";
 

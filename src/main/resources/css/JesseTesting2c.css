@@ -170,7 +170,9 @@ text-align: left;
    background-color: #f1f1f1;
    padding: 50px;
    z-index: 9994;
-   min-height: 100vh;
+   /* Controls how far down the footer is
+   If its set to 100vh the footer is one scroll below page*/
+   min-height: 75vh;
  }
  .footer a {
   text-decoration: none;
@@ -192,6 +194,7 @@ text-align: left;
    display: flex;
    flex-direction: column;
    justify-content: flex-end;
+   
 
  }
 
