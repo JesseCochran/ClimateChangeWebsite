@@ -104,17 +104,30 @@ public class PageHelp implements Handler {
         html = html
                 + """
                             <section id='help-section'>
-                                <h2>Page Assistance</h2>
+                                <h2 class='smaller'>Page Assistance</h2>
                                 <p>Steps to help you around the website:  </p>
 
                                 <h3>Drop down Buttons/Menus</h3>
-                                <img src='dropdown.png' alt='dropdown image' height='120''>
+                                <img src='dropdown.png' alt='dropdown image 1' aspect-ratio: auto; width='150' style='margin-right: 20px;'>
+                                <img src='dropdown2.png' alt='dropdown image 2' aspect-ratio: auto; width='120' style='margin-right: 20px;'>
+                                <img src='dropDown3.png' alt='dropdown image 3' aspect-ratio: auto; width='150' style='margin-right: 20px;'>
                                 <p>Drop downs are the core of our website's design. In order to use them, click on the button and it should bring up a list of potential options that
-                                you can then choose to select from. <br> To select one of the many options available all you have to do is click on the option you wish to view.</p>
+                                you can then choose to select from. <br> To select one of the many options available all you have to do is click on the option you wish to view.
+                                <br>
+                                If viewing on a computer. <br>
+                                Step 1: Left Click on the drop down. <br>
+                                Step 2: Once you see the list of options Left Click the option you like. <br>
+                                If viewing on a different device such as a phone or tablet. <br>
+                                Tap the drop down instead of Left Clicking it.
+                                </p>
 
                                 <h3>Radio Buttons</h3>
-                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
-                                <p>Steps to help you around the website:  </p>
+                                <img src='radiobutton.png' alt='radio button example' aspect-ratio: auto; width = '120''>
+                                <p>A radio button is a button that helps you choose one option from a list of options.<br>
+                                On our website we use this type of button to allow you to choose how you want data to be sorted.<br>
+                                Step 1: Think about which option you would prefer to have the data sorted. <br>
+                                Step 2: Left Click/tap the circle next to the option you want, it should be highlighted if selected.
+                                </p>
 
                                 <h3>Show Table Button</h3>
                                 <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
@@ -132,7 +145,7 @@ public class PageHelp implements Handler {
         html = html
                 + """
                         <section id='faq-section'>
-                            <h2>Frequently Asked Questions (FAQ)</h2>
+                            <h2 class='smaller'>Frequently Asked Questions (FAQ)</h2>
                             """;
 
         // Prints each question and answer from the database and formats the answer
@@ -156,7 +169,7 @@ public class PageHelp implements Handler {
         // Advanced features section of the page
         html = html + """
                 <section id='advanced-section'>
-                <h2>Advanced Features</h2>
+                <h2 class='smaller'>Advanced Features</h2>
                 <h3>Keyboard Shortcuts</h3>
                     <table>
                       <tr>

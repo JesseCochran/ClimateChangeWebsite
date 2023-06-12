@@ -55,6 +55,9 @@ body {
    color: #6cb358;
    text-align: center;
 }
+h2.smaller {
+   font-size: 1.25em; /* One size down */
+ }
 .sections h3 {
    text-align: left;
    margin-left: 20px;

@@ -194,9 +194,24 @@ text-align: left;
    display: flex;
    flex-direction: column;
    justify-content: flex-end;
-   
-
  }
+
+ #faq-section {
+  padding-top: 150px; /* Adjust the padding-top value to your desired offset */
+  margin-top: -150px; /* Negative margin to counteract the padding */
+}
+#advanced-section {
+  padding-top: 150px; /* Adjust the padding-top value to your desired offset */
+  margin-top: -150px; /* Negative margin to counteract the padding */
+}
+#aboutUs-section{
+  padding-top: 150px; /* Adjust the padding-top value to your desired offset */
+  margin-top: -150px; /* Negative margin to counteract the padding */
+}
+#persona-section{
+  padding-top: 150px; /* Adjust the padding-top value to your desired offset */
+  margin-top: -150px; /* Negative margin to counteract the padding */
+}
 
  .reset {
    background-color: transparent;
