@@ -75,7 +75,8 @@ public class PageHelp implements Handler {
 
                                 <h3>Drop down Buttons/Menus</h3>
                                 <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
-                                <p>Steps to help you around the website:  </p>
+                                <p>Drop downs are the core of our website's design. In order to use them, click on the button and it should bring up a list of potential options that
+                                you can then choose to select from. To select one of the many options available all you have to do is click on the option you wish to view.</p>
 
                                 <h3>Radio Buttons</h3>
                                 <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
