@@ -63,17 +63,35 @@ public class PageHelp implements Handler {
         // Add header content block
         html = html + """
                     <div class='content'>
-
+                    <h2>Help & Support</h2>
                 """;
 
         // Help section of the page
-        html = html + """
-                    <section id='help-section'>
-                        <h2>Page Assistance</h2>
-                        <p>Steps to help you around the website:  </p>
+        html = html
+                + """
+                            <section id='help-section'>
+                                <h2>Page Assistance</h2>
+                                <p>Steps to help you around the website:  </p>
 
-                    </section>
-                """;
+                                <h3>Drop down Buttons/Menus</h3>
+                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
+                                <p>Steps to help you around the website:  </p>
+
+                                <h3>Radio Buttons</h3>
+                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
+                                <p>Steps to help you around the website:  </p>
+
+                                <h3>Show Table Button</h3>
+                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
+                                <p>Steps to help you around the website:  </p>
+
+                                <h3>Reset Button</h3>
+                                <img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120''>
+                                <p>Steps to help you around the website:  </p>
+
+
+                            </section>
+                        """;
 
         // FAQ section of the page
         html = html
