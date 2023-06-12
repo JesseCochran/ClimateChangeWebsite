@@ -425,12 +425,25 @@ public class PageST3C implements Handler {
         // Footer
         html = html
                 + """
-                            <div class='footer'>
-                                <p>COSC2803 - Studio Project Starter Code (Apr23)</p>
-                                <a href='PageHelp.html'>Help Page</a>
-                                <p style='display: flex; gap: 10px;'><a href='PageHelp.html#help-section'>Help</a><a href='PageHelp.html#faq-section'>FAQ</a><a href='PageHelp.html#advanced-section'>Advanced Features</a></p>
-                            </div>
-                        """;
+                                                                            <div class='footer'>
+                                                                                <p>Index</p>
+
+                                                                               <div class='footerBlock'>
+                          <div class='footerColumn'>
+                            <a href='mission.html'>About</a>
+                            <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                          </div>
+                          <div class='footerColumn'>
+                            <a href='PageHelp.html'>Help & Support</a>
+                            <a href='PageHelp.html#help-section'>Help</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                          </div>
+                        </div>
+                                                </div>
+                                                                        """;
 
         // Finish the HTML webpage
         html = html + "</body>" + "</html>";
