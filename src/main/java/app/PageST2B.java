@@ -107,7 +107,7 @@ public class PageST2B implements Handler {
         // brief description of info on page
         html += """
                    <p> While climate change is an issue that effects the world on a global scale,
-                   it can often be benificial to explore the changes on a smaller scale -
+                   it can often be beneficial to explore the changes on a smaller scale -
                    such as that of cities and states. The following table generator
                    provides a means to explore and compare this data. Additionally the respective cities and
                    states are ranked by the proportional change in temperature for the average, minimum and maximum
@@ -134,7 +134,7 @@ public class PageST2B implements Handler {
             if (countryParameterFromURL != null) {
                 if (countryParameterFromURL.equals(key)) {
 
-                    // part of code that makes the selected option stay after the page is refereshed
+                    // part of code that makes the selected option stay after the page is refreshed
 
                     html += "<option selected='selected' value='";
                     html += key + "'>" + value + "</option>";
@@ -232,7 +232,9 @@ public class PageST2B implements Handler {
         html += "</div>";
         html += "</form>";
 
-        html = html + "<div class='content' style='margin-top:10px;'>";
+        // note from jesse had to disable code below as it was breaking the footer
+        // html = html + "<div class='content' style='margin-top:10px;'>";
+
         if (countryParameterFromURL != null) {
             ArrayList<TempData> data;
 
@@ -275,6 +277,10 @@ public class PageST2B implements Handler {
                 html += printOutRanking(statsMin);
                 html += "<h3> The Proportional Change of Maximum Temperatures</h3>";
                 html += printOutRanking(statsMax);
+                html += "</table>";
+            } else {
+                html += "</tr></table>";
+
             }
 
         }
@@ -315,6 +321,7 @@ public class PageST2B implements Handler {
                                   </div>
                                 </div>
                                 """;
+
         html += "<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
                 "    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1\n" +
                 "}))</script>";
