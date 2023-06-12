@@ -59,47 +59,6 @@ public class PageHelp implements Handler {
                         <a href='PageHelp.html'>Help Page</a>
                     </div>
                 """;
-        // nice scroll affect i found **This offsets the scroll a bit as the top stuff
-        // is fixed to the screen
-        html = html
-                + """
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    // Get all anchor links in the document
-                                    var anchorLinks = document.querySelectorAll('a[href^="#"]');
-
-                                    // Attach click event listener to each anchor link
-                                    anchorLinks.forEach(function(link) {
-                                        link.addEventListener('click', function(e) {
-                                            e.preventDefault(); // Prevent default link behavior
-
-                                            var targetId = this.getAttribute('href'); // Get the target section id
-                                            var targetSection = document.querySelector(targetId); // Get the target section
-
-                                            if (targetSection) {
-                                                var topOffset = targetSection.offsetTop -65; // Calculate the top offset of the target section
-                                                window.scrollTo({
-                                                    top: topOffset,
-                                                    behavior: 'smooth' // Smooth scroll to the target section
-                                                });
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-                        """;
-
-        // Add header content block
-        html = html + """
-                    <div class='content'>
-                    <div class='sections'>
-                        <h2>Help And Support Page</h2>
-                        <h3>Contents</h3>
-                        <h3><a href='#help-section'>Help</a></h3>
-                        <h3><a href='#faq-section'>FAQ</a></h3>
-                        <h3><a href='#advanced-section'>Advanced Features</a></h3>
-                    </div>
-                """;
 
         // Help section of the page
         html = html + """
