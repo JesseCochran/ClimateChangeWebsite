@@ -353,10 +353,11 @@ public class PageST3C implements Handler {
         // Sorting order
         html = html + """
                 <p>Sort By</p>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='Ascending'>Least Change In Average Temperature</label><br>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='Descending'>Greatest Change In Average Temperature</label><br>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
+                <label class='radio-label' for='SortOrderAsc'>Least Change In Average Temperature</label><br>
+
+                <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
+                 <label class='radio-label' for='SortOrderDes'>Greatest Change In Average Temperature</label><br>
 
                     """;
 
