@@ -178,10 +178,12 @@ public class PageST3C implements Handler {
         html = html + "       return false;";
         html = html + "   }";
         html = html + "</script>";
+
         html = html + " <div class='container'>";
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
         html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
+        html = html + "<option value='' disabled selected hidden>--select date--</option>";
 
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> years = jdbc.getLandOceanYears();
@@ -192,6 +194,7 @@ public class PageST3C implements Handler {
 
         html = html + "      <label for='lengthDropdown'>Select the time period of years:</label>";
         html = html + "      <select id='lengthDropdown' name='lengthDropdown'>";
+        html = html + "<option value='' disabled selected hidden>--select years--</option>";
         for (int i = 1; i < years.size(); i++) {
             if (i != 1) {
                 html = html + " <option value='" + i + "'>" + i + " years</option>";
@@ -207,6 +210,7 @@ public class PageST3C implements Handler {
 
         html = html + "      <label for='dataType'>Select data you wish to view:</label>";
         html = html + "      <select id='dataType' name='dataType' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select data--</option>";
         html = html + "<option>Land Data</option>";
         html = html + "<option>Land-Ocean Data</option>";
         html = html + "      </select>";
@@ -334,6 +338,7 @@ public class PageST3C implements Handler {
                 html = html + "      <label for='StartYear_drop" + i + "'>Select the start year:</label>";
                 html = html + "      <select id='StartYear_drop" + i + "' name='StartYear_drop" + i
                         + "' onchange='updateStartYearOptionsMultiple(this)'>";
+                html = html + "<option value='' disabled selected hidden>--select date--</option>";
 
                 years = jdbc.getLandOceanYears();
                 for (Climate year : years) {
@@ -343,6 +348,7 @@ public class PageST3C implements Handler {
 
                 html = html + "      <label for='dataType" + i + "'>Select data you wish to view:</label>";
                 html = html + "      <select id='dataType" + i + "' name='dataType" + i + "' size='1'>";
+                html = html + "<option value='' disabled selected hidden>--select data--</option>";
                 html = html + "<option>Land Data</option>";
                 html = html + "<option>Land-Ocean Data</option>";
                 html = html + "      </select><br>";
