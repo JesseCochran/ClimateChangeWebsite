@@ -37,7 +37,7 @@ public class PageST3C implements Handler {
                 "<title>Comparing Land and Land-Ocean Temperature Data</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='Common.css' />";
         // adds a cool icon on the nav menu
         html = html
                 + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";

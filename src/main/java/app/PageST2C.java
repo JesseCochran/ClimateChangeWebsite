@@ -37,7 +37,7 @@ public class PageST2C implements Handler {
                 "<title>Focused View Of Land Ocean Temperature</title>";
 
         // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='Common.css' />";
         html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
         // adds a cool icon on the nav menu
         html = html

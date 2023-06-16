@@ -36,19 +36,20 @@ public class PageST2B implements Handler {
         // adds a cool icon on the nav menu
         html = html
                 + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='Common.css' />";
         html = html + "</head>";
 
         // Add the body
         // Create a simple HTML webpage in a String
 
         // Add some Head information
-        html = html + "<head>" +
-                "<title>Subtask 2.1</title>";
+        // html = html + "<head>" +
+        // "<title>Subtask 2.1</title>";
 
-        // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
-        html = html + "</head>";
+        // // Add some CSS (external file)
+        // html = html + "<link rel='stylesheet' type='text/css'
+        // href='JesseTesting2c.css' />";
+        // html = html + "</head>";
 
         // Add the body
         html = html + "<body>";
