@@ -110,9 +110,9 @@ public class PageST2C implements Handler {
         // Explanation of land ocean temp
         html = html
                 + """
-                        <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
-                        <p>Land Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
-                        <p>The Global Land Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
+                        <h2>A Look At Annual Global Land-Ocean Temperature Records</h2>
+                        <p>Land-Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
+                        <p>The Global Land-Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
                         this is because oceans have a higher heat capacity compared to land therefore meaning they absorb and release heat slower which can then help show greater discrepancies in temperatures therefore showing signs of climate change. </p>
                         """;
 
@@ -243,10 +243,11 @@ public class PageST2C implements Handler {
         // Sorting order
         html = html + """
                 <p>Sort By</p>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='Ascending'>Ascending Order</label><br>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='Descending'>Descending Order</label>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
+                <label class='radio-label' for='SortOrderAsc'>Least Change In Average Temperature</label><br>
+
+                <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
+                 <label class='radio-label' for='SortOrderDes'>Greatest Change In Average Temperature</label><br>
 
                     """;
 

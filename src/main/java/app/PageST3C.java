@@ -109,7 +109,7 @@ public class PageST3C implements Handler {
         // Explanation of land ocean temp
         html = html
                 + """
-                        <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
+                        <h2>Annual Global Land-Ocean Temperature Records Compared To Global Land Temperature Records</h2>
                         <p>Analysing the relationship between global land-ocean temperatures and land temperatures can help determine long term temperature trends on a global scale.<br>
                         The reason for comparing global land-ocean with land temperature data is that water has a higher heat capacity than land and as such it takes longer to heat up and cool down thus resulting in a slower temperature change. <br>
                         This can than lead to much more useful results then otherwise just comparing a time period of land-ocean data to another time period, as would just comparing land temperature to land temperature. </p>
@@ -147,16 +147,30 @@ public class PageST3C implements Handler {
         html = html + "       return true;";
         html = html + "   }";
         html = html + " window.onload = function() {";
-        html = html + " var startYear = sessionStorage.getItem('startYear');";
-        html = html + " var timeYears = sessionStorage.getItem('timeYears');";
-        html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
-        html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
-        html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
-        html = html + " if (timeYears) document.getElementById('timeYears_drop').value = timeYears;";
+        // html = html + " var startYear = sessionStorage.getItem('startYear');";
+        // html = html + " var timeYears = sessionStorage.getItem('timeYears');";
+        // html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
+        // html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
+        // html = html + " if (startYear)
+        // document.getElementById('StartYear_drop').value = startYear;";
+        // html = html + " if (timeYears)
+        // document.getElementById('timeYears_drop').value = timeYears;";
+        // html = html
+        // + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' +
+        // sortOrder + ']').checked = true;";
+        // html = html + " if (dataToShow)
+        // document.getElementById('TempSelection_drop').value = dataToShow;";
+        // html = html + " }";
+        html = html + "       var startYear = sessionStorage.getItem('startYear');";
+        html = html + "       var timeYears = sessionStorage.getItem('timeYears');";
+        html = html + "       var sortOrder = sessionStorage.getItem('sortOrder');";
+        html = html + "       var dataToShow = sessionStorage.getItem('dataToShow');";
+        html = html + "       if (startYear) document.getElementById('StartYear_drop').value = startYear;";
+        html = html + "       if (timeYears) document.getElementById('lengthDropdown').value = timeYears;";
         html = html
-                + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
-        html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
-        html = html + " }";
+                + "       if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
+        html = html + "       if (dataToShow) document.getElementById('dataType').value = dataToShow;";
+        html = html + "   }";
         html = html + "</script>";
 
         // reload/clear button
@@ -177,11 +191,52 @@ public class PageST3C implements Handler {
         html = html + "       document.getElementById('tableData').innerHTML = '';";
         html = html + "       return false;";
         html = html + "   }";
+
+        // key press to reload/clear values
+        html = html + """
+                          document.addEventListener('keydown', function(event) {
+                // Check if the C key (key code 67) is pressed
+                if (event.keyCode == 67) {
+                  reload();
+                }
+                });
+                          """;
+
+        // take to help page
+        html = html + """
+
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """;
+        // take to home page
+        html = html + """
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """;
         html = html + "</script>";
+
         html = html + " <div class='container'>";
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
         html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
+        html = html + "<option value='' disabled selected hidden>--select date--</option>";
 
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> years = jdbc.getLandOceanYears();
@@ -192,6 +247,7 @@ public class PageST3C implements Handler {
 
         html = html + "      <label for='lengthDropdown'>Select the time period of years:</label>";
         html = html + "      <select id='lengthDropdown' name='lengthDropdown'>";
+        html = html + "<option value='' disabled selected hidden>--select years--</option>";
         for (int i = 1; i < years.size(); i++) {
             if (i != 1) {
                 html = html + " <option value='" + i + "'>" + i + " years</option>";
@@ -207,6 +263,7 @@ public class PageST3C implements Handler {
 
         html = html + "      <label for='dataType'>Select data you wish to view:</label>";
         html = html + "      <select id='dataType' name='dataType' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select data--</option>";
         html = html + "<option>Land Data</option>";
         html = html + "<option>Land-Ocean Data</option>";
         html = html + "      </select>";
@@ -255,6 +312,10 @@ public class PageST3C implements Handler {
 
         // Event listener for length dropdown
         html = html + "lengthDropdown.addEventListener('change', function() {";
+        html = html + "    populateStartYearOptions();";
+        html = html + "});";
+
+        html = html + "window.addEventListener('load', function() {";
         html = html + "    populateStartYearOptions();";
         html = html + "});";
 
@@ -334,6 +395,7 @@ public class PageST3C implements Handler {
                 html = html + "      <label for='StartYear_drop" + i + "'>Select the start year:</label>";
                 html = html + "      <select id='StartYear_drop" + i + "' name='StartYear_drop" + i
                         + "' onchange='updateStartYearOptionsMultiple(this)'>";
+                html = html + "<option value='' disabled selected hidden>--select date--</option>";
 
                 years = jdbc.getLandOceanYears();
                 for (Climate year : years) {
@@ -343,6 +405,7 @@ public class PageST3C implements Handler {
 
                 html = html + "      <label for='dataType" + i + "'>Select data you wish to view:</label>";
                 html = html + "      <select id='dataType" + i + "' name='dataType" + i + "' size='1'>";
+                html = html + "<option value='' disabled selected hidden>--select data--</option>";
                 html = html + "<option>Land Data</option>";
                 html = html + "<option>Land-Ocean Data</option>";
                 html = html + "      </select><br>";
@@ -353,16 +416,17 @@ public class PageST3C implements Handler {
         // Sorting order
         html = html + """
                 <p>Sort By</p>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='Ascending'>Least Change In Average Temperature</label><br>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='Descending'>Greatest Change In Average Temperature</label><br>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
+                <label class='radio-label' for='SortOrderAsc'>Least Change In Average Temperature</label><br>
+
+                <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
+                 <label class='radio-label' for='SortOrderDes'>Greatest Change In Average Temperature</label><br>
 
                     """;
 
         // View table
         html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
-        html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
+        html = html + "<label for='dataTable'> Do you wish to see the data in a graph?</label><br>";
         // html = html + "<p>" + counterValue + "</p>";
 
         // hidden field to save number of dropdowns
@@ -375,6 +439,18 @@ public class PageST3C implements Handler {
                 + "   <button class='showTable' type='submit' class='btn btn-primary'>Get Information</button>";
 
         html = html + "</form>";
+        // test
+        String startYear = context.formParam("StartYear_drop");
+        String timeYears = context.formParam("lengthDropdown");
+        String sortOrder = context.formParam("SortOrder");
+        String dataToShow = context.formParam("dataType");
+        html = html + "<script>";
+        html = html + "   sessionStorage.setItem('startYear', '" + startYear + "');";
+        html = html + "   sessionStorage.setItem('timeYears', '" + timeYears + "');";
+        html = html + "   sessionStorage.setItem('sortOrder', '" + sortOrder + "');";
+        html = html + "   sessionStorage.setItem('dataToShow', '" + dataToShow + "');";
+        html = html + "</script>";
+
         String viewTable = context.formParam("dataTable");
         String startYear1 = context.formParam("StartYear_drop");
         String duration = context.formParam("lengthDropdown");
@@ -388,17 +464,42 @@ public class PageST3C implements Handler {
             String arrayLength = context.formParam("counterValue");
             arrayLengthNum = Integer.parseInt(arrayLength);
         }
+        boolean getGraph = false;
+        boolean error = false;
         ArrayList<String> startYears = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
         startYears.add(context.formParam("StartYear_drop"));
         dataTypes.add(context.formParam("dataType"));
         for (int i = 0; i < arrayLengthNum; i++) {
-            startYears.add(context.formParam("StartYear_drop" + i));
-            dataTypes.add(context.formParam("dataType" + i));
+            if (context.formParam("StartYear_drop" + i) != null) {
+                startYears.add(context.formParam("StartYear_drop" + i));
+            } else {
+                error = true;
+                // startYears.add("0");
+            }
+            if (context.formParam("StartYear_drop" + i) != null) {
+                dataTypes.add(context.formParam("dataType" + i));
+            } else {
+                error = true;
+                // dataTypes.add("0");
+            }
+            // for(int j = 0; j < startYears.size(); j++){
+            // if(startYears.get(j));
+            // }
+        }
 
-            if (startYears.get(i) == null || duration == null || dataTypes.get(i) == null) {
+        for (int i = 0; i < startYears.size(); i++) {
+
+            if (startYears.get(i) == null || startYears.get(i).isEmpty() || duration == null
+                    || dataTypes.get(i) == null || dataTypes.get(i).isEmpty()) {
                 html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
                 getInfo = false;
+                error = true;
+            }
+            if (error == true) {
+                getGraph = false;
+            } else {
+                getGraph = true;
             }
         }
 
@@ -415,8 +516,15 @@ public class PageST3C implements Handler {
             getInfo = false;
         }
 
-        if (viewTable != null && viewTable.equals("seeTable") && getInfo) {
-            html = html + outputTable(startYears, dataTypes, duration, orderBy);
+        if (viewTable != null && viewTable.equals("seeTable") && getInfo == true && startYears != null
+                && dataTypes != null
+                && orderBy != null && duration != null && getGraph == true) {
+
+            html = html + outputTable(startYears, dataTypes, duration, orderBy, "Graph");
+            // html = html + showGraph(startYears, dataTypes, duration, orderBy);
+        } else if (getInfo && startYears != null && dataTypes != null && orderBy != null && duration != null) {
+            html = html + outputTable(startYears, dataTypes, duration, orderBy, "TableOnly");
+            // html = html + showGraph(startYears, dataTypes, duration, orderBy);
         }
 
         // Close Content div
@@ -466,7 +574,7 @@ public class PageST3C implements Handler {
     }
 
     private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration,
-            String orderBy) {
+            String orderBy, String tableGraph) {
         String html = "<div id='tableData'>";
         // testing
         // html = html + "<p>" + startYears.size() + "</p>";
@@ -496,6 +604,9 @@ public class PageST3C implements Handler {
         }
         ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYears,
                 endYears, dataTypes, orderBy);
+        if (tableGraph.equals("Graph")) {
+            html = html + showGraph(WorldData, duration);
+        }
 
         for (int j = 0; j < WorldData.size(); j++) {
             html = html + "<tr> <td>" + WorldData.get(j).getDataType() + "</td> " + "<td>";
@@ -508,6 +619,87 @@ public class PageST3C implements Handler {
         }
 
         html = html + "</table></div>";
+
+        return html;
+    }
+
+    private String showGraph(ArrayList<Climate> WorldData, String duration) {
+        String html = "";
+        // html = html + "<div id='columnchart_values' style=\"width: 900px; height:
+        // 300px;\"></div>";
+        // graph code from google charts
+        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+        html = html + "  <script type='text/javascript'>";
+        html = html + "    google.charts.load('current', {packages:['corechart']});";
+        html = html + "    google.charts.setOnLoadCallback(drawChart);";
+        html = html + "    function drawChart() {";
+        html = html + "      var data = google.visualization.arrayToDataTable([";
+        html = html + "        ['YearRange', 'Change In Average'],";
+        for (int i = 0; i < WorldData.size(); i++) {
+            html = html + "        ['" + WorldData.get(i).getDataType() + "\\n" + WorldData.get(i).getStartYear()
+                    + " - "
+                    + WorldData.get(i).getEndYear()
+                    + "', " + WorldData.get(i).getTempPercent() + "],";
+        }
+        html = html + "      ]);";
+        html = html + "";
+        html = html + "      var view = new google.visualization.DataView(data);";
+        html = html + "      view.setColumns([0, 1, {";
+        html = html + "        calc: function(data, row) {";
+        html = html + "          var value = data.getValue(row, 1) + '.00%';"; // Add the % symbol here
+        html = html + "          if (!Number.isInteger(data.getValue(row, 1))) {";
+        html = html + "            value = data.getValue(row, 1).toFixed(2) + '%';";
+        html = html + "          }";
+        html = html + "          return value;";
+        html = html + "        },";
+        html = html + "        type: 'string',";
+        html = html + "        role: 'annotation'";
+        html = html + "      }]);";
+        html = html + "      var options = {";
+        html = html + "        title: 'Change In Average Temperature Over " + duration + " Years',";
+        html = html + "        width: 600,";
+        html = html + "        height: 300,";
+        html = html + "        bar: {groupWidth: '95%'},";
+        html = html + "        legend: { position: 'none' },";
+        html = html + "        colors: ['#292d6a'],";
+        html = html + "        annotations: {";
+        html = html + "          textStyle: {";
+        html = html + "            fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "          },";
+        html = html + "          format: '##.##%'";
+        html = html + "        },";
+        html = html + "        titleTextStyle: {";
+        html = html + "          fontSize: 18,";
+        html = html + "          fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "        },";
+        html = html + "        hAxis: {";
+        html = html + "          textStyle: {";
+        html = html + "            fontSize: 14,";
+        html = html + "            fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "          }";
+        html = html + "        },";
+        html = html + "        vAxis: {";
+        html = html + "          textStyle: {";
+        html = html + "            fontSize: 14,";
+        html = html + "            fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "          }";
+        html = html + "        },";
+        html = html + "      chartArea: {";
+        html = html + "        left: 35,";
+        html = html + "        top: 30,";
+        html = html + "        right: 0,";
+        html = html + "        width: '70%',";
+        html = html + "        height: '70%'";
+        html = html + "      }";
+        html = html + "      };";
+        html = html
+                + "      var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_values'));";
+        html = html + "      chart.draw(view, options);";
+        html = html + "  }";
+        html = html + "  </script>";
+        html = html
+                + "<div id='columnchart_values' style='padding: 0px; margin-left: 650px; margin-top: -350px; position: absolute; border: 2px solid black; text-align: center;''></div>";
+
         return html;
     }
 }

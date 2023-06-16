@@ -23,291 +23,291 @@ import java.time.Year;
  */
 public class PageIndex implements Handler {
 
-    // URL of this page relative to http://localhost:7001/
-    public static final String URL = "/";
+  // URL of this page relative to http://localhost:7001/
+  public static final String URL = "/";
 
-    @Override
-    public void handle(Context context) throws Exception {
-        // Create a simple HTML webpage in a String
-        String html = "<html>";
+  @Override
+  public void handle(Context context) throws Exception {
+    // Create a simple HTML webpage in a String
+    String html = "<html>";
 
-        // Add some Header information
-        html = html + "<head>" +
-                "<title>Homepage</title>";
+    // Add some Header information
+    html = html + "<head>" +
+        "<title>Homepage</title>";
 
-        // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
-        // adds a cool icon on the nav menu
-        html = html
-                + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-        html = html + "</head>";
+    // Add some CSS (external file)
+    html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+    // adds a cool icon on the nav menu
+    html = html
+        + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
+    html = html + "</head>";
 
-        // Add the body
-        html = html + "<body>";
+    // Add the body
+    html = html + "<body>";
 
-        // Add header content block with logo on the right
-        html = html
-                + """
-                                <div class='header'>
-                                <h1>
-                                <a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                                    Climate Change Awareness
-                                </h1>
-                            </div>
-                        """;
+    // Add header content block with logo on the right
+    html = html
+        + """
+                    <div class='header'>
+                    <h1>
+                    <a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                        Climate Change Awareness
+                    </h1>
+                </div>
+            """;
 
-        // Add the topnav
-        html = html + """
-                    <div class='topnav'>
-                    <a href='/'>Home</a>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Shallow View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                    <a href='page2B.html'>Temperature Change By State/City</a>
-                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>In-Depth View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>About Us
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='mission.html#persona-section'>Personas</a>
-                    <a href='mission.html#aboutUs-section'>Contact Us</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Help & Support
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='PageHelp.html'>Page Assistance</a>
-                    <a href='PageHelp.html#faq-section'>FAQ</a>
-                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                    </div>
-                    </div>
-                    </div>
-                """;
+    // Add the topnav
+    html = html + """
+            <div class='topnav'>
+            <a href='/'>Home</a>
+            <div class='dropDown'>
+            <button class='dropbtn'>Shallow View Of Climate Change
+            <i class='fa fa-caret-down'></i>
+            </button>
+            <div class='dropdown-content'>
+            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+            <a href='page2B.html'>Temperature Change By State/City</a>
+            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+            </div>
+            </div>
+            <div class='dropDown'>
+            <button class='dropbtn'>In-Depth View Of Climate Change
+            <i class='fa fa-caret-down'></i>
+            </button>
+            <div class='dropdown-content'>
+            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+            </div>
+            </div>
+            <div class='dropDown'>
+            <button class='dropbtn'>About Us
+            <i class='fa fa-caret-down'></i>
+            </button>
+            <div class='dropdown-content'>
+            <a href='mission.html'>Our Mission</a>
+            <a href='mission.html#persona-section'>Personas</a>
+            <a href='mission.html#aboutUs-section'>Contact Us</a>
+            </div>
+            </div>
+            <div class='dropDown'>
+            <button class='dropbtn'>Help & Support
+            <i class='fa fa-caret-down'></i>
+            </button>
+            <div class='dropdown-content'>
+            <a href='PageHelp.html'>Page Assistance</a>
+            <a href='PageHelp.html#faq-section'>FAQ</a>
+            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+            </div>
+            </div>
+            </div>
+        """;
 
-        // Add Div for page Content
-        html = html + "<div class='content'>";
+    // Add Div for page Content
+    html = html + "<div class='content'>";
 
-        // Add HTML for heading
-        html = html + "<h2>Introduction to Climate Change Awareness</h2>";
+    // Add HTML for heading
+    html = html + "<h2>Introduction to Climate Change Awareness</h2>";
 
-        // Add HTML paragraph description
-        html = html
-                + "<p>Climate change is a growing issue for not only the world but for your futures and lives. Throughout this website we are giving you multiple tools to research and view this data for yourselves.</p>";
+    // Add HTML paragraph description
+    html = html
+        + "<p>Climate change is a growing issue for not only the world but for your futures and lives. Throughout this website we are giving you multiple tools to research and view this data for yourselves.</p>";
 
-        JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<Climate> populationTempRanges = jdbc.getPopulationTempRanges();
-        int firstYear = populationTempRanges.get(0).getYear();
-        String firstPopulation = String.format("%,d", populationTempRanges.get(0).getPopulationLevel());
-        float firstTemp = populationTempRanges.get(0).getAverageTemperature();
-        int secondYear = populationTempRanges.get(1).getYear();
-        String secondPopulation = String.format("%,d", populationTempRanges.get(1).getPopulationLevel());
-        float secondTemp = populationTempRanges.get(1).getAverageTemperature();
+    JDBCConnection jdbc = new JDBCConnection();
+    ArrayList<Climate> populationTempRanges = jdbc.getPopulationTempRanges();
+    int firstYear = populationTempRanges.get(0).getYear();
+    String firstPopulation = String.format("%,d", populationTempRanges.get(0).getPopulationLevel());
+    float firstTemp = populationTempRanges.get(0).getAverageTemperature();
+    int secondYear = populationTempRanges.get(1).getYear();
+    String secondPopulation = String.format("%,d", populationTempRanges.get(1).getPopulationLevel());
+    float secondTemp = populationTempRanges.get(1).getAverageTemperature();
 
-        ArrayList<Climate> tempYearRange = jdbc.getGlobalTempYears();
+    ArrayList<Climate> tempYearRange = jdbc.getGlobalTempYears();
 
-        int temperatureYears = tempYearRange.get(tempYearRange.size() - 1).getYear() - tempYearRange.get(0).getYear();
+    int temperatureYears = tempYearRange.get(tempYearRange.size() - 1).getYear() - tempYearRange.get(0).getYear();
 
-        int populationYears = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
+    int populationYears = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
 
-        // Add HTML data specifications(1A)
-        html = html
-                + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at "
-                +
-                "<strong>" + firstYear + "</strong> where the global population was <strong>" + firstPopulation
-                + "</strong> and the average temperature was " +
-                "<strong>" + firstTemp + "</strong>. It then ends at <strong>" + secondYear
-                + "</strong> where the global population was <strong>" + secondPopulation +
-                "</strong> and the average temperature was <strong>" + secondTemp + "</strong>. There is <strong>"
-                + populationYears +
-                "</strong> years of data for global population, however, there is <strong>" + temperatureYears
-                + "</strong> years of data for global temperature as more data is available.</p>";
+    // Add HTML data specifications(1A)
+    html = html
+        + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at "
+        +
+        "<strong>" + firstYear + "</strong> where the global population was <strong>" + firstPopulation
+        + "</strong> and the average temperature was " +
+        "<strong>" + firstTemp + "</strong>. It then ends at <strong>" + secondYear
+        + "</strong> where the global population was <strong>" + secondPopulation +
+        "</strong> and the average temperature was <strong>" + secondTemp + "</strong>. There is <strong>"
+        + populationYears +
+        "</strong> years of data for global population, however, there is <strong>" + temperatureYears
+        + "</strong> years of data for global temperature as more data is available.</p>";
 
-        html = html + "<h3>Climate Change Data Overview</h3>";
+    html = html + "<h3>Climate Change Data Overview</h3>";
 
-        // Add table for global temperature and population ranges
-        html = html
-                + """
-                        <table>
-                              <tr>
-                                <th>Year</th>
-                                <th>Population</th>
-                                <th>Average Temperature</th>
-                                <th>Minimum Temperature</th>
-                                <th>Maximum Temperature</th>
-                              </tr>
-                              """;
+    // Add table for global temperature and population ranges
+    html = html
+        + """
+            <table>
+                  <tr>
+                    <th>Year</th>
+                    <th>Population</th>
+                    <th>Average Temperature</th>
+                    <th>Minimum Temperature</th>
+                    <th>Maximum Temperature</th>
+                  </tr>
+                  """;
 
-        for (int i = 0; i < populationTempRanges.size(); ++i) {
-            html = html + " <tr> <td>" + populationTempRanges.get(i).getYear() + "</td> " + "<td>"
-                    + String.format("%,d", populationTempRanges.get(i).getPopulationLevel()) + "</td>" + "<td>"
-                    + populationTempRanges.get(i).getAverageTemperature() + "</td>" + "<td>"
-                    + populationTempRanges.get(i).getMinimumTemperature() + "</td>" + "<td>"
-                    + populationTempRanges.get(i).getMaximumTemperature() + "</td> </tr>";
-        }
-
-        html = html + "</table>";
-
-        // Close Content div
-        // moved further down
-        // html = html + "</div>";
-
-        // Bar chart for temperature range
-        html = html + "<div id='barchart'></div>";
-
-        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
-        html = html + "<script type='text/javascript'>";
-        html = html + "google.charts.load('current', {'packages':['corechart']});";
-        html = html + "google.charts.setOnLoadCallback(drawChart);";
-        html = html + "function drawChart() {";
-        html = html + "var data = google.visualization.arrayToDataTable([";
-        html = html + "['Year', 'Population'],";
-        html = html + "[" + firstYear + ", " + populationTempRanges.get(0).getPopulationLevel() + "],";
-        html = html + "[" + secondYear + ", " + populationTempRanges.get(1).getPopulationLevel() + "],";
-        html = html + "]);";
-        html = html + "var options = {'title':'Population Change', 'width':550, 'height':400};";
-        html = html + "var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));";
-        html = html + "chart.draw(data, options);";
-        html = html + "}";
-        html = html + "</script>";
-
-        // Testing for the extension graph we need to do
-        jdbc = new JDBCConnection();
-        ArrayList<Climate> Countries = jdbc.getCountryClimateData();
-        ArrayList<Climate> Years = jdbc.getCountryYearsOfData();
-        int currentYearIndex = 0;
-        html = html + "<form action='/' method='post'>";
-        if (context.formParam("year_dropdown") != null) {
-            html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
-                    context.formParam("year_dropdown") + ".</h4>";
-        } else {
-            html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
-                    Years.get(0).getYear() + ".</h4>";
-        }
-
-        html = html + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
-
-        // Create dropdown menu for selecting year
-        html = html + "<select id='year_dropdown' name='year_dropdown'>";
-        for (Climate year : Years) {
-            html = html + "<option value='" + year.getYear() + "'>" + year.getYear() + "</option>";
-        }
-        html = html + "</select>";
-
-        // Add submit button to update the graph
-        html = html + "<button onclick='submitForm()'>Submit</button>";
-        html = html + "</form>";
-
-        String Year = context.formParam("year_dropdown");
-        if (Year == null) {
-            Year = "1750"; // Set a default value if the selected value is null
-        }
-        html = html + "<div id='regions_div'></div>";
-        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
-        html = html + "<script type='text/javascript'>";
-        html = html + "google.charts.load('current', { 'packages':['geochart'] });";
-        html = html + "google.charts.setOnLoadCallback(drawRegionsMap);";
-        html = html + "var currentYearIndex = " + currentYearIndex + ";";
-        html = html + "function submitForm() {";
-        html = html + "var dropdown = document.getElementById('year_dropdown');";
-        html = html + "currentYearIndex = dropdown.selectedIndex;";
-        html = html + "var currentYear = dropdown.value;";
-        html = html
-                + "document.getElementById('year_heading').innerText = 'Average Temperature Of The World In ' + currentYear + '.';";
-        html = html + "drawRegionsMap();";
-        html = html + "}";
-        html = html + "function drawRegionsMap() {";
-        html = html + "var data = google.visualization.arrayToDataTable([";
-        html = html + "['Country', 'Average Temperature'],";
-        for (Climate country : Countries) {
-            if (Year != null) {
-
-                if (country.getYear() == Integer.parseInt(Year)) {
-                    html = html + "['" + country.getCountryName() + "', " + country.getAverageTemperature() + "],";
-                }
-                // else {
-                // html = html + "['" + country.getCountryName() + "', " +
-                // country.getAverageTemperature() + "],";
-                // }
-            } else {
-                html = html + "['" + Countries.get(0).getCountryName() + "', "
-                        + Countries.get(0).getAverageTemperature() + "],";
-            }
-        }
-        html = html + "]);";
-        html = html + "var options = {colorAxis: {colors: ['#00FF00', '#FFFF00', '#FF0000']},};";
-        html = html + "var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));";
-        html = html + "chart.draw(data, options);";
-        html = html + "}";
-        html = html + "</script>";
-
-        // end content section
-        html = html + "</div>";
-
-        // *Testing */
-        // html = html + "<p>" + currentYearIndex + "</p>";
-
-        // html = html + "<p>" + Year + "</p>";
-
-        // TESTING html = html + "<p>" + Countries.get(0).getYear() + "</p>";
-        // Footer
-        html = html
-                + """
-                            <div class='footer'>
-                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
-                        <div class='footerBlock'>
-                                    <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
-                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                                      <a href='page2B.html'>Temperature Change By State/City</a>
-                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                                    </div>
-                                    <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
-                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                                    </div>
-                                    <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
-                                      <a href='mission.html'>Our Mission</a>
-                                      <a href='mission.html#persona-section'>Personas</a>
-                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
-                                    </div>
-                                    <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
-                                      <a href='PageHelp.html'>Page Assistance</a>
-                                      <a href='PageHelp.html#faq-section'>FAQ</a>
-                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                                    </div>
-                                  </div>
-                                </div>
-                                """;
-
-        // Finish the HTML webpage
-        html = html + "</body>" + "</html>";
-
-        // DO NOT MODIFY THIS
-        // Makes Javalin render the webpage
-        context.html(html);
+    for (int i = 0; i < populationTempRanges.size(); ++i) {
+      html = html + " <tr> <td>" + populationTempRanges.get(i).getYear() + "</td> " + "<td>"
+          + String.format("%,d", populationTempRanges.get(i).getPopulationLevel()) + "</td>" + "<td>"
+          + populationTempRanges.get(i).getAverageTemperature() + "</td>" + "<td>"
+          + populationTempRanges.get(i).getMinimumTemperature() + "</td>" + "<td>"
+          + populationTempRanges.get(i).getMaximumTemperature() + "</td> </tr>";
     }
+
+    html = html + "</table>";
+
+    // Close Content div
+    // moved further down
+    // html = html + "</div>";
+
+    // Bar chart for temperature range
+    html = html + "<div id='barchart'></div>";
+
+    html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+    html = html + "<script type='text/javascript'>";
+    html = html + "google.charts.load('current', {'packages':['corechart']});";
+    html = html + "google.charts.setOnLoadCallback(drawChart);";
+    html = html + "function drawChart() {";
+    html = html + "var data = google.visualization.arrayToDataTable([";
+    html = html + "['Year', 'Population'],";
+    html = html + "[" + firstYear + ", " + populationTempRanges.get(0).getPopulationLevel() + "],";
+    html = html + "[" + secondYear + ", " + populationTempRanges.get(1).getPopulationLevel() + "],";
+    html = html + "]);";
+    html = html + "var options = {'title':'Population Change', 'width':550, 'height':400};";
+    html = html + "var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));";
+    html = html + "chart.draw(data, options);";
+    html = html + "}";
+    html = html + "</script>";
+
+    // Testing for the extension graph we need to do
+    jdbc = new JDBCConnection();
+    ArrayList<Climate> Countries = jdbc.getCountryClimateData();
+    ArrayList<Climate> Years = jdbc.getCountryYearsOfData();
+    int currentYearIndex = 0;
+    html = html + "<form action='/' method='post'>";
+    if (context.formParam("year_dropdown") != null) {
+      html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
+          context.formParam("year_dropdown") + ".</h4>";
+    } else {
+      html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
+          Years.get(0).getYear() + ".</h4>";
+    }
+
+    html = html + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
+
+    // Create dropdown menu for selecting year
+    html = html + "<select id='year_dropdown' name='year_dropdown'>";
+    for (Climate year : Years) {
+      html = html + "<option value='" + year.getYear() + "'>" + year.getYear() + "</option>";
+    }
+    html = html + "</select>";
+
+    // Add submit button to update the graph
+    html = html + "<button class='showGraph' onclick='submitForm()'>Submit</button>";
+    html = html + "</form>";
+
+    String Year = context.formParam("year_dropdown");
+    if (Year == null) {
+      Year = "1750"; // Set a default value if the selected value is null
+    }
+    html = html + "<div id='regions_div'></div>";
+    html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+    html = html + "<script type='text/javascript'>";
+    html = html + "google.charts.load('current', { 'packages':['geochart'] });";
+    html = html + "google.charts.setOnLoadCallback(drawRegionsMap);";
+    html = html + "var currentYearIndex = " + currentYearIndex + ";";
+    html = html + "function submitForm() {";
+    html = html + "var dropdown = document.getElementById('year_dropdown');";
+    html = html + "currentYearIndex = dropdown.selectedIndex;";
+    html = html + "var currentYear = dropdown.value;";
+    html = html
+        + "document.getElementById('year_heading').innerText = 'Average Temperature Of The World In ' + currentYear + '.';";
+    html = html + "drawRegionsMap();";
+    html = html + "}";
+    html = html + "function drawRegionsMap() {";
+    html = html + "var data = google.visualization.arrayToDataTable([";
+    html = html + "['Country', 'Average Temperature'],";
+    for (Climate country : Countries) {
+      if (Year != null) {
+
+        if (country.getYear() == Integer.parseInt(Year)) {
+          html = html + "['" + country.getCountryName() + "', " + country.getAverageTemperature() + "],";
+        }
+        // else {
+        // html = html + "['" + country.getCountryName() + "', " +
+        // country.getAverageTemperature() + "],";
+        // }
+      } else {
+        html = html + "['" + Countries.get(0).getCountryName() + "', "
+            + Countries.get(0).getAverageTemperature() + "],";
+      }
+    }
+    html = html + "]);";
+    html = html + "var options = {colorAxis: {colors: ['#00FF00', '#FFFF00', '#FF0000']},};";
+    html = html + "var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));";
+    html = html + "chart.draw(data, options);";
+    html = html + "}";
+    html = html + "</script>";
+
+    // end content section
+    html = html + "</div>";
+
+    // *Testing */
+    // html = html + "<p>" + currentYearIndex + "</p>";
+
+    // html = html + "<p>" + Year + "</p>";
+
+    // TESTING html = html + "<p>" + Countries.get(0).getYear() + "</p>";
+    // Footer
+    html = html
+        + """
+                <div class='footer'>
+             <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+            <div class='footerBlock'>
+                        <div class='footerColumn'>
+                          <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                          <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                          <a href='page2B.html'>Temperature Change By State/City</a>
+                          <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                        </div>
+                        <div class='footerColumn'>
+                          <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                          <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                          <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                          <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                        </div>
+                        <div class='footerColumn'>
+                          <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                          <a href='mission.html'>Our Mission</a>
+                          <a href='mission.html#persona-section'>Personas</a>
+                          <a href='mission.html#aboutUs-section'>Contact Us</a>
+                        </div>
+                        <div class='footerColumn'>
+                          <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                          <a href='PageHelp.html'>Page Assistance</a>
+                          <a href='PageHelp.html#faq-section'>FAQ</a>
+                          <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                        </div>
+                      </div>
+                    </div>
+                    """;
+
+    // Finish the HTML webpage
+    html = html + "</body>" + "</html>";
+
+    // DO NOT MODIFY THIS
+    // Makes Javalin render the webpage
+    context.html(html);
+  }
 
 }

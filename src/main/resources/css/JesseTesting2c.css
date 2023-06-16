@@ -253,6 +253,29 @@ text-align: left;
    outline: none;
   box-shadow: 0 0 0 3px #272760;
 }
+.showGraph{
+  margin-left: 5px;
+  
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  background-color: #292d6a;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.showGraph:hover {
+  background-color: #40407a;
+}
+.showGraph:focus {
+  outline: none;
+ box-shadow: 0 0 0 3px #272760;
+}
 
 
 .content h2 {
