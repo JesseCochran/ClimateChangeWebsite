@@ -104,7 +104,36 @@ public class PageST2A implements Handler {
                     </div>
                     </div>
                 """;
+        html = html + "<script>";
+        // take to help page
+        html = html + """
 
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """;
+        // take to home page
+        html = html + """
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """;
+        html = html + "</script>";
         // Add Div for page Content
         html = html + "<div class='content'>";
 
@@ -441,7 +470,8 @@ public class PageST2A implements Handler {
         float squareSumY = (startTemp * startTemp) + (endTemp * endTemp);
 
         float numerator = (n * sumXY) - (sumX * sumY);
-        float denominator = (float) (Math.sqrt(((n * squareSumX) - (sumX * sumX)) * ((n * squareSumY) - (sumY * sumY))));
+        float denominator = (float) (Math
+                .sqrt(((n * squareSumX) - (sumX * sumX)) * ((n * squareSumY) - (sumY * sumY))));
         corr = numerator / denominator;
 
         return corr;
