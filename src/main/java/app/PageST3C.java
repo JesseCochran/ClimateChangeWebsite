@@ -147,16 +147,30 @@ public class PageST3C implements Handler {
         html = html + "       return true;";
         html = html + "   }";
         html = html + " window.onload = function() {";
-        html = html + " var startYear = sessionStorage.getItem('startYear');";
-        html = html + " var timeYears = sessionStorage.getItem('timeYears');";
-        html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
-        html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
-        html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
-        html = html + " if (timeYears) document.getElementById('timeYears_drop').value = timeYears;";
+        // html = html + " var startYear = sessionStorage.getItem('startYear');";
+        // html = html + " var timeYears = sessionStorage.getItem('timeYears');";
+        // html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
+        // html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
+        // html = html + " if (startYear)
+        // document.getElementById('StartYear_drop').value = startYear;";
+        // html = html + " if (timeYears)
+        // document.getElementById('timeYears_drop').value = timeYears;";
+        // html = html
+        // + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' +
+        // sortOrder + ']').checked = true;";
+        // html = html + " if (dataToShow)
+        // document.getElementById('TempSelection_drop').value = dataToShow;";
+        // html = html + " }";
+        html = html + "       var startYear = sessionStorage.getItem('startYear');";
+        html = html + "       var timeYears = sessionStorage.getItem('timeYears');";
+        html = html + "       var sortOrder = sessionStorage.getItem('sortOrder');";
+        html = html + "       var dataToShow = sessionStorage.getItem('dataToShow');";
+        html = html + "       if (startYear) document.getElementById('StartYear_drop').value = startYear;";
+        html = html + "       if (timeYears) document.getElementById('lengthDropdown').value = timeYears;";
         html = html
-                + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
-        html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
-        html = html + " }";
+                + "       if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
+        html = html + "       if (dataToShow) document.getElementById('dataType').value = dataToShow;";
+        html = html + "   }";
         html = html + "</script>";
 
         // reload/clear button
@@ -259,6 +273,10 @@ public class PageST3C implements Handler {
 
         // Event listener for length dropdown
         html = html + "lengthDropdown.addEventListener('change', function() {";
+        html = html + "    populateStartYearOptions();";
+        html = html + "});";
+
+        html = html + "window.addEventListener('load', function() {";
         html = html + "    populateStartYearOptions();";
         html = html + "});";
 
@@ -382,6 +400,18 @@ public class PageST3C implements Handler {
                 + "   <button class='showTable' type='submit' class='btn btn-primary'>Get Information</button>";
 
         html = html + "</form>";
+        // test
+        String startYear = context.formParam("StartYear_drop");
+        String timeYears = context.formParam("lengthDropdown");
+        String sortOrder = context.formParam("SortOrder");
+        String dataToShow = context.formParam("dataType");
+        html = html + "<script>";
+        html = html + "   sessionStorage.setItem('startYear', '" + startYear + "');";
+        html = html + "   sessionStorage.setItem('timeYears', '" + timeYears + "');";
+        html = html + "   sessionStorage.setItem('sortOrder', '" + sortOrder + "');";
+        html = html + "   sessionStorage.setItem('dataToShow', '" + dataToShow + "');";
+        html = html + "</script>";
+
         String viewTable = context.formParam("dataTable");
         String startYear1 = context.formParam("StartYear_drop");
         String duration = context.formParam("lengthDropdown");
@@ -424,6 +454,7 @@ public class PageST3C implements Handler {
 
         if (viewTable != null && viewTable.equals("seeTable") && getInfo) {
             html = html + outputTable(startYears, dataTypes, duration, orderBy);
+            // html = html + showGraph(startYears, dataTypes, duration, orderBy);
         }
 
         // Close Content div
@@ -503,6 +534,7 @@ public class PageST3C implements Handler {
         }
         ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYears,
                 endYears, dataTypes, orderBy);
+        html = html + showGraph(WorldData, duration);
 
         for (int j = 0; j < WorldData.size(); j++) {
             html = html + "<tr> <td>" + WorldData.get(j).getDataType() + "</td> " + "<td>";
@@ -515,6 +547,87 @@ public class PageST3C implements Handler {
         }
 
         html = html + "</table></div>";
+
+        return html;
+    }
+
+    private String showGraph(ArrayList<Climate> WorldData, String duration) {
+        String html = "";
+        // html = html + "<div id='columnchart_values' style=\"width: 900px; height:
+        // 300px;\"></div>";
+        // graph code from google charts
+        html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
+        html = html + "  <script type='text/javascript'>";
+        html = html + "    google.charts.load('current', {packages:['corechart']});";
+        html = html + "    google.charts.setOnLoadCallback(drawChart);";
+        html = html + "    function drawChart() {";
+        html = html + "      var data = google.visualization.arrayToDataTable([";
+        html = html + "        ['YearRange', 'Change In Average'],";
+        for (int i = 0; i < WorldData.size(); i++) {
+            html = html + "        ['" + WorldData.get(i).getDataType() + "\\n" + WorldData.get(i).getStartYear()
+                    + " - "
+                    + WorldData.get(i).getEndYear()
+                    + "', " + WorldData.get(i).getTempPercent() + "],";
+        }
+        html = html + "      ]);";
+        html = html + "";
+        html = html + "      var view = new google.visualization.DataView(data);";
+        html = html + "      view.setColumns([0, 1, {";
+        html = html + "        calc: function(data, row) {";
+        html = html + "          var value = data.getValue(row, 1) + '.00%';"; // Add the % symbol here
+        html = html + "          if (!Number.isInteger(data.getValue(row, 1))) {";
+        html = html + "            value = data.getValue(row, 1).toFixed(2) + '%';";
+        html = html + "          }";
+        html = html + "          return value;";
+        html = html + "        },";
+        html = html + "        type: 'string',";
+        html = html + "        role: 'annotation'";
+        html = html + "      }]);";
+        html = html + "      var options = {";
+        html = html + "        title: 'Change In Average Temperature Over " + duration + " Years',";
+        html = html + "        width: 600,";
+        html = html + "        height: 300,";
+        html = html + "        bar: {groupWidth: '95%'},";
+        html = html + "        legend: { position: 'none' },";
+        html = html + "        colors: ['#292d6a'],";
+        html = html + "        annotations: {";
+        html = html + "          textStyle: {";
+        html = html + "            fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "          },";
+        html = html + "          format: '##.##%'";
+        html = html + "        },";
+        html = html + "        titleTextStyle: {";
+        html = html + "          fontSize: 18,";
+        html = html + "          fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "        },";
+        html = html + "        hAxis: {";
+        html = html + "          textStyle: {";
+        html = html + "            fontSize: 14,";
+        html = html + "            fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "          }";
+        html = html + "        },";
+        html = html + "        vAxis: {";
+        html = html + "          textStyle: {";
+        html = html + "            fontSize: 14,";
+        html = html + "            fontName: 'Roboto, Arial, sans-serif'";
+        html = html + "          }";
+        html = html + "        },";
+        html = html + "      chartArea: {";
+        html = html + "        left: 30,";
+        html = html + "        top: 30,";
+        html = html + "        right: 0,";
+        html = html + "        width: '70%',";
+        html = html + "        height: '70%'";
+        html = html + "      }";
+        html = html + "      };";
+        html = html
+                + "      var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_values'));";
+        html = html + "      chart.draw(view, options);";
+        html = html + "  }";
+        html = html + "  </script>";
+        html = html
+                + "<div id='columnchart_values' style='padding: 0px; margin-left: 650px; margin-top: -350px; position: absolute; border: 2px solid black; text-align: center;''></div>";
+
         return html;
     }
 }
