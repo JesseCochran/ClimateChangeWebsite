@@ -109,7 +109,7 @@ public class PageST3C implements Handler {
         // Explanation of land ocean temp
         html = html
                 + """
-                        <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
+                        <h2>Annual Global Land-Ocean Temperature Records Compared To Global Land Temperature Records</h2>
                         <p>Analysing the relationship between global land-ocean temperatures and land temperatures can help determine long term temperature trends on a global scale.<br>
                         The reason for comparing global land-ocean with land temperature data is that water has a higher heat capacity than land and as such it takes longer to heat up and cool down thus resulting in a slower temperature change. <br>
                         This can than lead to much more useful results then otherwise just comparing a time period of land-ocean data to another time period, as would just comparing land temperature to land temperature. </p>
@@ -191,6 +191,45 @@ public class PageST3C implements Handler {
         html = html + "       document.getElementById('tableData').innerHTML = '';";
         html = html + "       return false;";
         html = html + "   }";
+
+        // key press to reload/clear values
+        html = html + """
+                          document.addEventListener('keydown', function(event) {
+                // Check if the C key (key code 67) is pressed
+                if (event.keyCode == 67) {
+                  reload();
+                }
+                });
+                          """;
+
+        // take to help page
+        html = html + """
+
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """;
+        // take to home page
+        html = html + """
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """;
         html = html + "</script>";
 
         html = html + " <div class='container'>";
