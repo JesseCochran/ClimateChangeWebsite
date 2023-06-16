@@ -387,7 +387,7 @@ public class PageST3C implements Handler {
 
         // View table
         html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
-        html = html + "<label for='dataTable'> Do you wish to see the data in a table?</label><br>";
+        html = html + "<label for='dataTable'> Do you wish to see the data in a graph?</label><br>";
         // html = html + "<p>" + counterValue + "</p>";
 
         // hidden field to save number of dropdowns
@@ -437,6 +437,7 @@ public class PageST3C implements Handler {
                 html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
                 getInfo = false;
             }
+
         }
 
         if (startYear1 == null || duration == null) {
@@ -452,8 +453,12 @@ public class PageST3C implements Handler {
             getInfo = false;
         }
 
-        if (viewTable != null && viewTable.equals("seeTable") && getInfo) {
-            html = html + outputTable(startYears, dataTypes, duration, orderBy);
+        if (viewTable != null && viewTable.equals("seeTable") && getInfo && startYears != null && dataTypes != null
+                && orderBy != null && duration != null) {
+            html = html + outputTable(startYears, dataTypes, duration, orderBy, "Graph");
+            // html = html + showGraph(startYears, dataTypes, duration, orderBy);
+        } else if (getInfo && startYears != null && dataTypes != null && orderBy != null && duration != null) {
+            html = html + outputTable(startYears, dataTypes, duration, orderBy, "TableOnly");
             // html = html + showGraph(startYears, dataTypes, duration, orderBy);
         }
 
@@ -504,7 +509,7 @@ public class PageST3C implements Handler {
     }
 
     private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration,
-            String orderBy) {
+            String orderBy, String tableGraph) {
         String html = "<div id='tableData'>";
         // testing
         // html = html + "<p>" + startYears.size() + "</p>";
@@ -534,7 +539,9 @@ public class PageST3C implements Handler {
         }
         ArrayList<Climate> WorldData = jdbc.getWorldLandOceanAverageTempOverPeriod(startYears,
                 endYears, dataTypes, orderBy);
-        html = html + showGraph(WorldData, duration);
+        if (tableGraph.equals("Graph")) {
+            html = html + showGraph(WorldData, duration);
+        }
 
         for (int j = 0; j < WorldData.size(); j++) {
             html = html + "<tr> <td>" + WorldData.get(j).getDataType() + "</td> " + "<td>";
@@ -613,7 +620,7 @@ public class PageST3C implements Handler {
         html = html + "          }";
         html = html + "        },";
         html = html + "      chartArea: {";
-        html = html + "        left: 30,";
+        html = html + "        left: 35,";
         html = html + "        top: 30,";
         html = html + "        right: 0,";
         html = html + "        width: '70%',";
