@@ -425,19 +425,43 @@ public class PageST3C implements Handler {
             String arrayLength = context.formParam("counterValue");
             arrayLengthNum = Integer.parseInt(arrayLength);
         }
+        boolean getGraph = false;
+        boolean error = false;
         ArrayList<String> startYears = new ArrayList<String>();
         ArrayList<String> dataTypes = new ArrayList<String>();
         startYears.add(context.formParam("StartYear_drop"));
         dataTypes.add(context.formParam("dataType"));
         for (int i = 0; i < arrayLengthNum; i++) {
-            startYears.add(context.formParam("StartYear_drop" + i));
-            dataTypes.add(context.formParam("dataType" + i));
+            if (context.formParam("StartYear_drop" + i) != null) {
+                startYears.add(context.formParam("StartYear_drop" + i));
+            } else {
+                error = true;
+                // startYears.add("0");
+            }
+            if (context.formParam("StartYear_drop" + i) != null) {
+                dataTypes.add(context.formParam("dataType" + i));
+            } else {
+                error = true;
+                // dataTypes.add("0");
+            }
+            // for(int j = 0; j < startYears.size(); j++){
+            // if(startYears.get(j));
+            // }
+        }
 
-            if (startYears.get(i) == null || duration == null || dataTypes.get(i) == null) {
+        for (int i = 0; i < startYears.size(); i++) {
+
+            if (startYears.get(i) == null || startYears.get(i).isEmpty() || duration == null
+                    || dataTypes.get(i) == null || dataTypes.get(i).isEmpty()) {
                 html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
                 getInfo = false;
+                error = true;
             }
-
+            if (error == true) {
+                getGraph = false;
+            } else {
+                getGraph = true;
+            }
         }
 
         if (startYear1 == null || duration == null) {
@@ -453,8 +477,10 @@ public class PageST3C implements Handler {
             getInfo = false;
         }
 
-        if (viewTable != null && viewTable.equals("seeTable") && getInfo && startYears != null && dataTypes != null
-                && orderBy != null && duration != null) {
+        if (viewTable != null && viewTable.equals("seeTable") && getInfo == true && startYears != null
+                && dataTypes != null
+                && orderBy != null && duration != null && getGraph == true) {
+
             html = html + outputTable(startYears, dataTypes, duration, orderBy, "Graph");
             // html = html + showGraph(startYears, dataTypes, duration, orderBy);
         } else if (getInfo && startYears != null && dataTypes != null && orderBy != null && duration != null) {
