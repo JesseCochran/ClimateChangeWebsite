@@ -441,7 +441,7 @@ public class PageST2A implements Handler {
         float squareSumY = (startTemp * startTemp) + (endTemp * endTemp);
 
         float numerator = (n * sumXY) - (sumX * sumY);
-        float denominator = (float) (Math.sqrt((n * squareSumX - sumX * sumX) * (n * squareSumY - sumY * sumY)));
+        float denominator = (float) (Math.sqrt(((n * squareSumX) - (sumX * sumX)) * ((n * squareSumY) - (sumY * sumY))));
         corr = numerator / denominator;
 
         return corr;

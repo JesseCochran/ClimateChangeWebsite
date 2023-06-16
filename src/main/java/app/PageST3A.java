@@ -111,6 +111,45 @@ public class PageST3A implements Handler {
                 """;
 
         html = html + "<form action='/page2A.html' method='post'>";
+        
+        //geo location drop down
+        html = html + "<div class='form-group'>";
+        html = html + "     <label for='GeoLocation_drop'>Select Global, Country, State or City:</label>";
+        html = html + "     <select id='GeoLocation_drop' name='GeoLocation_drop' size='1'>";
+        html = html + "     <option>Global</option>";
+        html = html + "     <option>Country</option>";
+        html = html + "     <option>State</option>";
+        html = html + "     <option>City</option>";
+        html = html + "     </select>";
+
+        //country select dropdown 
+        html = html + "<p class='hide-element'>";
+        html = html + "     <label for='Country_drop'>Select Country:</label>";
+        html = html + "     <select id='Country_drop' name='Country_drop' size='1'>";
+        //insert loop that enters CountryName's
+        html = html + "     </select>";
+        html = html + "</p>";
+
+        //state select dropdown
+        html = html + "<p class='hide-element'>";
+        html = html + "     <label for='State_drop'>Select State:</label>";
+        html = html + "     <select id='State_drop' name='State_drop' size='1'>";
+        //insert loop that enters StateName's
+        html = html + "     </select>";
+        html = html + "</p>";
+
+        //city select dropdown
+        html = html + "<p class='hide-element'>";
+        html = html + "     <label for='Cty_drop'>Select State:</label>";
+        html = html + "     <select id='City_drop' name='City_drop' size='1'>";
+        //insert loop that enters CityName's
+        html = html + "     </select>";
+        html = html + "</p>";
+        html = html + "</div>";
+        
+
+
+        html = html + "</form>";
 
         // Close Content div
         html = html + "</div>";
