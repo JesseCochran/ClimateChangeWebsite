@@ -59,6 +59,13 @@ text-align: left;
    font-family: "Roboto", Arial, sans-serif;
    font-size: 18px;
 }
+tr:hover {
+  background-color: #6cb358;
+
+}
+tr:active {
+  background-color: #6cb358;
+}
 
 
 
@@ -71,12 +78,22 @@ text-align: left;
    margin-top: 5px;
    position: fixed;
    overflow:visible;
-   
-   background-color: #333;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   background-color: #2b3237;
    text-align: center;
    display: flex;
   justify-content: center;
  }
+ .SideNavBar {
+  width: 10%;
+  z-index: 9998;
+  margin-top: 5px;
+  position: fixed;
+  overflow:visible;
+  text-align: center;
+  display: flex;
+ justify-content: center;
+}
  
  /* Style the topnav links */
  .topnav a {
@@ -167,7 +184,7 @@ text-align: left;
    position: relative;
    padding-top: 100px;
    margin-top: 100px;
-   background-color: #f1f1f1;
+   background-color: white;
    padding: 50px;
    z-index: 9994;
    /* Controls how far down the footer is
@@ -176,10 +193,16 @@ text-align: left;
  }
  .footer a {
   text-decoration: none;
-  color: #292d6a;
+  color: white;
+  padding-bottom: 8px;
 }
 .footer a:visited {
-  color: #292d6a;
+  color: white;
+}
+.footer p{
+  color: #818181;
+  font-size: 22px;
+  font-weight: bold;
 }
 .footer a:hover{
   color: #6cb358;
@@ -188,9 +211,9 @@ text-align: left;
  .footer {
   font-family: "Roboto", Arial, sans-serif;
    font-size: 18px;
-   background-color: #cccccc;
+   background-color: #2b3237;
    padding: 10px;
-
+  color: white;
    display: flex;
    flex-direction: column;
    justify-content: flex-end;
