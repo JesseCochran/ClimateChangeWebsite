@@ -165,6 +165,8 @@ public class PageMission implements Handler {
                         html += String.format("<img style='width: 200px; height: 200px; float: right;' src='%s'/>",
                                         p.getImagePath());
                         html += "<p>" + p.getQuote() + "</p>";
+                        html += " <h4> Background </h4>";
+                        html += "<p>" + p.getBackground() + "</p>";
                         html += " <h4> Experience </h4>";
                         html += "<p>" + p.getExperience() + "</p>";
                         html += " <h4> Requirements </h4>";
