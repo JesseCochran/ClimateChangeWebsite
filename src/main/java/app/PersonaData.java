@@ -1,22 +1,24 @@
 package app;
 
-import java.util.ArrayList;
-
 public class PersonaData {
     private int personaId;
     private String name;
     private String quote;
     private String imagePath;
     private String requirements;
+    private String background;
+
     private String experience;
 
-    public PersonaData(int personaId, String name, String quote, String imagePath, String requirements,
-            String experience) {
+    public PersonaData(int personaId, String name, String quote, String imagePath, String requirements, String background,
+                       String experience) {
         this.personaId = personaId;
         this.name = name;
         this.quote = quote;
         this.imagePath = imagePath;
         this.requirements = requirements;
+        this.background = background;
+
         this.experience = experience;
     }
 
@@ -59,6 +61,15 @@ public class PersonaData {
     public void setRequirements(String requirements) {
         this.requirements = requirements;
     }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
+    }
+
 
     public String getExperience() {
         return experience;

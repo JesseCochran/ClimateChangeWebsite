@@ -453,7 +453,7 @@ public class PageST2B implements Handler {
         String html = "";
         int i = 1;
         for (Stat s : stats) {
-            html += "<li>Rank " + i + ". " + s.getName() + " has a change in proportion of: " + s.getProportion()
+            html += "<li>Rank " + i + ". " + s.getId() + " has a change in proportion of: " + s.getProportion()
                     + "</li>";
             i++;
         }

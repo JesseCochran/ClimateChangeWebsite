@@ -5,6 +5,8 @@ import io.javalin.http.Handler;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 /**
  * Example Index HTML class using Javalin
  * <p>
@@ -18,6 +20,11 @@ public class PageST3B implements Handler {
 
     // URL of this page relative to http://localhost:7001/
     public static final String URL = "/page3B.html";
+
+    public static void sort(ArrayList<Stat> list) {
+
+        list.sort((o2, o1) -> Float.compare(o1.getProportion(), o2.getProportion()));
+    }
 
     @Override
     public void handle(Context context) throws Exception {
@@ -141,12 +148,20 @@ public class PageST3B implements Handler {
 
         try {
             fromDate = Integer.parseInt(context.req.getParameter("from"));
-            duration = Integer.parseInt(context.req.getParameter("duration"));
-            number = Integer.parseInt(context.req.getParameter("number"));
 
         } catch (Exception e) {
             fromDate = 0;
+        }
+        try {
+            duration = Integer.parseInt(context.req.getParameter("duration"));
+
+        } catch (Exception e) {
             duration = 0;
+        }
+        try {
+            number = Integer.parseInt(context.req.getParameter("number"));
+
+        } catch (Exception e) {
             number = 0;
         }
 
@@ -184,6 +199,7 @@ public class PageST3B implements Handler {
 
 
         if (countryParameterFromURL != null) {
+
             if (cityParameterFromUrl == null && stateParameterFromUrl == null) {
 
                 html.append("<label>Select Desired Data:</label>");
@@ -195,6 +211,7 @@ public class PageST3B implements Handler {
                            <option value="Temperature-and-Population">Temperature and Temperature</option>
                               """);
                 html.append("</select>");
+
 
             }
 
@@ -322,7 +339,7 @@ public class PageST3B implements Handler {
         html.append("""
                 </select>
                    <br> <label for>Select number of locations to compare:</label>
-                      <select name='Number'>
+                      <select name='number'>
                           <option value='' selected disabled hidden> </option>
 
                               """);
@@ -347,6 +364,70 @@ public class PageST3B implements Handler {
         html.append("<button class='reset' type='reset' >Reset</button>");
         html.append("</div>");
         html.append("</form>");
+
+//        ********************** Average Temp ****************************
+
+        html.append("<table> <tr>");
+        html.append("<th>Rank By Similarity</th>");
+        html.append("<th>Country</th>");
+        html.append("<th>start year</th>");
+        html.append("<th>end year</th>");
+        html.append("<th>Proportion</th>");
+        html.append("</tr>");
+
+        int toDate = fromDate + duration;
+        if (toDate > 2014) {
+            toDate = 2013;
+        }
+        ArrayList<PopulationAndTemp> data = JDBCConnection.getCountryPopulationAndTemp(fromDate, toDate);
+        ArrayList<PopulationAndTemp> minData = getDataByYear(data, fromDate);
+        ArrayList<PopulationAndTemp> maxData = getDataByYear(data, toDate);
+        ArrayList<Stat> avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
+        sort(avgTempProportionalValues);
+        avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
+        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+            int i = 1;
+            for (Stat d : avgTempProportionalValues) {
+                html.append("<tr>");
+                html.append("<td>").append(i).append("</td>");
+                html.append("<td>").append(d.getName()).append("</td>");
+                html.append("<td>").append(fromDate).append("</td>");
+                html.append("<td>").append(toDate).append("</td>");
+                html.append("<td>").append(d.getProportion()).append("</td>");
+                html.append("</tr>");
+                i++;
+            }
+            html.append("</table>");
+        }
+
+//        ********************** Average Population ****************************
+
+        html.append("<table> <tr>");
+        html.append("<th>Rank By Similarity</th>");
+        html.append("<th>Country</th>");
+        html.append("<th>start year</th>");
+        html.append("<th>end year</th>");
+        html.append("<th>Proportion</th>");
+        html.append("</tr>");
+
+
+        ArrayList<Stat> avgPopProportionalValues = getPopulationProportionalValues(minData, maxData);
+        sort(avgPopProportionalValues);
+        avgPopProportionalValues = getNearByCountries(avgPopProportionalValues, countryParameterFromURL, number);
+        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+            int i = 1;
+            for (Stat d : avgPopProportionalValues) {
+                html.append("<tr>");
+                html.append("<td>").append(i).append("</td>");
+                html.append("<td>").append(d.getName()).append("</td>");
+                html.append("<td>").append(fromDate).append("</td>");
+                html.append("<td>").append(toDate).append("</td>");
+                html.append("<td>").append(d.getProportion()).append("</td>");
+                html.append("</tr>");
+                i++;
+            }
+            html.append("</table>");
+        }
 
 
         // Close Content div
@@ -391,6 +472,67 @@ public class PageST3B implements Handler {
         // DO NOT MODIFY THIS
         // Makes Javalin render the webpage
         context.html(html.toString());
+    }
+
+    public ArrayList<PopulationAndTemp> getDataByYear(ArrayList<PopulationAndTemp> data, int year) {
+        ArrayList<PopulationAndTemp> tmp = new ArrayList<PopulationAndTemp>();
+        for (PopulationAndTemp d : data) {
+            if (d.getYear() == year) {
+                tmp.add(d);
+            }
+        }
+        return tmp;
+    }
+
+    public ArrayList<Stat> getAvgTempProportionalValues(ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (PopulationAndTemp m : min) {
+            for (PopulationAndTemp x : max) {
+                if (m.getCountryId().equals(x.getCountryId())) {
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getAvgTemp() - x.getAvgTemp()) / m.getAvgTemp()) * 100));
+                }
+            }
+        }
+        return stats;
+    }
+
+    public ArrayList<Stat> getPopulationProportionalValues(ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (PopulationAndTemp m : min) {
+            for (PopulationAndTemp x : max) {
+                if (m.getCountryId().equals(x.getCountryId())) {
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getPopulation() - x.getPopulation()) / m.getPopulation()) * 100));
+                }
+            }
+        }
+        return stats;
+    }
+
+
+    public ArrayList<Stat> getNearByCountries(ArrayList<Stat> stat, String countryName, int limit) {
+        int x = 0;
+        int index = 0;
+        for (Stat s : stat) {
+            if (s.getId().equals(countryName)) {
+                index = x;
+                break;
+            }
+            x++;
+        }
+        Stat country = stat.get(index);
+        ArrayList<Stat> nearStats = new ArrayList<>();
+        nearStats.add(country);
+        for (int i = 1; i < limit; i++) {
+            float above = country.getProportion() - stat.get(index + i).getProportion();
+            float below = country.getProportion() - stat.get(index - i).getProportion();
+            if (abs(above) > abs(below)) {
+                nearStats.add(stat.get(index - i));
+            } else {
+                nearStats.add(stat.get(index + i));
+            }
+
+        }
+        return nearStats;
     }
 
 }
