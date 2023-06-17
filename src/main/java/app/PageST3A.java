@@ -143,8 +143,9 @@ public class PageST3A implements Handler {
     html = html + "<form action='/page2A.html' method='post'>";
 
     // geo location drop down
-    html = html + "<div class='form-group'>";
     html = html + "<h4>Choose a Geographic Type & Location</h4>";
+    html = html + "<div class='container'>";
+    html = html + "<div id='top'>";
     html = html + "     <label for='GeoLocation_drop'>Select Global, Country, State or City:</label>";
     html = html + "     <select id='GeoLocation_drop' name='GeoLocation_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select type--</option>";
@@ -153,11 +154,13 @@ public class PageST3A implements Handler {
     html = html + "     <option>State</option>";
     html = html + "     <option>City</option>";
     html = html + "     </select>";
+    html = html + "</div>";
 
     JDBCConnection jdbc = new JDBCConnection();
     ArrayList<Climate> countryNames = jdbc.getCountryName();
 
     // country select dropdown
+    html = html + "<div class='layer1'>";
     html = html + "     <label for='Country1_drop'>Select a Country:</label>";
     html = html + "     <select id='Country1_drop' name='Country1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -165,9 +168,11 @@ public class PageST3A implements Handler {
       html = html + "<option>" + countryName.getCountryName() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
     ArrayList<Climate> stateNames = jdbc.getStateName();
     // state select dropdown
+    html = html + "<div class='layer2'>";
     html = html + "     <label for='State1_drop'>Select a State:</label>";
     html = html + "     <select id='State1_drop' name='State1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select state--</option>";
@@ -175,9 +180,11 @@ public class PageST3A implements Handler {
       html = html + "<option>" + stateName.getStateName() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
     
     ArrayList<Climate> cityNames = jdbc.getCityName();
     // city select dropdown
+    html = html + "<div class='layer3'>";
     html = html + "     <label for='City1_drop'>Select a City:</label>";
     html = html + "     <select id='City1_drop' name='City1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select city--</option>";
@@ -185,6 +192,8 @@ public class PageST3A implements Handler {
       html = html + "<option>" + cityName.getCityName() + "</option>";
     }
     html = html + "     </select>";
+    html = html + "</div>";
+
     html = html + "</div>";
 
     html = html + "<div class='form-group'>";
@@ -284,7 +293,7 @@ public class PageST3A implements Handler {
           """;
 
     html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
-    
+
     html = html + "</form>";
 
     String geoLocation = context.formParam("GeoLocation_drop");
@@ -302,6 +311,13 @@ public class PageST3A implements Handler {
     String country4 = context.formParam("Country4_drop");
     String sort = context.formParam("SortOrder");
 
+    /* 
+    if(geoLocation.equals(" ")) {
+      html = html + "<h3>Please Select a Geographic Type</h3>";
+    }
+    else if(geoLocation.equals("Country")) {
+
+    }*/
 
 
     // Close Content div

@@ -1,3 +1,17 @@
 .hide-element {
     display: none;
    }
+
+.container {
+    display: grid;
+}
+
+.layer1, .layer2, .layer3 {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#top {
+    grid-column: 1;
+    grid-column: 1;
+}
