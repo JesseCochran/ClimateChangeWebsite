@@ -187,7 +187,7 @@ public class PageMission implements Handler {
     // Personas Sections
     html = html + "<section id='persona-section'>";
     html += """
-         <h2>Who this site is built for</h2>
+         <h2>Who This Site Is Built For</h2>
         """;
 
     ArrayList<PersonaData> data = JDBCConnection.getPersonaData();
@@ -210,7 +210,7 @@ public class PageMission implements Handler {
     // Student info section
     html = html + "<section id='aboutUs-section'>";
     html += """
-        <h2>Who are we</h2>
+        <h2>Who Are We</h2>
         """;
 
     ArrayList<StudentInfo> info = JDBCConnection.getStudentInfo();

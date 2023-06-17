@@ -181,7 +181,7 @@ public class PageIndex implements Handler {
       html = html + "<h4 id='year_heading'> Average Country Temperature In " +
           context.formParam("year_dropdown") + ".</h4>";
     } else {
-      html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
+      html = html + "<h4 id='year_heading'> Average Country Temperature In " +
           Years.get(Years.size() - 1).getYear() + ".</h4>";
     }
 
@@ -200,7 +200,8 @@ public class PageIndex implements Handler {
 
     String Year = context.formParam("year_dropdown");
     if (Year == null) {
-      Year = Integer.toString(Years.size() - 1); // Set a default value if the selected value is null
+      Year = Integer.toString(Years.get(Years.size() - 1).getYear()); // Set a default value if the selected value is
+                                                                      // null
     }
 
     // Add HTML paragraph description
