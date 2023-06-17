@@ -1,10 +1,8 @@
 package app;
 
 import java.util.ArrayList;
-
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,12 +21,11 @@ public class PageHelp implements Handler {
     // Add some Head information
     html = html + "<head>" +
         "<title>Our Mission</title>";
-
-    // Add some CSS (external file)
+    // Css files connected in order of use
     html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
     html = html + "<link rel='stylesheet' type='text/css' href='HelpPage.css' />";
     html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
-    // adds a cool icon on the nav menu
+    // adds a cool icon on the nav menu drop downs
     html = html
         + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
     html = html + "</head>";
@@ -36,7 +33,7 @@ public class PageHelp implements Handler {
     // Add the body
     html = html + "<body>";
 
-    // Add header content block with logo on the right
+    // Add header content block with logo
     html = html
         + """
 
@@ -48,7 +45,7 @@ public class PageHelp implements Handler {
                 </div>
             """;
 
-    // Add the topnav
+    // Navigation bar of the site
     html = html + """
             <div class='topnav'>
                             <a href='/'>Home</a>
@@ -87,7 +84,7 @@ public class PageHelp implements Handler {
                             </div>
                             </div>
         """;
-
+    // Javascript to operate showing and hiding burger menu contents
     html = html + "<script>";
     html = html + """
 
@@ -100,6 +97,9 @@ public class PageHelp implements Handler {
         }
                                         """;
     html = html + "</script>";
+    // code for the burger menu
+    // On click it uses javascript function above to hide side bar and when 3 lines
+    // are pressed re opens it
     html = html + "<div class='SideNavBar'>";
     html = html
         + """
@@ -127,7 +127,7 @@ public class PageHelp implements Handler {
                     """;
     html = html + "</div>";
     html = html + "<script>";
-    // take to help page
+    // take user to help page through pressing h
     html = html + """
 
              // Function to navigate to the help page
@@ -141,7 +141,7 @@ public class PageHelp implements Handler {
                       }
                     });
                                 """;
-    // take to home page
+    // take user to home page when esc is pressed
     html = html + """
              // Function to navigate to the home page
         function goToHomePage() {
@@ -156,13 +156,15 @@ public class PageHelp implements Handler {
         });
                     """;
     html = html + "</script>";
-    // Add header content block
+
+    // Top of content section
     html = html + """
             <div class='content'>
             <h2>Help & Support</h2>
         """;
 
-    // Help section of the page
+    // Page assistance section, shows many screen shots and tips to use elements of
+    // webpage.
     html = html
         + """
                 <section id='help-section'>
