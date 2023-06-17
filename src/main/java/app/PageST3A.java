@@ -180,7 +180,7 @@ public class PageST3A implements Handler {
     html = html + "<div class='location-container'>";
     html = html + "<div id='top'>";
     html = html + "     <label for='GeoLocation_drop'>Select Global, Country, State or City:</label>";
-    html = html + "     <select id='GeoLocation_drop' name='GeoLocation_drop' size='1'>";
+    html = html + "     <select id='GeoLocation_drop' name='GeoLocation_drop' onchange='showSelectedElements()' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select type--</option>";
     html = html + "     <option>Global</option>";
     html = html + "     <option>Country</option>";
@@ -193,7 +193,7 @@ public class PageST3A implements Handler {
     ArrayList<Climate> countryNames = jdbc.getCountryName();
 
     // country select dropdown
-    html = html + "<div id='geoLayer1'>";
+    html = html + "<div id='geoLayer1' class='hide-element'>";
     html = html + "     <label for='Country1_drop'>Select a Country:</label>";
     html = html + "     <select id='Country1_drop' name='Country1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -205,7 +205,7 @@ public class PageST3A implements Handler {
 
     ArrayList<Climate> stateNames = jdbc.getStateName();
     // state select dropdown
-    html = html + "<div id='geoLayer2'>";
+    html = html + "<div id='geoLayer2' class='hide-element'>";
     html = html + "     <label for='State1_drop'>Select a State:</label>";
     html = html + "     <select id='State1_drop' name='State1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select state--</option>";
@@ -217,7 +217,7 @@ public class PageST3A implements Handler {
 
     ArrayList<Climate> cityNames = jdbc.getCityName();
     // city select dropdown
-    html = html + "<div id='geoLayer3'>";
+    html = html + "<div id='geoLayer3' class='hide-element'>";
     html = html + "     <label for='City1_drop'>Select a City:</label>";
     html = html + "     <select id='City1_drop' name='City1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select city--</option>";
@@ -301,7 +301,7 @@ public class PageST3A implements Handler {
 
     html = html + "<h4>Add More Locations to Compare</h4>";
     html = html + "<div class='location-container'>";
-    html = html + "<div id='country1Layer'>";
+    html = html + "<div id='country1Layer' class='hide-element'>";
     html = html + "     <label for='Country2_drop'>Add a Country:</label>";
     html = html + "     <select id='Country2_drop' name='Country2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -311,7 +311,7 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div id='country2Layer'>";
+    html = html + "<div id='country2Layer' class='hide-element'>";
     html = html + "     <label for='Country3_drop'>Add a Country:</label>";
     html = html + "     <select id='Country3_drop' name='Country3_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -321,7 +321,7 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div id='country3Layer'>";
+    html = html + "<div id='country3Layer' class='hide-element'>";
     html = html + "     <label for='Country4_drop'>Add a Country:</label>";
     html = html + "     <select id='Country4_drop' name='Country4_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -332,7 +332,7 @@ public class PageST3A implements Handler {
     html = html + "</div>";
 
 
-    html = html + "<div id='state1Layer'>";
+    html = html + "<div id='state1Layer' class='hide-element'>";
     html = html + "     <label for='State2_drop'>Add a State:</label>";
     html = html + "     <select id='State2_drop' name='State2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select state--</option>";
@@ -342,7 +342,7 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div id='state2Layer'>";
+    html = html + "<div id='state2Layer' class='hide-element'>";
     html = html + "     <label for='State3_drop'>Add a State:</label>";
     html = html + "     <select id='State3_drop' name='State3_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select state--</option>";
@@ -352,7 +352,7 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div id='state3Layer'>";
+    html = html + "<div id='state3Layer' class='hide-element'>";
     html = html + "     <label for='State4_drop'>Add a State:</label>";
     html = html + "     <select id='State4_drop' name='State4_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select state--</option>";
@@ -363,7 +363,7 @@ public class PageST3A implements Handler {
     html = html + "</div>";
 
 
-    html = html + "<div id='city1Layer'>";
+    html = html + "<div id='city1Layer' class='hide-element'>";
     html = html + "     <label for='City2_drop'>Add a City:</label>";
     html = html + "     <select id='City2_drop' name='City2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select city--</option>";
@@ -373,7 +373,7 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div id='city2Layer'>";
+    html = html + "<div id='city2Layer' class='hide-element'>";
     html = html + "     <label for='City3_drop'>Add a City:</label>";
     html = html + "     <select id='City3_drop' name='City3_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select city--</option>";
@@ -383,7 +383,7 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div id='city3Layer'>";
+    html = html + "<div id='city3Layer' class='hide-element'>";
     html = html + "     <label for='City4_drop'>Add a City:</label>";
     html = html + "     <select id='City4_drop' name='City4_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select city--</option>";
@@ -412,6 +412,59 @@ public class PageST3A implements Handler {
 
     html = html + "</form>";
 
+    html = html + "<script>";
+    html = html + "function showSelectedElements() {";
+    html = html + "var GeoLocation_drop = document.getElementById('GeoLocation_drop');";
+    html = html + "var selectedValue = GeoLocation_drop.value;";
+    html = html + "var geoLayer1 = document.getElementById('geoLayer1');";
+    html = html + "var geoLayer2 = document.getElementById('geoLayer2');";
+    html = html + "var geoLayer3 = document.getElementById('geoLayer3');";
+    html = html + "var country1Layer = document.getElementById('country1Layer');";
+    html = html + "var country2Layer = document.getElementById('country2Layer');";
+    html = html + "var country3Layer = document.getElementById('country3Layer');";
+    html = html + "var state1Layer = document.getElementById('state1Layer');";
+    html = html + "var state2Layer = document.getElementById('state2Layer');";
+    html = html + "var state3Layer = document.getElementById('state3Layer');";
+    html = html + "var city1Layer = document.getElementById('city1Layer');";
+    html = html + "var city2Layer = document.getElementById('city2Layer');";
+    html = html + "var city3Layer = document.getElementById('city3Layer');";
+
+    html = html + "geoLayer1.style.display = 'none';";
+    html = html + "geoLayer2.style.display = 'none';";
+    html = html + "geoLayer3.style.display = 'none';";
+    html = html + "country1Layer.style.display = 'none';";
+    html = html + "country2Layer.style.display = 'none';";
+    html = html + "country3Layer.style.display = 'none';";
+    html = html + "state1Layer.style.display = 'none';";
+    html = html + "state2Layer.style.display = 'none';";
+    html = html + "state3Layer.style.display = 'none';";
+    html = html + "city1Layer.style.display = 'none';";
+    html = html + "city2Layer.style.display = 'none';";
+    html = html + "city3Layer.style.display = 'none';";
+
+    html = html + "if(selectedValue === 'Country') {";
+    html = html + "geoLayer1.style.display = 'block';";
+    html = html + "country1Layer.style.display = 'block';";
+    html = html + "country2Layer.style.display = 'block';";
+    html = html + "country3Layer.style.display = 'block';";
+    html = html + "}";
+    html = html + "else if (selectedValue === 'State') {";
+    html = html + "geoLayer2.style.display = 'block';";
+    html = html + "state1Layer.style.display = 'block';";
+    html = html + "state2Layer.style.display = 'block';";
+    html = html + "state3Layer.style.display = 'block';";
+    html = html + "}";
+    html = html + "else if (selectedValue === 'City') {";
+    html = html + "geoLayer3.style.display = 'block';";
+    html = html + "city1Layer.style.display = 'block';";
+    html = html + "city2Layer.style.display = 'block';";
+    html = html + "city3Layer.style.display = 'block';";
+    html = html + "}";
+    html = html + "}";
+    html = html + "</script>";
+
+
+
     String geoLocation = context.formParam("GeoLocation_drop");
     String country1 = context.formParam("Country1_drop");
     String state1 = context.formParam("State1_drop");
@@ -426,6 +479,8 @@ public class PageST3A implements Handler {
     String country3 = context.formParam("Country3_drop");
     String country4 = context.formParam("Country4_drop");
     String sort = context.formParam("SortOrder");
+
+    
 
     /*
      * if(geoLocation.equals(" ")) {
