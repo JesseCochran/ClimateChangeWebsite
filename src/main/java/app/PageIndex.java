@@ -167,13 +167,47 @@ public class PageIndex implements Handler {
     html = html + "<div class='content'>";
 
     // Add HTML for heading
-    html = html + "<h2>Introduction to Climate Change Awareness</h2>";
+    html = html + "<h2>Welcome To Climate Change Awareness</h2>";
+    html = html + "<h3 id='year_heading'> Average Temperature Global Heat Map</h3>";
+    html = html + "<div id='regions_div' Style='height: 600px;'></div>";
+    // Testing for the extension graph we need to do
+
+    JDBCConnection jdbc = new JDBCConnection();
+    ArrayList<Climate> Countries = jdbc.getCountryClimateData();
+    ArrayList<Climate> Years = jdbc.getCountryYearsOfData();
+    int currentYearIndex = Years.size() - 1;
+    html = html + "<form action='/' method='post'>";
+    if (context.formParam("year_dropdown") != null) {
+      html = html + "<h4 id='year_heading'> Average Country Temperature In " +
+          context.formParam("year_dropdown") + ".</h4>";
+    } else {
+      html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
+          Years.get(Years.size() - 1).getYear() + ".</h4>";
+    }
+
+    html = html + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
+
+    // Create dropdown menu for selecting year
+    html = html + "<select id='year_dropdown' name='year_dropdown'>";
+    for (Climate year : Years) {
+      html = html + "<option value='" + year.getYear() + "'>" + year.getYear() + "</option>";
+    }
+    html = html + "</select>";
+
+    // Add submit button to update the graph
+    html = html + "<button class='showGraph' onclick='submitForm()'>Submit</button>";
+    html = html + "</form>";
+
+    String Year = context.formParam("year_dropdown");
+    if (Year == null) {
+      Year = Integer.toString(Years.size() - 1); // Set a default value if the selected value is null
+    }
 
     // Add HTML paragraph description
     html = html
         + "<p>Climate change is a growing issue for not only the world but for your futures and lives. Throughout this website we are giving you multiple tools to research and view this data for yourselves.</p>";
 
-    JDBCConnection jdbc = new JDBCConnection();
+    jdbc = new JDBCConnection();
     ArrayList<Climate> populationTempRanges = jdbc.getPopulationTempRanges();
     int firstYear = populationTempRanges.get(0).getYear();
     String firstPopulation = String.format("%,d", populationTempRanges.get(0).getPopulationLevel());
@@ -226,61 +260,7 @@ public class PageIndex implements Handler {
 
     html = html + "</table>";
 
-    // Close Content div
-    // moved further down
-    // html = html + "</div>";
-
-    // Bar chart for temperature range
-    html = html + "<div id='barchart'></div>";
-
-    html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
-    html = html + "<script type='text/javascript'>";
-    html = html + "google.charts.load('current', {'packages':['corechart']});";
-    html = html + "google.charts.setOnLoadCallback(drawChart);";
-    html = html + "function drawChart() {";
-    html = html + "var data = google.visualization.arrayToDataTable([";
-    html = html + "['Year', 'Population'],";
-    html = html + "[" + firstYear + ", " + populationTempRanges.get(0).getPopulationLevel() + "],";
-    html = html + "[" + secondYear + ", " + populationTempRanges.get(1).getPopulationLevel() + "],";
-    html = html + "]);";
-    html = html + "var options = {'title':'Population Change', 'width':550, 'height':400};";
-    html = html + "var chart = new google.visualization.ColumnChart(document.getElementById('barchart'));";
-    html = html + "chart.draw(data, options);";
-    html = html + "}";
-    html = html + "</script>";
-
-    // Testing for the extension graph we need to do
-    jdbc = new JDBCConnection();
-    ArrayList<Climate> Countries = jdbc.getCountryClimateData();
-    ArrayList<Climate> Years = jdbc.getCountryYearsOfData();
-    int currentYearIndex = 0;
-    html = html + "<form action='/' method='post'>";
-    if (context.formParam("year_dropdown") != null) {
-      html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
-          context.formParam("year_dropdown") + ".</h4>";
-    } else {
-      html = html + "<h4 id='year_heading'> Average Temperature Of The World In " +
-          Years.get(0).getYear() + ".</h4>";
-    }
-
-    html = html + "<p> Please note data on certain countries may be unavailable over different time periods </p> ";
-
-    // Create dropdown menu for selecting year
-    html = html + "<select id='year_dropdown' name='year_dropdown'>";
-    for (Climate year : Years) {
-      html = html + "<option value='" + year.getYear() + "'>" + year.getYear() + "</option>";
-    }
-    html = html + "</select>";
-
-    // Add submit button to update the graph
-    html = html + "<button class='showGraph' onclick='submitForm()'>Submit</button>";
-    html = html + "</form>";
-
-    String Year = context.formParam("year_dropdown");
-    if (Year == null) {
-      Year = "1750"; // Set a default value if the selected value is null
-    }
-    html = html + "<div id='regions_div'></div>";
+    // html = html + "<div id='regions_div'></div>";
     html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
     html = html + "<script type='text/javascript'>";
     html = html + "google.charts.load('current', { 'packages':['geochart'] });";
