@@ -316,12 +316,12 @@ public class PageST3A implements Handler {
     html = html + """
         <div class='form-group'>
         <h4>Sort By </h4>
-        <input type='radio' id ='SortOrder' name = 'SortOrder' value='False' checked>
-        <label class='radio-label' for='False'>Neither</label>
-        <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-        <label class='radio-label' for='Ascending'>Low to High</label>
-        <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-         <label class='radio-label' for='Descending'>High to Low</label>
+        <input type='radio' id ='SortOrderNone' name = 'SortOrder' value='False' checked>
+        <label class='radio-label' for='SortOrderNone'>Neither</label>
+        <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
+        <label class='radio-label' for='SortOrderAsc'>Low to High</label>
+        <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
+         <label class='radio-label' for='SortOrderDes'>High to Low</label>
          </div>
             """;
 

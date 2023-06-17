@@ -296,10 +296,10 @@ public class PageST2A implements Handler {
         // Sorting order
         html = html + """
                 <p>Sort By</p>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='Ascending'>Low to High</label><br>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='Descending'>High to Low</label>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
+                <label class='radio-label' for='SortOrderAsc'>Low to High</label><br>
+                <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
+                 <label class='radio-label' for='SortOrderDes'>High to Low</label>
                     """;
 
         // submit button
