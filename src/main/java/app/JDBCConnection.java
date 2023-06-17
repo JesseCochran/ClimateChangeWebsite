@@ -1,12 +1,7 @@
 package app;
 
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Class for Managing the JDBC Connection to a SQLLite Database.
@@ -26,6 +21,497 @@ public class JDBCConnection {
      */
     public JDBCConnection() {
         System.out.println("Created JDBC Connection Object");
+    }
+
+    public static ArrayList<Country> getCountryNames() {
+
+        ArrayList<Country> countryNames = new ArrayList<>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT CountryName, CountryId from Country DESC;";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                countryNames.add(new Country(results.getString("CountryId"),
+                        results.getString("CountryName")));
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return countryNames;
+    }
+
+    public static ArrayList<TempData> getTempByState(String countryId, int fromDate, int toDate) {
+
+        ArrayList<TempData> tempByState = new ArrayList<TempData>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT StateName, Year, AvgTemp, MinTemp, MaxTemp from StateTemp WHERE CountryId='"
+                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+
+            while (results.next()) {
+                // Lookup the columns we need
+                TempData tempData = new TempData(results.getString("StateName"),
+                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
+                        results.getInt("Year"), results.getFloat("MaxTemp"));
+                tempByState.add(tempData);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return tempByState;
+    }
+
+    public static ArrayList<TempData> getTempByCity(String countryId, int fromDate, int toDate) {
+
+        ArrayList<TempData> tempByCity = new ArrayList<TempData>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+
+            // The Query
+            String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
+
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                TempData tempData = new TempData(results.getString("CityName"),
+                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
+                        results.getInt("Year"), results.getFloat("MaxTemp"));
+                tempByCity.add(tempData);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return tempByCity;
+    }
+
+    public static ArrayList<PersonaData> getPersonaData() {
+
+        ArrayList<PersonaData> personaInfo = new ArrayList<PersonaData>();
+
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT PersonaId, Name, Quote, ImagePath, Requirements, Experience FROM Persona;";
+
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                PersonaData personaData = new PersonaData(results.getInt("PersonaId"),
+                        results.getString("Name"), results.getString("Quote"),
+                        results.getString("ImagePath"), results.getString("Requirements"), results.getString("Experience"));
+                personaInfo.add(personaData);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return personaInfo;
+    }
+
+    public static ArrayList<StudentInfo> getStudentInfo() {
+
+        ArrayList<StudentInfo> studentData = new ArrayList<StudentInfo>();
+
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT StudentNumber, Fname, Lname, Email FROM StudentInfo;";
+
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                StudentInfo studentInfo = new StudentInfo(results.getString("StudentNumber"),
+                        results.getString("Fname"), results.getString("Lname"),
+                        results.getString("Email"));
+                studentData.add(studentInfo);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+
+        // Finally we return all of the lga
+        return studentData;
+    }
+
+    public static boolean hasCities(String countryId) {
+
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT count(*) as total from CityTemp where CountryId='" + countryId + "';";
+
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                return results.getInt("total") > 0;
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return false;
+    }
+
+    public static boolean hasStates(String countryId) {
+
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT count(*) as total from StateTemp where CountryId='" + countryId + "';";
+
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                return results.getInt("total") > 0;
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return false;
+    }
+
+    public static ArrayList<String> getDistinctStateNames(String countryId, int fromDate, int toDate) {
+
+        ArrayList<String> distinctStateName = new ArrayList<String>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT DISTINCT StateName WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp IS NOT NULL, MinTemp IS NOT NULL, MaxTemp IS NOT NULL;";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                String distinctStateNames = results.getString("StateName");
+                distinctStateName.add(distinctStateNames);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return distinctStateName;
+    }
+
+    public static ArrayList<CityState> getCityNames(String countryId) {
+
+        ArrayList<CityState> cityNames = new ArrayList<>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT DISTINCT CityName from CityTemp WHERE countryId ='" + countryId + "';";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                cityNames.add(new CityState(results.getString("CityName")));
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return cityNames;
+    }
+
+    public static ArrayList<CityState> getStateNames(String countryId) {
+
+        ArrayList<CityState> stateNames = new ArrayList<>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT DISTINCT StateName from StateTemp WHERE countryId ='" + countryId + "';";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                stateNames.add(new CityState(results.getString("StateName")));
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return stateNames;
     }
 
     /**
@@ -681,158 +1167,6 @@ public class JDBCConnection {
         return climates;
     }
 
-    public static ArrayList<Country> getCountryNames() {
-
-        ArrayList<Country> countryNames = new ArrayList<>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT CountryName, CountryId from Country DESC;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                countryNames.add(new Country(results.getString("CountryId"),
-                results.getString("CountryName")));
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return countryNames;
-    }
-
-    public static ArrayList<TempData> getTempByState(String countryId, int fromDate, int toDate) {
-
-        ArrayList<TempData> tempByState = new ArrayList<TempData>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT StateName, Year, AvgTemp, MinTemp, MaxTemp from StateTemp WHERE CountryId='"
-                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-
-            while (results.next()) {
-                // Lookup the columns we need
-                TempData tempData = new TempData(results.getString("StateName"),
-                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
-                        results.getInt("Year"), results.getFloat("MaxTemp"));
-                tempByState.add(tempData);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return tempByState;
-    }
-
-    public static ArrayList<TempData> getTempByCity(String countryId, int fromDate, int toDate) {
-
-        ArrayList<TempData> tempByCity = new ArrayList<TempData>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-
-           // The Query
-           String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
-
-
-           // Get Result
-           ResultSet results = statement.executeQuery(query);
-
-           // Process all of the results
-          while (results.next()) {
-               // Lookup the columns we need
-
-                TempData tempData = new TempData(results.getString("CityName"),
-                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
-                        results.getInt("Year"), results.getFloat("MaxTemp"));
-                tempByCity.add(tempData);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return tempByCity;
-    }
-
     public ArrayList<Climate> getCountryPopulationTemp(String startYear, String endYear, String type, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -995,8 +1329,8 @@ public class JDBCConnection {
     }
 
     public ArrayList<Climate> getWorldLandOceanAverageTempOverPeriod(ArrayList<String> startYears,
-            ArrayList<String> endYears,
-            ArrayList<String> dataTypes, String OrderBy) {
+                                                                     ArrayList<String> endYears,
+                                                                     ArrayList<String> dataTypes, String OrderBy) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -1130,7 +1464,7 @@ public class JDBCConnection {
     }
 
     public ArrayList<Climate> OLDgetWorldLandOceanAverageTempOverPeriod(String startYear, String endYear,
-            String dataType) {
+                                                                        String dataType) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -1297,311 +1631,7 @@ public class JDBCConnection {
 
         // Finally we return all of the lga
         return climates;
-    
+
     }
-    public static ArrayList<PersonaData> getPersonaData() {
-
-        ArrayList<PersonaData> personaInfo = new ArrayList<PersonaData>();
- 
- 
-        Connection connection = null;
- 
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
- 
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
- 
-            // The Query
-            String query = "SELECT PersonaId, Name, Quote, ImagePath, Requirements, Experience FROM Persona;";
- 
- 
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
- 
-            // Process all of the results
-           while (results.next()) {
-                // Lookup the columns we need
-                 PersonaData personaData = new PersonaData(results.getInt("PersonaId"),
-                         results.getString("Name"), results.getString("Quote"),
-                         results.getString("ImagePath"), results.getString("Requirements"), results.getString("Experience"));
-                 personaInfo.add(personaData);
-             }
-             statement.close();
-         }
-         //
-         catch (SQLException e) {
-             // If there is an error, lets just pring the error
-             System.err.println(e.getMessage());
-         } finally {
-             // Safety code to cleanup
-             try {
-                 if (connection != null) {
-                     connection.close();
-                 }
-             } catch (SQLException e) {
-                 // connection close failed.
-                 System.err.println(e.getMessage());
-             }
-         }
- 
-         // Finally we return all of the lga
-         return personaInfo;
-     }
-
-public static ArrayList<StudentInfo> getStudentInfo() {
-
-    ArrayList<StudentInfo> studentData = new ArrayList<StudentInfo>();
-
-
-    Connection connection = null;
-
-    try {
-        // Connect to JDBC data base
-        connection = DriverManager.getConnection(DATABASE);
-
-        // Prepare a new SQL Query & Set a timeout
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30);
-
-        // The Query
-        String query = "SELECT StudentNumber, Fname, Lname, Email FROM StudentInfo;";
-
-
-        // Get Result
-        ResultSet results = statement.executeQuery(query);
-
-        // Process all of the results
-       while (results.next()) {
-            // Lookup the columns we need
-             StudentInfo studentInfo = new StudentInfo(results.getString("StudentNumber"),
-                     results.getString("Fname"), results.getString("Lname"),
-                     results.getString("Email"));
-             studentData.add(studentInfo);
-         }
-         statement.close();
-     }
-     //
-     catch (SQLException e) {
-         // If there is an error, lets just pring the error
-         System.err.println(e.getMessage());
-     } finally {
-         // Safety code to cleanup
-         try {
-             if (connection != null) {
-                 connection.close();
-             }
-         } catch (SQLException e) {
-             // connection close failed.
-             System.err.println(e.getMessage());
-         }
-     }
-
-
-     // Finally we return all of the lga
-     return studentData;
- }
- public static boolean hasCities(String countryId) {
-
-
-    Connection connection = null;
-
-    try {
-        // Connect to JDBC data base
-        connection = DriverManager.getConnection(DATABASE);
-
-        // Prepare a new SQL Query & Set a timeout
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30);
-
-        // The Query
-        String query = "SELECT count(*) as total from CityTemp where CountryId='" + countryId + "';";
-
-
-        // Get Result
-        ResultSet results = statement.executeQuery(query);
-
-        // Process all of the results
-       while (results.next()) {
-            // Lookup the columns we need
-             if (results.getInt("total") > 0){
-                return true;
-             }else{
-                return false;
-             }
-         }
-         statement.close();
-     }
-     //
-     catch (SQLException e) {
-         // If there is an error, lets just pring the error
-         System.err.println(e.getMessage());
-     } finally {
-         // Safety code to cleanup
-         try {
-             if (connection != null) {
-                 connection.close();
-             }
-         } catch (SQLException e) {
-             // connection close failed.
-             System.err.println(e.getMessage());
-         }
-     }
-
-     // Finally we return all of the lga
-     return false;
- }
- public static boolean hasStates(String countryId) {
-
-
-    Connection connection = null;
-
-    try {
-        // Connect to JDBC data base
-        connection = DriverManager.getConnection(DATABASE);
-
-        // Prepare a new SQL Query & Set a timeout
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30);
-
-        // The Query
-        String query = "SELECT count(*) as total from StateTemp where CountryId='" + countryId + "';";
-
-
-        // Get Result
-        ResultSet results = statement.executeQuery(query);
-
-        // Process all of the results
-       while (results.next()) {
-            // Lookup the columns we need
-             if (results.getInt("total") > 0){
-                return true;
-             }else{
-                return false;
-             }
-         }
-         statement.close();
-     }
-     //
-     catch (SQLException e) {
-         // If there is an error, lets just pring the error
-         System.err.println(e.getMessage());
-     } finally {
-         // Safety code to cleanup
-         try {
-             if (connection != null) {
-                 connection.close();
-             }
-         } catch (SQLException e) {
-             // connection close failed.
-             System.err.println(e.getMessage());
-         }
-     }
-
-     // Finally we return all of the lga
-     return false;
- }
- public static ArrayList<String> getDistinctStateNames(String countryId, int fromDate, int toDate) {
-
-    ArrayList<String> distinctStateName = new ArrayList<String>();
-
-    Connection connection = null;
-
-    try {
-        // Connect to JDBC data base
-        connection = DriverManager.getConnection(DATABASE);
-
-        // Prepare a new SQL Query & Set a timeout
-        Statement statement = connection.createStatement();
-        statement.setQueryTimeout(30);
-
-        // The Query
-        String query = "SELECT DISTINCT StateName WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate + " AND AvgTemp IS NOT NULL, MinTemp IS NOT NULL, MaxTemp IS NOT NULL;";
-
-        // Get Result
-        ResultSet results = statement.executeQuery(query);
-
-        // Process all of the results
-        while (results.next()) {
-            // Lookup the columns we need
-            String distinctStateNames = new String(results.getString("StateName"));
-                    distinctStateName.add(distinctStateNames);
-        }
-        statement.close();
-    }
-    //
-    catch (SQLException e) {
-        // If there is an error, lets just pring the error
-        System.err.println(e.getMessage());
-    } finally {
-        // Safety code to cleanup
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            // connection close failed.
-            System.err.println(e.getMessage());
-        }
-    }
-
-    // Finally we return all of the lga
-    return distinctStateName;
-}
-
-
-
-public static ArrayList<String> distinctCityNames(String countryId, int fromDate, int toDate) {
-
-   ArrayList<String> distinctCityName = new ArrayList<String>();
-
-
-   Connection connection = null;
-
-   try {
-       // Connect to JDBC data base
-       connection = DriverManager.getConnection(DATABASE);
-
-       // Prepare a new SQL Query & Set a timeout
-       Statement statement = connection.createStatement();
-       statement.setQueryTimeout(30);
-
-       // The Query
-       String query = "SELECT DISTINCT CityName WHERE CountryId='" + countryId + "' AND Year > " + fromDate + " and Year < " + toDate + " ;";
-
-
-       // Get Result
-       ResultSet results = statement.executeQuery(query);
-
-       // Process all of the results
-      while (results.next()) {
-           // Lookup the columns we need
-            String distinctCityNames = new String(results.getString("CityName"));
-                    distinctCityName.add(distinctCityNames);
-        }
-        statement.close();
-    }
-    //
-    catch (SQLException e) {
-        // If there is an error, lets just pring the error
-        System.err.println(e.getMessage());
-    } finally {
-        // Safety code to cleanup
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            // connection close failed.
-            System.err.println(e.getMessage());
-        }
-    }
-
-    // Finally we return all of the lga
-    return distinctCityName;
-}
-
 
 }
