@@ -177,7 +177,7 @@ public class PageST3A implements Handler {
 
     // geo location drop down
     html = html + "<h4>Choose a Geographic Type & Location</h4>";
-    html = html + "<div class='container'>";
+    html = html + "<div class='location-container'>";
     html = html + "<div id='top'>";
     html = html + "     <label for='GeoLocation_drop'>Select Global, Country, State or City:</label>";
     html = html + "     <select id='GeoLocation_drop' name='GeoLocation_drop' size='1'>";
@@ -193,7 +193,7 @@ public class PageST3A implements Handler {
     ArrayList<Climate> countryNames = jdbc.getCountryName();
 
     // country select dropdown
-    html = html + "<div class='layer1'>";
+    html = html + "<div id='geoLayer1'>";
     html = html + "     <label for='Country1_drop'>Select a Country:</label>";
     html = html + "     <select id='Country1_drop' name='Country1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -205,7 +205,7 @@ public class PageST3A implements Handler {
 
     ArrayList<Climate> stateNames = jdbc.getStateName();
     // state select dropdown
-    html = html + "<div class='layer2'>";
+    html = html + "<div id='geoLayer2'>";
     html = html + "     <label for='State1_drop'>Select a State:</label>";
     html = html + "     <select id='State1_drop' name='State1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select state--</option>";
@@ -217,7 +217,7 @@ public class PageST3A implements Handler {
 
     ArrayList<Climate> cityNames = jdbc.getCityName();
     // city select dropdown
-    html = html + "<div class='layer3'>";
+    html = html + "<div id='geoLayer3'>";
     html = html + "     <label for='City1_drop'>Select a City:</label>";
     html = html + "     <select id='City1_drop' name='City1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select city--</option>";
@@ -229,9 +229,10 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
-    html = html + "<div class='form-group'>";
-    ArrayList<Climate> years = jdbc.getYearRange3A();
     html = html + "<h4>Choose a Start Year & Time Period</h4>";
+    ArrayList<Climate> years = jdbc.getYearRange3A();
+    html = html + "<div class='year-container'>";
+    html = html + "<div id='startYearLayer'>";
     html = html + "<label for='StartYear1_drop'>Select a Start Year:</label>";
     html = html + "<select id='StarYear1_drop name='StartYear2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
@@ -239,7 +240,9 @@ public class PageST3A implements Handler {
       html = html + "<option>" + year.getYear() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
+    html = html + "<div id='timePeriodLayer'>";
     html = html + "<label for='TimePeriod_drop'>Select the Time Period:</label>";
     html = html + "<select id='TimePeriod_drop name='TimePeriod_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select period--</option>";
@@ -250,8 +253,11 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div class='form-group'>";
+    html = html + "</div>";
+
     html = html + "<h4>Add More Start Years</h4>";
+    html = html + "<div class='year-container'>";
+    html = html + "<div id='addYear1Layer'>";
     html = html + "<label for='StartYear2_drop'>Add a Start Year:</label>";
     html = html + "<select id='StarYear2_drop name='StartYear2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
@@ -259,7 +265,9 @@ public class PageST3A implements Handler {
       html = html + "<option>" + year.getYear() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
+    html = html + "<div id='addYear2Layer'>";
     html = html + "<label for='StartYear3_drop'>Add a Start Year:</label>";
     html = html + "<select id='StarYear3_drop name='StartYear3_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
@@ -267,7 +275,9 @@ public class PageST3A implements Handler {
       html = html + "<option>" + year.getYear() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
+    html = html + "<div id='addYear3Layer'>";
     html = html + "<label for='StartYear4_drop'>Add a Start Year:</label>";
     html = html + "<select id='StarYear4_drop name='StartYear4_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
@@ -275,7 +285,9 @@ public class PageST3A implements Handler {
       html = html + "<option>" + year.getYear() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
+    html = html + "<div id='addYear4Layer'>";
     html = html + "<label for='StartYear5_drop'>Add a Start Year:</label>";
     html = html + "<select id='StarYear5_drop name='StartYear5_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
@@ -285,8 +297,11 @@ public class PageST3A implements Handler {
     html = html + "</select>";
     html = html + "</div>";
 
-    html = html + "<div class='form-group'>";
+    html = html + "</div>";
+
     html = html + "<h4>Add More Locations to Compare</h4>";
+    html = html + "<div class='location-container'>";
+    html = html + "<div id='country1Layer'>";
     html = html + "     <label for='Country2_drop'>Add a Country:</label>";
     html = html + "     <select id='Country2_drop' name='Country2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -294,7 +309,9 @@ public class PageST3A implements Handler {
       html = html + "<option>" + countryName.getCountryName() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
+    html = html + "<div id='country2Layer'>";
     html = html + "     <label for='Country3_drop'>Add a Country:</label>";
     html = html + "     <select id='Country3_drop' name='Country3_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -302,7 +319,9 @@ public class PageST3A implements Handler {
       html = html + "<option>" + countryName.getCountryName() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
 
+    html = html + "<div id='country3Layer'>";
     html = html + "     <label for='Country4_drop'>Add a Country:</label>";
     html = html + "     <select id='Country4_drop' name='Country4_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select country--</option>";
@@ -310,6 +329,70 @@ public class PageST3A implements Handler {
       html = html + "<option>" + countryName.getCountryName() + "</option>";
     }
     html = html + "</select>";
+    html = html + "</div>";
+
+
+    html = html + "<div id='state1Layer'>";
+    html = html + "     <label for='State2_drop'>Add a State:</label>";
+    html = html + "     <select id='State2_drop' name='State2_drop' size='1'>";
+    html = html + "<option value='' disabled selected hidden>--select state--</option>";
+    for (Climate stateName : stateNames) {
+      html = html + "<option>" + stateName.getStateName() + "</option>";
+    }
+    html = html + "</select>";
+    html = html + "</div>";
+
+    html = html + "<div id='state2Layer'>";
+    html = html + "     <label for='State3_drop'>Add a State:</label>";
+    html = html + "     <select id='State3_drop' name='State3_drop' size='1'>";
+    html = html + "<option value='' disabled selected hidden>--select state--</option>";
+    for (Climate stateName : stateNames) {
+      html = html + "<option>" + stateName.getStateName() + "</option>";
+    }
+    html = html + "</select>";
+    html = html + "</div>";
+
+    html = html + "<div id='state3Layer'>";
+    html = html + "     <label for='State4_drop'>Add a State:</label>";
+    html = html + "     <select id='State4_drop' name='State4_drop' size='1'>";
+    html = html + "<option value='' disabled selected hidden>--select state--</option>";
+    for (Climate stateName : stateNames) {
+      html = html + "<option>" + stateName.getStateName() + "</option>";
+    }
+    html = html + "</select>";
+    html = html + "</div>";
+
+
+    html = html + "<div id='city1Layer'>";
+    html = html + "     <label for='City2_drop'>Add a City:</label>";
+    html = html + "     <select id='City2_drop' name='City2_drop' size='1'>";
+    html = html + "<option value='' disabled selected hidden>--select city--</option>";
+    for (Climate cityName : cityNames) {
+      html = html + "<option>" + cityName.getCityName() + "</option>";
+    }
+    html = html + "</select>";
+    html = html + "</div>";
+
+    html = html + "<div id='city2Layer'>";
+    html = html + "     <label for='City3_drop'>Add a City:</label>";
+    html = html + "     <select id='City3_drop' name='City3_drop' size='1'>";
+    html = html + "<option value='' disabled selected hidden>--select city--</option>";
+    for (Climate cityName : cityNames) {
+      html = html + "<option>" + cityName.getCityName() + "</option>";
+    }
+    html = html + "</select>";
+    html = html + "</div>";
+
+    html = html + "<div id='city3Layer'>";
+    html = html + "     <label for='City4_drop'>Add a City:</label>";
+    html = html + "     <select id='City4_drop' name='City4_drop' size='1'>";
+    html = html + "<option value='' disabled selected hidden>--select city--</option>";
+    for (Climate cityName : cityNames) {
+      html = html + "<option>" + cityName.getCityName() + "</option>";
+    }
+    html = html + "</select>";
+    html = html + "</div>";
+
     html = html + "</div>";
 
     // Sorting order
