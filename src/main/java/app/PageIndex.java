@@ -36,7 +36,7 @@ public class PageIndex implements Handler {
         "<title>Homepage</title>";
 
     // Add some CSS (external file)
-    html = html + "<link rel='stylesheet' type='text/css' href='Common.css' />";
+    html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
     html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
     // adds a cool icon on the nav menu
     html = html

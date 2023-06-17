@@ -36,7 +36,7 @@ public class PageST2B implements Handler {
         // adds a cool icon on the nav menu
         html = html
                 + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-        html = html + "<link rel='stylesheet' type='text/css' href='Common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
         html = html + "</head>";
 
         // Add the body

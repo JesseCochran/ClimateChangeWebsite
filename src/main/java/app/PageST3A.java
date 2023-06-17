@@ -35,7 +35,8 @@ public class PageST3A implements Handler {
         "<title>Subtask 3.1</title>";
 
     // Add some CSS (external file)
-    html = html + "<link rel='stylesheet' type='text/css' href='Common.css' />";
+    html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+    html = html + "<link rel='stylesheet' type='text/css' href='ST3A.css' />";
     // adds a cool icon on the nav menu
     html = html
         + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
@@ -151,11 +152,16 @@ public class PageST3A implements Handler {
     html = html + "     <option>City</option>";
     html = html + "     </select>";
 
+    JDBCConnection jdbc = new JDBCConnection();
+    ArrayList<Climate> countryNames = jdbc.getCountryName();
+
     // country select dropdown
-    html = html + "<p class='hide-element'>";
+    html = html + "<p>";
     html = html + "     <label for='Country_drop'>Select Country:</label>";
     html = html + "     <select id='Country_drop' name='Country_drop' size='1'>";
-    // insert loop that enters CountryName's
+    for (Climate countryName : countryNames) {
+      html = html + "<option>" + countryName.getCountryName() + "</option>";
+    }
     html = html + "     </select>";
     html = html + "</p>";
 
