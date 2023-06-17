@@ -1615,8 +1615,10 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                    SELECT Year
-                    FROM GlobalTemp;
+                SELECT CountryName
+                FROM Country
+                WHERE CountryId <> 'WLD'
+                AND CountryId <> 'CIV';
                         """;
 
             // Get Result
