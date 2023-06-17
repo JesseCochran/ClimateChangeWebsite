@@ -189,6 +189,7 @@ public class PageIndex implements Handler {
 
     // Create dropdown menu for selecting year
     html = html + "<select id='year_dropdown' name='year_dropdown'>";
+    html = html + "<option value='' disabled selected hidden>--select year--</option>";
     for (Climate year : Years) {
       html = html + "<option value='" + year.getYear() + "'>" + year.getYear() + "</option>";
     }
