@@ -681,8 +681,6 @@ public class PageST3A implements Handler {
       }
     }
 
-
-
     html = html + "</div>";
     
     return html;
