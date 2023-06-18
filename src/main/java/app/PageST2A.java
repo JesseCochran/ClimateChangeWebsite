@@ -401,7 +401,7 @@ public class PageST2A implements Handler {
 
     //method to sort inputs into separate table formats
     private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
-        String html = "<div id='tableData'>";
+        String html = "";
 
         if (type.equals("Population Change")) {
             if (sort.equals("Ascending")) {
@@ -431,8 +431,6 @@ public class PageST2A implements Handler {
 
             }
         }
-
-        html = html + "</div>";
 
         return html;
     }
