@@ -1932,29 +1932,25 @@ public class JDBCConnection {
             query = query + "WHERE Year >= " + startDate1 + " AND Year <= (" + startDate1  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
             if(startDate2 != null) {
             query = query + "UNION ";
-            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
-            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
             query = query + "FROM GlobalTemp ";
             query = query + "WHERE Year >= " + startDate2 + " AND Year <= (" + startDate2  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
             }
             if(startDate3 != null) {
             query = query + "UNION ";
-            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
-            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
             query = query + "FROM GlobalTemp ";
             query = query + "WHERE Year >= " + startDate3 + " AND Year <= (" + startDate3  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
             }
             if(startDate4 != null) {
             query = query + "UNION ";
-            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
-            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
             query = query + "FROM GlobalTemp ";
             query = query + "WHERE Year >= " + startDate4 + " AND Year <= (" + startDate4  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
             }
             if(startDate5 != null) {
             query = query + "UNION ";
-            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
-            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
             query = query + "FROM GlobalTemp ";
             query = query + "WHERE Year >= " + startDate5 + " AND Year <= (" + startDate5  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
             }
