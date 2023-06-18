@@ -173,10 +173,12 @@ public class PageST3A implements Handler {
         <h2>Identify changes in temperature over extended periods</h2>
         """;
 
+    html = html + "<p>This page allows you to select multiple allows you to view average temperatures over different time periods and compare the changes to other geographic locations over the same period." +
+                  " As a result you can actively see the ways climate change has affected temperature change over the coarse of history.</p>";
     html = html + "<form action='/page3A.html' method='post'>";
-
+    html = html + "<p><strong>Note:</strong> If data is unavailable it will be presented in the table as '0.0'</p>";
     // geo location drop down
-    html = html + "<h4>Choose a Geographic Type & Location</h4>";
+    html = html + "<h3>Choose a Geographic Type & Location</h3>";
     html = html + "<div class='location-container'>";
     html = html + "<div id='top'>";
     html = html + "     <label for='GeoLocation_drop'>Select Global, Country, State or City:</label>";
@@ -229,7 +231,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
-    html = html + "<h4>Choose a Start Year & Time Period</h4>";
+    html = html + "<h3>Choose a Start Year & Time Period</h3>";
     ArrayList<Climate> years = jdbc.getYearRange3A();
     html = html + "<div class='year-container'>";
     html = html + "<div id='startYearLayer'>";
@@ -254,7 +256,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
-    html = html + "<h4>Add More Start Years</h4>";
+    html = html + "<h3>Add More Start Years</h3>";
     html = html + "<div class='year-container'>";
     html = html + "<div id='addYear1Layer'>";
     html = html + "<label for='StartYear2_drop'>Add a Start Year:</label>";
@@ -298,7 +300,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
-    html = html + "<h4>Add More Locations to Compare</h4>";
+    html = html + "<h3>Add More Locations to Compare</h3>";
     html = html + "<div class='location-container'>";
     html = html + "<div id='country1Layer' class='hide-element'>";
     html = html + "     <label for='Country2_drop'>Add a Country:</label>";
@@ -397,7 +399,7 @@ public class PageST3A implements Handler {
     // Sorting order
     html = html + """
         <div class='form-group'>
-        <h4>Sort By Change in Average Temperature</h4>
+        <h3>Sort By Change in Average Temperature</h3>
         <input type='radio' id ='SortOrderNone' name = 'SortOrder' value='False' checked>
         <label class='radio-label' for='SortOrderNone'>Neither</label>
         <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
