@@ -249,19 +249,11 @@ public class PageST3C implements Handler {
                 });
                             """;
         html = html + "</script>";
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> years = jdbc.getLandOceanYears();
 
         html = html + " <div class='container'>";
         html = html + "   <div class='form-group'>";
-        html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
-        html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
-        html = html + "<option value='' disabled selected hidden>--select year--</option>";
-
-        JDBCConnection jdbc = new JDBCConnection();
-        ArrayList<Climate> years = jdbc.getLandOceanYears();
-        for (Climate year : years) {
-            html = html + "<option>" + year.getYear() + "</option>";
-        }
-        html = html + "      </select>";
 
         html = html + "      <label for='lengthDropdown'>Select the time period of years:</label>";
         html = html + "      <select id='lengthDropdown' name='lengthDropdown'>";
@@ -272,6 +264,15 @@ public class PageST3C implements Handler {
             } else {
                 html = html + " <option value='" + i + "'>" + i + " year</option>";
             }
+        }
+        html = html + "      </select>";
+
+        html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
+        html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
+
+        for (Climate year : years) {
+            html = html + "<option>" + year.getYear() + "</option>";
         }
         html = html + "      </select>";
 
