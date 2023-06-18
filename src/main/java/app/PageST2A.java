@@ -174,12 +174,16 @@ public class PageST2A implements Handler {
         html = html + """
                 <h2>Focused view of temperature and population change by Country/World</h2>
                 """;
-        
-        html = html + "<p>This page allows you to look at specific global temperature and population change over a time period" +
-                      " or compare changes in country population and temperature change. As a result you can find ways in which" +
-                      " population change has affected temperature change on a large scale.</p>";
 
-        html = html + "<p><strong>Note:</strong> Only data where population and temperature is available has been used below.</p>";
+        html = html
+                + "<p>This page allows you to look at specific global temperature and population change over a time period"
+                +
+                " or compare changes in country population and temperature change. As a result you can find ways in which"
+                +
+                " population change has affected temperature change on a large scale.</p>";
+
+        html = html
+                + "<p><strong>Note:</strong> Only data where population and temperature is available has been used below.</p>";
 
         html = html + "<form action='/page2A.html' method='post'>";
 
@@ -200,7 +204,8 @@ public class PageST2A implements Handler {
         // Dropdown to select start year which updates end year based on result
         html = html + "<div>";
         html = html + "     <label for='StartYear_drop'>Select the start year:</label>";
-        html = html + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html
+                + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
         html = html + "<option value='' disabled selected hidden>--select year--</option>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
@@ -252,7 +257,8 @@ public class PageST2A implements Handler {
 
         html = html + "   <div>";
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
-        html = html + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+        html = html
+                + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
         html = html + "<option value='' disabled selected hidden>--select year--</option>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
@@ -285,6 +291,20 @@ public class PageST2A implements Handler {
         html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
         html = html + "<input class='reset' type='reset' value='Reset'>";
         html = html + "</form>";
+        // javascript to allow 'c' to also reset the data
+        html = html + """
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var button = document.querySelector('.reset');
+                        document.addEventListener('keydown', function(event) {
+                            // Check if the C key (key code 67) is pressed
+                            if (event.keyCode == 67) {
+                                button.click();
+                            }
+                        });
+                    });
+                    </script>
+                """;
 
         String DataToOutput = context.formParam("CountryWorld_drop");
         String StartYear_drop = context.formParam("StartYear_drop");
@@ -292,21 +312,19 @@ public class PageST2A implements Handler {
         String TypeOrder = context.formParam("TypeOrder_drop");
         String SortOrder = context.formParam("SortOrder");
 
-        //validation for form
+        // validation for form
         if (DataToOutput == null) {
             html = html + "<h3>Please Select Country or Global Data</h3>";
         } else if (DataToOutput.equals("Global")) {
-            if(StartYear_drop != null) {
-            html = html + outputWorld(DataToOutput, StartYear_drop, EndYear_drop);
-            }
-            else {
+            if (StartYear_drop != null) {
+                html = html + outputWorld(DataToOutput, StartYear_drop, EndYear_drop);
+            } else {
                 html = html + "<h3>Please Select a Start & End Date</h3>";
             }
         } else if (DataToOutput.equals("Country")) {
-            if(TypeOrder != null) {
-            html = html + outputCountry(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
-            }
-            else {
+            if (TypeOrder != null) {
+                html = html + outputCountry(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+            } else {
                 html = html + "<h3>Please Select an Order Type</h3>";
             }
         }
@@ -357,7 +375,7 @@ public class PageST2A implements Handler {
         context.html(html);
     }
 
-    //method to create World Table based off inputs
+    // method to create World Table based off inputs
     private String outputWorld(String dataOutput, String startYear, String endYear) {
         String html = "<div id='tableData'>";
         html = html + "<h3>" + dataOutput + " data for " + startYear + " and " + endYear + "</h3>";
@@ -399,7 +417,7 @@ public class PageST2A implements Handler {
         return html;
     }
 
-    //method to sort inputs into separate table formats
+    // method to sort inputs into separate table formats
     private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
         String html = "<div id='tableData'>";
 
@@ -435,7 +453,7 @@ public class PageST2A implements Handler {
         return html;
     }
 
-    //method to create country table based off inputs
+    // method to create country table based off inputs
     private String countryTableFormat(String html, String dataOutput, String startYear, String endYear, String type,
             String sort) {
         html = html + "<h3>" + dataOutput + " data for " + startYear + " and " + endYear + "</h3>";
@@ -485,7 +503,7 @@ public class PageST2A implements Handler {
         return html;
     }
 
-    //method to calculate correlation 
+    // method to calculate correlation
     private float correlationCalc(long startPop, long endPop, float startTemp, float endTemp) {
         float corr;
         int n = 2;
