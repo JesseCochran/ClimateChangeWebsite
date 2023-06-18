@@ -283,7 +283,7 @@ public class PageST2A implements Handler {
 
         // submit button
         html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
-
+        html = html + "<input class='reset' type='reset' value='Reset'>";
         html = html + "</form>";
 
         String DataToOutput = context.formParam("CountryWorld_drop");
