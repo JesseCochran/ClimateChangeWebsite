@@ -43,7 +43,8 @@ public class PageST2A implements Handler {
         // adds a cool icon on the nav menu
         html = html
                 + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
         html = html + "</head>";
 
         // Add the body
@@ -61,95 +62,133 @@ public class PageST2A implements Handler {
         // Add the topnav
         html = html + """
                     <div class='topnav'>
-                    <a href='/'>Home</a>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Shallow View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                    <a href='page2B.html'>Temperature Change By State/City</a>
-                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>In-Depth View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>About Us
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='mission.html#persona-section'>Personas</a>
-                    <a href='mission.html#aboutUs-section'>Contact Us</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Help & Support
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='PageHelp.html'>Page Assistance</a>
-                    <a href='PageHelp.html#faq-section'>FAQ</a>
-                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                    </div>
-                    </div>
-                    </div>
+                            <a href='/'>Home</a>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Climate Data and Analysis
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                            <a href='page2B.html'>Temperature Change By State/City</a>
+                            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>About Us
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Help & Support
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                            </div>
+                            </div>
+                            </div>
                 """;
 
+        html = html + "<script>";
+        html = html + """
+
+                                function openNav() {
+                  document.getElementById('mySidenav').style.width = '250px';
+                }
+
+                function closeNav() {
+                  document.getElementById('mySidenav').style.width = '0px';
+                }
+                                                """;
+        html = html + "</script>";
+        html = html + "<div class='SideNavBar'>";
+        html = html
+                + """
+                                <div id='mySidenav' class='sidenav'>
+                                    <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
+                                    <a href='/'>Home</a>
+                                    <p>Climate Data and Analysis</p>
+                                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                    <a href='page2B.html'>Temperature Change By State/City</a>
+                                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    <p>About Us</p>
+                                    <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            <p>Help & Support</p>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
+                                </div>
+                        <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
+                                """;
+        html = html + "</div>";
+        html = html + "<script>";
+        // take to help page
+        html = html + """
+
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """;
+        // take to home page
+        html = html + """
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """;
+        html = html + "</script>";
         // Add Div for page Content
         html = html + "<div class='content'>";
 
         // Add HTML for the page content
         html = html + """
-                <h2>Focused view of temperature and population change by Country/Global</h2>
+                <h2>Focused view of temperature and population change by Country/World</h2>
                 """;
+        
+        html = html + "<p>This page allows you to look at specific global temperature and population change over a time period" +
+                      " or compare changes in country population and temperature change. As a result you can find ways in which" +
+                      " population change has affected temperature change on a large scale.</p>";
 
-        html = html + "<form action='/page2A.html' method='post' onsubmit='return ReenterData()'>";
+        html = html + "<p><strong>Note:</strong> Only data where population and temperature is available has been used below.</p>";
 
-        // Elements keep values on reload
-        html = html + "<script>";
-        html = html + "   function ReenterData() {";
-        html = html + "       var dataToShow = document.getElementById('CountryWorld_drop').value;";
-        html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
-        html = html + "       var endYear = document.getElementById('EndYear_drop').value;";
-        html = html + "       var dataType = document.getElementById('TypeOrder_drop').value;";
-        html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
-        html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
-        html = html + "       sessionStorage.setItem('startYear', startYear);";
-        html = html + "       sessionStorage.setItem('endYear', endYear);";
-        html = html + "       sessionStorage.setItem('dataType', dataType);";
-        html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
-        html = html + "       return true;";
-        html = html + "   }";
-        html = html + " window.onload = function() {";
-        html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
-        html = html + " var startYear = sessionStorage.getItem('startYear');";
-        html = html + " var endYear = sessionStorage.getItem('endYear');";
-        html = html + " var dataType = sessionStorage.getItem('dataType');";
-        html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
-        html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
-        html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
-        html = html + " if (endYear) document.getElementById('EndYear_drop').value = endYear;";
-        html = html + " if (dataType) document.getElementById('TypeOrder_drop').value = dataType;";
-        html = html
-                + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
-        html = html + " }";
-        html = html + "</script>";
+        html = html + "<form action='/page2A.html' method='post'>";
 
         // Dropdown to select country or world data
-        html = html + "<div class='form-group'>";
-        html = html + "     <label for='CountryWorld_drop'>Select World or Country data:</label>";
+        html = html + "<div>";
+        html = html + "     <label for='CountryWorld_drop'>Select Global or Country data:</label>";
         html = html + "     <select id='CountryWorld_drop' name='CountryWorld_drop' size='1'>";
-        html = html + "     <option>World</option>";
+        html = html + "<option value='' disabled selected hidden>--select country/global--</option>";
+        html = html + "     <option>Global</option>";
         html = html + "     <option>Country</option>";
         html = html + "     </select>";
         html = html + "</div>";
@@ -159,10 +198,10 @@ public class PageST2A implements Handler {
         ArrayList<Climate> years = jdbc.getPopulationYears();
 
         // Dropdown to select start year which updates end year based on result
-        html = html + "<div class='form-group'>";
+        html = html + "<div>";
         html = html + "     <label for='StartYear_drop'>Select the start year:</label>";
-        html = html
-                + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
@@ -211,11 +250,10 @@ public class PageST2A implements Handler {
         html = html + "}";
         html = html + "</script>";
 
-        html = html + "   <div class='form-group'>";
+        html = html + "   <div>";
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
-        html = html
-                + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
-
+        html = html + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
@@ -223,9 +261,10 @@ public class PageST2A implements Handler {
         html = html + "   </div>";
 
         // Dropdown to select how to format the data
-        html = html + "<div class='form-group'>";
+        html = html + "<div>";
         html = html + "      <label for='TypeOrder_drop'>Select how you want to order the data:</label>";
         html = html + "      <select id='TypeOrder_drop' name='TypeOrder_drop' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select order type--</option>";
         html = html + "      <option>Population Change</option>";
         html = html + "      <option>Temperature Change</option>";
         html = html + "      </select>";
@@ -233,17 +272,18 @@ public class PageST2A implements Handler {
 
         // Sorting order
         html = html + """
+                <div>
                 <p>Sort By</p>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='Ascending'>Low to High</label><br>
-                <input type='radio' id='SortOrder' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='Descending'>High to Low</label>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending' checked>
+                <label class='radio-label' for='SortOrderAsc'>Low to High</label><br>
+                <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
+                 <label class='radio-label' for='SortOrderDes'>High to Low</label>
+                 </div>
                     """;
 
         // submit button
-        html = html + "<div>";
         html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
-        html = html + "</div>";
+        html = html + "<input class='reset' type='reset' value='Reset'>";
         html = html + "</form>";
 
         String DataToOutput = context.formParam("CountryWorld_drop");
@@ -253,11 +293,21 @@ public class PageST2A implements Handler {
         String SortOrder = context.formParam("SortOrder");
 
         if (DataToOutput == null) {
-            html = html + "<h3>Please Select Country or World Data</h3>";
-        } else if (DataToOutput.equals("World")) {
+            html = html + "<h3>Please Select Country or Global Data</h3>";
+        } else if (DataToOutput.equals("Global")) {
+            if(StartYear_drop != null) {
             html = html + outputWorld(DataToOutput, StartYear_drop, EndYear_drop);
+            }
+            else {
+                html = html + "<h3>Please Select a Start & End Date</h3>";
+            }
         } else if (DataToOutput.equals("Country")) {
+            if(TypeOrder != null) {
             html = html + outputCountry(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+            }
+            else {
+                html = html + "<h3>Please Select an Order Type</h3>";
+            }
         }
 
         // Close Content div
@@ -267,31 +317,32 @@ public class PageST2A implements Handler {
         html = html
                 + """
                             <div class='footer'>
-                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+
                         <div class='footerBlock'>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                                      <p style='margin-top: 0;'>Shallow View</p>
                                       <a href='page2A.html'>Temperature & Population Change By Country/World</a>
                                       <a href='page2B.html'>Temperature Change By State/City</a>
                                       <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
                                     </div>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                                      <p style='margin-top: 0;'>In-Depth View</p>
                                       <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
                                       <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
                                       <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
                                     </div>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                                      <p style='margin-top: 0;'>About</p>
                                       <a href='mission.html'>Our Mission</a>
                                       <a href='mission.html#persona-section'>Personas</a>
                                       <a href='mission.html#aboutUs-section'>Contact Us</a>
                                     </div>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                                      <p style='margin-top: 0;'>Help & Support</p>
                                       <a href='PageHelp.html'>Page Assistance</a>
                                       <a href='PageHelp.html#faq-section'>FAQ</a>
                                       <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
                                     </div>
                                   </div>
                                 </div>
@@ -441,7 +492,8 @@ public class PageST2A implements Handler {
         float squareSumY = (startTemp * startTemp) + (endTemp * endTemp);
 
         float numerator = (n * sumXY) - (sumX * sumY);
-        float denominator = (float) (Math.sqrt((n * squareSumX - sumX * sumX) * (n * squareSumY - sumY * sumY)));
+        float denominator = (float) (Math
+                .sqrt(((n * squareSumX) - (sumX * sumX)) * ((n * squareSumY) - (sumY * sumY))));
         corr = numerator / denominator;
 
         return corr;

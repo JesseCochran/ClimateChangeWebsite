@@ -2,10 +2,8 @@ package app;
 
 import java.lang.Math;
 import java.util.ArrayList;
-
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,7 +15,7 @@ import java.sql.Statement;
  * <p>
  * Generate a static HTML page using Javalin
  * by writing the raw HTML into a Java String object
- *
+ * 
  * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
  * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
  */
@@ -34,19 +32,17 @@ public class PageST2C implements Handler {
         // Add some Head information
         // makes it so certain characters are visible
         html = html + "<head> <meta charset='UTF-8'>" +
-                "<title>Focused View Of Land Ocean Temperature</title>";
+                "<title>Focused View Of Land-Ocean Temperature</title>";
 
-        // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        // CSS style sheets for the page
+        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
         // adds a cool icon on the nav menu
         html = html
                 + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-        // html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
         html = html + "</head>";
-
         // Add the body
         html = html + "<body>";
-
         // Add header content block
         html = html
                 + """
@@ -56,75 +52,137 @@ public class PageST2C implements Handler {
                             </div>
                         """;
 
-        // Add the topnav
+        // Add the navigation bar that sits locked at the top of the screen
+        html = html
+                + """
+                            <div class='topnav'>
+                            <a href='/'>Home</a>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Climate Data and Analysis
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                            <a href='page2B.html'>Temperature Change By State/City</a>
+                            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>About Us
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Help & Support
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                            </div>
+                            </div>
+                            </div>
+                        """;
+        // Javascript for opening and closing burger nav
+        html = html + "<script>";
         html = html + """
-                    <div class='topnav'>
-                    <a href='/'>Home</a>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Shallow View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                    <a href='page2B.html'>Temperature Change By State/City</a>
-                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>In-Depth View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>About Us
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='mission.html#persona-section'>Personas</a>
-                    <a href='mission.html#aboutUs-section'>Contact Us</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Help & Support
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='PageHelp.html'>Page Assistance</a>
-                    <a href='PageHelp.html#faq-section'>FAQ</a>
-                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                    </div>
-                    </div>
-                    </div>
-                """;
 
+                                function openNav() {
+                  document.getElementById('mySidenav').style.width = '250px';
+                }
+
+                function closeNav() {
+                  document.getElementById('mySidenav').style.width = '0px';
+                }
+                                                """;
+        // take user to help page when h is pressed
+        html = html + """
+
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """;
+        // take to home page when esc is pressed
+        html = html + """
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+                 // key press to reload/clear values
+
+                          document.addEventListener('keydown', function(event) {
+                // Check if the C key (key code 67) is pressed
+                if (event.keyCode == 67) {
+                  reload();
+                }
+                });
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """;
+        html = html + "</script>";
+        // Code for the burger nav and the contents in it when its displayed
+        html = html + "<div class='SideNavBar'>";
+        html = html
+                + """
+                                <div id='mySidenav' class='sidenav'>
+                                    <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
+                                    <a href='/'>Home</a>
+                                    <p>Climate Data and Analysis</p>
+                                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                    <a href='page2B.html'>Temperature Change By State/City</a>
+                                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    <p>About Us</p>
+                                    <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            <p>Help & Support</p>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
+                                </div>
+                        <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
+                                """;
+        html = html + "</div>";
         // Add Div for page Content
         html = html + "<div class='content'>";
-
-        // Add HTML for the page content
         // Explanation of land ocean temp
         html = html
                 + """
-                        <h2>A Look At Annual Global Land Ocean Temperature Records</h2>
-                        <p>Land Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
-                        <p>The Global Land Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
+                        <h2>A Look At Annual Global Land-Ocean Temperature Records</h2>
+                        <p>Land-Ocean Temperature is an average of the temperatures of both the land and ocean surfaces over a period of time. </p>
+                        <p>The Global Land-Ocean records are especially useful as a critical tool in assessing long term climate trends and the extent of global warming due to the inclusion of the surfaces temperature of ocean data,
                         this is because oceans have a higher heat capacity compared to land therefore meaning they absorb and release heat slower which can then help show greater discrepancies in temperatures therefore showing signs of climate change. </p>
                         """;
 
-        // All the Drop down menu stuff for the data to eventually be retrieved from
-        // html = html + "<form action='/page2C.html' method='post'>";
-
-        // A version of the same thing with a javascript function to stop values entered
-        // being cleared on reload
+        // When the page reloads the data is placed back into the drop downs
         html = html + "<form action='/page2C.html' method='post' onsubmit='return ReenterData()'>";
-
         // This bit of javascript makes it so the page keeps the same values leading to
-        // less user confusion when the page reloads
+        // less user confusion when the page reloads as values are saved
         html = html + "<script>";
         html = html + "   function ReenterData() {";
         html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
@@ -152,12 +210,12 @@ public class PageST2C implements Handler {
 
         // reload/clear button
         html = html + "<button class='reset' type='button' onclick='reload()'>Reset</button>";
-        // javascript for that button to clear all data entered
+        // javascript for the reset button to clear all data entered
         //
         html = html + "<script>";
         html = html + "   function reload() {";
         html = html + "       document.getElementById('StartYear_drop').value = '';";
-        html = html + "       document.getElementById('EndYear_drop').options.length = 0;";
+        html = html + "       document.getElementById('EndYear_drop').value = '';";
         html = html + "       var sortOrderRadios = document.querySelectorAll('input[name=SortOrder]');";
         html = html + "       sortOrderRadios.forEach(function(radio) { radio.checked = false; });";
         html = html + "       document.getElementById('TempSelection_drop').value = '';";
@@ -166,17 +224,15 @@ public class PageST2C implements Handler {
         html = html + "       return false;";
         html = html + "   }";
         html = html + "</script>";
-
+        // start year drop down
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
         html = html
                 + "      <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
-        html = html + "<option value='' disabled selected hidden>--select date--</option>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
         // This onchange section ^ makes the website more dynamic by using a java script
         // Used java script taught in this video
         // https://www.youtube.com/watch?v=SBmSRK3feww&t=7s and my own knowledge
-        // function to take the value the user selects to then place it in the end date
-        // drop down menu.
 
         // this connects the database to the start date drop down box.
         JDBCConnection jdbc = new JDBCConnection();
@@ -188,6 +244,7 @@ public class PageST2C implements Handler {
         html = html + "   </div>";
         // Using some javascript to change the value of the end year drop down section
         // to be the same as the start year and vise versa
+        // Stores selected values into javascript variables
         html = html + "<script>";
         html = html + "var selectedStartYear = null;";
         html = html + "var selectedEndYear = null;";
@@ -196,8 +253,8 @@ public class PageST2C implements Handler {
         html = html + "   var EndYearDropdown = document.getElementById('EndYear_drop');";
         html = html + "   var startYear = parseInt(startYearDropdown.value);";
         html = html + "   var endYear = " + years.get(years.size() - 1).getYear() + ";";
-        html = html + "   var selectedEndYear = parseInt(EndYearDropdown.value);"; // Store selected value
-        html = html + "   EndYearDropdown.innerHTML = '';"; // Clear existing options
+        html = html + "   var selectedEndYear = parseInt(EndYearDropdown.value);";
+        html = html + "   EndYearDropdown.innerHTML = '';";
 
         // This javascript code effectively makes the data in the end year section must
         // be in the range of the user selected date to the end of the avilable data in
@@ -208,32 +265,32 @@ public class PageST2C implements Handler {
         html = html + "       option.value = year;";
         html = html + "       EndYearDropdown.add(option);";
         html = html + "   }";
-        html = html + "   if (selectedEndYear) EndYearDropdown.value = selectedEndYear;"; // Reapply selected value
+        html = html + "   if (selectedEndYear) EndYearDropdown.value = selectedEndYear;";
         html = html + "}";
         // this code does the same for the start year value
         html = html + "function updateStartYearOptions() {";
         html = html + "   var startYearDropdown = document.getElementById('StartYear_drop');";
         html = html + "   var EndYearDropdown = document.getElementById('EndYear_drop');";
         html = html + "   var EndYear = parseInt(EndYearDropdown.value);";
-        html = html + "   var selectedStartYear = parseInt(startYearDropdown.value);"; // Store selected value
-        html = html + "   startYearDropdown.innerHTML = '';"; // Clear existing options
+        html = html + "   var selectedStartYear = parseInt(startYearDropdown.value);";
+        html = html + "   startYearDropdown.innerHTML = '';";
         html = html + "   for (var year = " + years.get(0).getYear() + "; year <= EndYear; year++) {";
         html = html + "       var option = document.createElement('option');";
         html = html + "       option.text = year;";
         html = html + "       option.value = year;";
         html = html + "       startYearDropdown.add(option);";
         html = html + "   }";
-        html = html + "   if (selectedStartYear) startYearDropdown.value = selectedStartYear;"; // Reapply selected
-                                                                                                // value
+        html = html + "   if (selectedStartYear) startYearDropdown.value = selectedStartYear;";
         html = html + "}";
         html = html + "</script>";
 
+        // end year drop down
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
         html = html
                 + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
-        html = html + "<option value='' disabled selected hidden>--select date--</option>";
-
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
+        // java code to help get the year data into the drop down options
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
@@ -243,14 +300,14 @@ public class PageST2C implements Handler {
         // Sorting order
         html = html + """
                 <p>Sort By</p>
-                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
-                <label class='radio-label' for='SortOrderAsc'>Least Change In Average Temperature</label><br>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending' checked>
+                <label class='radio-label' for='SortOrderAsc'>Low to High</label><br>
 
                 <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
-                 <label class='radio-label' for='SortOrderDes'>Greatest Change In Average Temperature</label><br>
+                 <label class='radio-label' for='SortOrderDes'>High to Low</label><br>
 
                     """;
-
+        // Type of data drop down
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='TempSelection_drop'>Select Data You Wish To View:</label>";
         html = html + "      <select id='TempSelection_drop' name='TempSelection_drop' size='1'>";
@@ -263,41 +320,31 @@ public class PageST2C implements Handler {
         html = html + "   </div>";
         // submit button
         html = html + "   <button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
-
         html = html + "</form>";
 
-        /*
-         * Get the Form Data
-         * from the drop down list
-         * Need to be Careful!!
-         * If the form is not filled in, then the form will return null!
-         */
+        // gets data once form is posted
         String StartYear_drop = context.formParam("StartYear_drop");
-        // String movietype_drop = context.queryParam("movietype_drop");
-        if (StartYear_drop == null) {
-            // If NULL, nothing to show, therefore we make some "no results" HTML
-
-            // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
-        } else {
-            // If NOT NULL, then lookup the movie by type!
-            // html = html + outputData(StartYear_drop);
-
-        }
         String DataToShow = context.formParam("TempSelection_drop");
         String EndYear_drop = context.formParam("EndYear_drop");
         String SortBy = context.formParam("SortOrder");
-        // String movietype_drop = context.queryParam("movietype_drop");
-        if (EndYear_drop == null) {
-            // If NULL, nothing to show, therefore we make some "no results" HTML
 
-            // html = html + "<h2><i>No Results to show for dropbox</i></h2>";
+        // validation checks if stuff is null to prevent crashes
+        if (EndYear_drop == null && StartYear_drop == null && DataToShow == null && SortBy == null) {
+            html = html + "<h3>Please Fill Out The Form Above</h3>";
         } else {
-            // If NOT NULL, then lookup the movie by type!
-            // html = html + outputData(EndYear_drop);
-
+            if (StartYear_drop == null) {
+                html = html + "<h3>Please select a start year</h3>";
+            }
+            if (EndYear_drop == null) {
+                html = html + "<h3>Please select a end year</h3>";
+            }
+            if (DataToShow == null) {
+                html = html + "<h3>Please select a type of data</h3>";
+            }
             if (SortBy == null) {
-                html = html + "<h2><i>Please select a sorting method</i></h2>";
-            } else {
+                html = html + "<h3>Please select a sorting method</h3>";
+            } else if (EndYear_drop != null && StartYear_drop != null && DataToShow != null && SortBy != null) {
+                // function where data is calculated
                 html = html + outputData(StartYear_drop, EndYear_drop, DataToShow, SortBy);
             }
         }
@@ -309,31 +356,32 @@ public class PageST2C implements Handler {
         html = html
                 + """
                             <div class='footer'>
-                         <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+
                         <div class='footerBlock'>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                                      <p style='margin-top: 0;'>Shallow View</p>
                                       <a href='page2A.html'>Temperature & Population Change By Country/World</a>
                                       <a href='page2B.html'>Temperature Change By State/City</a>
                                       <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
                                     </div>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                                      <p style='margin-top: 0;'>In-Depth View</p>
                                       <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
                                       <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
                                       <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
                                     </div>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                                      <p style='margin-top: 0;'>About</p>
                                       <a href='mission.html'>Our Mission</a>
                                       <a href='mission.html#persona-section'>Personas</a>
                                       <a href='mission.html#aboutUs-section'>Contact Us</a>
                                     </div>
                                     <div class='footerColumn'>
-                                      <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                                      <p style='margin-top: 0;'>Help & Support</p>
                                       <a href='PageHelp.html'>Page Assistance</a>
                                       <a href='PageHelp.html#faq-section'>FAQ</a>
                                       <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
                                     </div>
                                   </div>
                                 </div>
@@ -348,6 +396,7 @@ public class PageST2C implements Handler {
     }
 
     private String outputData(String startYear, String endYear, String DataToShow, String SortBy) {
+        // makes the table for the data and the box of important info
         String html = "<div id='tableData'>";
         html = html + "<h2>" + "Climate Data From " + startYear + " To " + endYear + "</h2>";
         JDBCConnection jdbc = new JDBCConnection();
@@ -462,6 +511,8 @@ public class PageST2C implements Handler {
     }
 
     private int getIndexByYear(ArrayList<Climate> oceantemps, int year) {
+        // function is used to get all the years and check to see if its within the
+        // dataset and where it is
         for (int i = 0; i < oceantemps.size(); i++) {
             if (oceantemps.get(i).getYear() == year) {
                 return i;
@@ -478,6 +529,7 @@ public class PageST2C implements Handler {
         String tempChange = "";
         String roundDifferenceValue = "";
         String percentageChange = "";
+        // creates the box for important information
         html = html
                 + "<div style='width: 350px; margin-left: 630px; margin-top: -360px; position: absolute; border: 2px solid black; text-align: center;'>";
         html = html + "<h2> Change In Temperature Between " + startYear + " And " + endYear + "</h2>";
@@ -551,6 +603,7 @@ public class PageST2C implements Handler {
     }
 
     private String getTemperatureChange(float startValue, float endValue, String dataType) {
+        // calculates the change in temperature and formats into a string
         String tempChange = "";
         float difference = endValue - startValue;
         if (difference > 0) {
@@ -565,12 +618,14 @@ public class PageST2C implements Handler {
     }
 
     private String getRoundDifferenceValue(float startValue, float endValue) {
+        // calculates the rounded value from the end year value to start year value
         float difference = endValue - startValue;
         String roundDifferenceValue = String.format("%.2f", difference);
         return roundDifferenceValue;
     }
 
     private String getPercentageChange(float startValue, float endValue) {
+        // calculates percentage change
         float difference = endValue - startValue;
         float percentage = (difference / startValue) * 100;
         percentage = Math.abs(percentage);

@@ -10,8 +10,8 @@ public class PersonaData {
 
     private String experience;
 
-    public PersonaData(int personaId, String name, String quote, String imagePath, String requirements, String background,
-                       String experience) {
+    public PersonaData(int personaId, String name, String quote, String imagePath, String requirements,
+            String background, String experience) {
         this.personaId = personaId;
         this.name = name;
         this.quote = quote;
@@ -20,10 +20,19 @@ public class PersonaData {
         this.background = background;
 
         this.experience = experience;
+        this.background = background;
     }
 
     public int getPersonaId() {
         return personaId;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 
     public void setPersonaId(int personaId) {

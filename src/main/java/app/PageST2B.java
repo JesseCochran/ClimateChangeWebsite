@@ -38,19 +38,21 @@ public class PageST2B implements Handler {
         // adds a cool icon on the nav menu
         html = html
                 + "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>";
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
+        html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
         html = html + "</head>";
 
         // Add the body
         // Create a simple HTML webpage in a String
 
         // Add some Head information
-        html = html + "<head>" +
-                "<title>Subtask 2.1</title>";
+        // html = html + "<head>" +
+        // "<title>Subtask 2.1</title>";
 
-        // Add some CSS (external file)
-        html = html + "<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />";
-        html = html + "</head>";
+        // // Add some CSS (external file)
+        // html = html + "<link rel='stylesheet' type='text/css'
+        // href='JesseTesting2c.css' />";
+        // html = html + "</head>";
 
         // Add the body
         html = html + "<body>";
@@ -67,50 +69,111 @@ public class PageST2B implements Handler {
         // Add the topnav
         html = html + """
                     <div class='topnav'>
-                    <a href='/'>Home</a>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Shallow View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                    <a href='page2B.html'>Temperature Change By State/City</a>
-                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>In-Depth View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>About Us
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='mission.html#persona-section'>Personas</a>
-                    <a href='mission.html#aboutUs-section'>Contact Us</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Help & Support
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='PageHelp.html'>Page Assistance</a>
-                    <a href='PageHelp.html#faq-section'>FAQ</a>
-                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                    </div>
-                    </div>
-                    </div>
+                            <a href='/'>Home</a>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Climate Data and Analysis
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                            <a href='page2B.html'>Temperature Change By State/City</a>
+                            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>About Us
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Help & Support
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                            </div>
+                            </div>
+                            </div>
                 """;
 
+        html = html + "<script>";
+        html = html + """
+
+                                function openNav() {
+                  document.getElementById('mySidenav').style.width = '250px';
+                }
+
+                function closeNav() {
+                  document.getElementById('mySidenav').style.width = '0px';
+                }
+                                                """;
+        html = html + "</script>";
+        html = html + "<div class='SideNavBar'>";
+        html = html
+                + """
+                                <div id='mySidenav' class='sidenav'>
+                                    <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
+                                    <a href='/'>Home</a>
+                                    <p>Climate Data and Analysis</p>
+                                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                    <a href='page2B.html'>Temperature Change By State/City</a>
+                                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    <p>About Us</p>
+                                    <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            <p>Help & Support</p>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
+                                </div>
+                        <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
+                                """;
+        html = html + "</div>";
+        html = html + "<script>";
+        // take to help page
+        html = html + """
+
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """;
+        // take to home page
+        html = html + """
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """;
+        html = html + "</script>";
         // Add Div for page Content
         html = html + "<div class='content'>";
 
@@ -331,36 +394,38 @@ public class PageST2B implements Handler {
         // Footer
         html = html
                 + """
-                    <div class='footer'>
-                 <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
-                <div class='footerBlock'>
-                            <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
-                              <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                              <a href='page2B.html'>Temperature Change By State/City</a>
-                              <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                            </div>
-                            <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
-                              <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                              <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                              <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                            </div>
-                            <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>About</p>
-                              <a href='mission.html'>Our Mission</a>
-                              <a href='mission.html#persona-section'>Personas</a>
-                              <a href='mission.html#aboutUs-section'>Contact Us</a>
-                            </div>
-                            <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
-                              <a href='PageHelp.html'>Page Assistance</a>
-                              <a href='PageHelp.html#faq-section'>FAQ</a>
-                              <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                            </div>
-                          </div>
-                        </div>
-                        """;
+
+                            <div class='footer'>
+
+                        <div class='footerBlock'>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>Shallow View</p>
+                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='page2B.html'>Temperature Change By State/City</a>
+                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>In-Depth View</p>
+                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>About</p>
+                                      <a href='mission.html'>Our Mission</a>
+                                      <a href='mission.html#persona-section'>Personas</a>
+                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>Help & Support</p>
+                                      <a href='PageHelp.html'>Page Assistance</a>
+                                      <a href='PageHelp.html#faq-section'>FAQ</a>
+                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
+                                    </div>
+                                  </div>
+                                </div>
+                                """;
 
         html += "<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
                 "    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1\n" +

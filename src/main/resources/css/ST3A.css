@@ -1,0 +1,76 @@
+.hide-element {
+    display: none;
+   }
+
+.location-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+.year-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+#top {
+    grid-column: 1;
+    grid-column: 1;
+}
+
+#geoLayer1, #geoLayer2, #geoLayer3 {
+    grid-column: 2 / span 2;
+    grid-row: 1;
+}
+
+#country1Layer, #state1Layer, #city1Layer {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#country2Layer, #state2Layer, #city2Layer {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#country3Layer, #state3Layer, #city3Layer {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+#startYearLayer {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#timePeriodLayer {
+    grid-column: 2 / span 2;
+    grid-row: 1;
+}
+
+#addYear1Layer {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#addYear2Layer {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#addYear3Layer {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+#addYear4Layer {
+    grid-column: 4;
+    grid-row: 1;
+}
+
+.table-container {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+    grid-gap: 10px;
+}
