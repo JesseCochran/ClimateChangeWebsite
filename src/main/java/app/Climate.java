@@ -30,6 +30,7 @@ public class Climate {
     private float endTemp;
     private float tempPercent;
     private String dataType;
+    private float avgDiff;
 
     /**
      * Create an Climate object and set the fields
@@ -202,6 +203,14 @@ public class Climate {
 
     public void setDataType(String dataType) {
         this.dataType = dataType;
+    }
+
+    public void setAverageDifference(float avgDiff) {
+        this.avgDiff = avgDiff;
+    }
+
+    public float getAverageDifference() {
+        return avgDiff;
     }
 
 }

@@ -1781,4 +1781,110 @@ public class JDBCConnection {
         return climates;
     }
 
+    public ArrayList<Climate> get3ATableData(String geoType, String geoName, String startDate1, String timePeriod, String StartDate2, String StartDate3, String StartDate4, String StartDate5, String sort) {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT StartDate, AvgTemp, AvgDiff ";
+            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
+            query = query + "FROM (SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + "FROM CountryTemp AS ct ";
+            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+            query = query + "WHERE s.StateName = 'Victoria' ";
+            query = query + "AND ct.Year >= 1960 AND ct.Year <= (1960 + 10)) AS AvgTemp, '1960' AS StartDate ";
+
+            query = query + "UNION ";
+            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + "FROM CountryTemp AS ct ";
+            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+            query = query + "WHERE s.StateName = 'Victoria' ";
+            query = query + "AND ct.Year >= 1990 AND ct.Year <= (1990 + 10)) AS AvgTemp, '1990' AS StartDate ";
+
+            query = query + "UNION ";
+            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + "FROM CountryTemp AS ct ";
+            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+            query = query + "WHERE s.StateName = 'Victoria' ";
+            query = query + "AND ct.Year >= 1880 AND ct.Year <= (1880 + 10)) AS AvgTemp, '1880' AS StartDate ";
+
+            query = query + "UNION ";
+            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + "FROM CountryTemp AS ct ";
+            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+            query = query + "WHERE s.StateName = 'Victoria' ";
+            query = query + "AND ct.Year >= 2000 AND ct.Year <= (2000 + 10)) AS AvgTemp, '2000' AS StartDate ";
+
+            query = query + "UNION ";
+            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + "FROM CountryTemp AS ct ";
+            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+            query = query + "WHERE s.StateName = 'Victoria' ";
+            query = query + "AND ct.Year >= 1900 AND ct.Year <= (1900 + 10)) AS AvgTemp, '1880' AS StartDate ";
+
+            query = query + ")) ORDER BY StartDate ASC; ";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("StartDate");
+                float avgTemp = results.getFloat("AvgTemp");
+                float avgDiff = results.getFloat("AvgDiff");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setAverageTemperature(avgTemp);
+                climate.setAverageDifference(avgDiff);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
 }
