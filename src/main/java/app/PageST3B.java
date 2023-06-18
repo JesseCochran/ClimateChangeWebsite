@@ -99,7 +99,7 @@ public class PageST3B implements Handler {
 
 
         // Add HTML for the page content
-        html.append("<h4> A Focused View Of Date On a Country, City or State Level <h4/>");
+        html.append("<h2> A Focused View Of Date On a Country, City or State Level </h2>");
         html.append("<p> On this page you have the option to select whether you wish to view data on a country, city, or state level. <p/>");
         html.append("<p> If you have chosen to view country data you may view population, temperature or both population and temperature. <p/>");
         html.append("<p> If you have chosen to view city or state data only temperature data is available. <p/>");
