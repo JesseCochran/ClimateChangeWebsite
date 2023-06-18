@@ -1908,4 +1908,98 @@ public class JDBCConnection {
         return climates;
     }
 
+    public ArrayList<Climate> get3AGlobalTableData(String geoType, String startDate1, String timePeriod, 
+    String startDate2, String startDate3, String startDate4, String startDate5, String sort) {
+        // Create the ArrayList of Climate objects to return
+        ArrayList<Climate> climates = new ArrayList<Climate>();
+
+        // Setup the variable for the JDBC connection
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT StartDate, AvgTemp, AvgDiff ";
+            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
+            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "FROM GlobalTemp ";
+            query = query + "WHERE Year >= " + startDate1 + " AND Year <= (" + startDate1  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
+            if(startDate2 != null) {
+            query = query + "UNION ";
+            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
+            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "FROM GlobalTemp ";
+            query = query + "WHERE Year >= " + startDate2 + " AND Year <= (" + startDate2  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
+            }
+            if(startDate3 != null) {
+            query = query + "UNION ";
+            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
+            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "FROM GlobalTemp ";
+            query = query + "WHERE Year >= " + startDate3 + " AND Year <= (" + startDate3  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
+            }
+            if(startDate4 != null) {
+            query = query + "UNION ";
+            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
+            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "FROM GlobalTemp ";
+            query = query + "WHERE Year >= " + startDate4 + " AND Year <= (" + startDate4  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
+            }
+            if(startDate5 != null) {
+            query = query + "UNION ";
+            query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
+            query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
+            query = query + "FROM GlobalTemp ";
+            query = query + "WHERE Year >= " + startDate5 + " AND Year <= (" + startDate5  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
+            }
+            query = query + sort;
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+
+                int year = results.getInt("StartDate");
+                float avgTemp = results.getFloat("AvgTemp");
+                float avgDiff = results.getFloat("AvgDiff");
+
+                // Create a Climate Object
+                Climate climate = new Climate();
+                climate.setYear(year);
+                climate.setAverageTemperature(avgTemp);
+                climate.setAverageDifference(avgDiff);
+
+                // Add the lga object to the array
+                climates.add(climate);
+            }
+
+            // Close the statement because we are done with it
+            statement.close();
+        } catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return climates;
+    }
+
 }
