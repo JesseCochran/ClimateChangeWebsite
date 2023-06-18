@@ -180,10 +180,10 @@ public class PageST3B implements Handler {
         html.append(
                 "<p> If you have chosen to view country data you may view population, temperature or both population and temperature. </p>");
         html.append("<p> If you have chosen to view city or state data only temperature data is available. </p>");
-        html.append(
-                "<p> The table generator will provide you with information geographical locations with similar data to your chosen location. You may choose how many locations you wish to compare.  </p>");
-        html.append("<p> Please note Cities and States will be compared with respect to their parent country. </p>");
         html.append("<p> Additionally you may choose to compare data by relative change or absolute value </p>");
+        html.append("<p> The table generator will provide you with information geographical locations with similar data to your chosen location. You may choose how many locations you wish to compare.  </p>");
+        html.append("<p> Additionally you may choose to compare data by relative change or absolute value </p>");
+        html.append("<p> Please note: Cities and States will be compared with respect to their parent country. </p>");
 
         // declaring variables
         int fromDate;
