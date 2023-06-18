@@ -224,8 +224,10 @@ public class PageIndex implements Handler {
 
     int populationYears = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
 
-    // Add HTML data specifications(1A)
+    // Heading for 1A
     html = html + "<h2>Introduction</h2>";
+
+    //Description of 1A
     html = html
         + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at "
         +
@@ -286,11 +288,8 @@ public class PageIndex implements Handler {
         if (country.getYear() == Integer.parseInt(Year)) {
           html = html + "['" + country.getCountryName() + "', " + country.getAverageTemperature() + "],";
         }
-        // else {
-        // html = html + "['" + country.getCountryName() + "', " +
-        // country.getAverageTemperature() + "],";
-        // }
-      } else {
+      } 
+      else {
         html = html + "['" + Countries.get(0).getCountryName() + "', "
             + Countries.get(0).getAverageTemperature() + "],";
       }
@@ -305,12 +304,6 @@ public class PageIndex implements Handler {
     // end content section
     html = html + "</div>";
 
-    // *Testing */
-    // html = html + "<p>" + currentYearIndex + "</p>";
-
-    // html = html + "<p>" + Year + "</p>";
-
-    // TESTING html = html + "<p>" + Countries.get(0).getYear() + "</p>";
     // Footer
     html = html
         + """
