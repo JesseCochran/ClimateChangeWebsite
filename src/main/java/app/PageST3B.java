@@ -26,8 +26,11 @@ public class PageST3B implements Handler {
         html.append("<head>").append("<title>Subtask 3.2</title>");
 
         // Add some CSS (external file)
-        html.append("<link rel='stylesheet' type='text/css' href='JesseTesting2c.css' />");
-        // adds a cool icon on the nav menu
+        html.append("""
+                  <link rel='stylesheet' type='text/css' href='common.css' />
+                  <link rel='stylesheet' type='text/css' href='ST3A.css' />
+                  <link rel='stylesheet' type='text/css' href='burgerNav.css' />
+                """);
         html.append("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
         html.append("</head>");
 

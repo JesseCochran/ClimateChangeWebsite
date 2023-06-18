@@ -703,12 +703,62 @@ public class JDBCConnection {
         return avgTempForState;
     }
 
+
+    public static ArrayList<String> distinctCityNames(String countryId, int fromDate, int toDate) {
+
+        ArrayList<String> distinctCityName = new ArrayList<String>();
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT DISTINCT CityName WHERE CountryId='" + countryId + "' AND Year > " + fromDate
+                    + " and Year < " + toDate + " ;";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                String distinctCityNames = results.getString("CityName");
+                distinctCityName.add(distinctCityNames);
+            }
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return distinctCityName;
+    }
+
     /**
      * Get all of the LGAs in the database.
      *
      * @return Returns an ArrayList of LGA objects
      */
-    
+
     public ArrayList<Climate> getLandOceanYears() {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -1301,163 +1351,7 @@ public class JDBCConnection {
         return climates;
     }
 
-
-    public static ArrayList<Country> getCountryNames() {
-
-        ArrayList<Country> countryNames = new ArrayList<>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT CountryName, CountryId from Country DESC;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                countryNames.add(new Country(results.getString("CountryId"),
-                        results.getString("CountryName")));
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return countryNames;
-    }
-
-    public static ArrayList<TempData> getTempByState(String countryId, int fromDate, int toDate) {
-
-        ArrayList<TempData> tempByState = new ArrayList<TempData>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT StateName, Year, AvgTemp, MinTemp, MaxTemp from StateTemp WHERE CountryId='"
-                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate
-                    + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            while (results.next()) {
-                // Lookup the columns we need
-                TempData tempData = new TempData(results.getString("StateName"),
-                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
-                        results.getInt("Year"), results.getFloat("MaxTemp"));
-                tempByState.add(tempData);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return tempByState;
-    }
-
-    public static ArrayList<TempData> getTempByCity(String countryId, int fromDate, int toDate) {
-
-        ArrayList<TempData> tempByCity = new ArrayList<TempData>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-
-            // The Query
-            String query = "SELECT CityName, Year, AvgTemp, MinTemp, MaxTemp from CityTemp WHERE CountryId='"
-                    + countryId + "' AND Year >= " + fromDate + " and Year <= " + toDate
-                    + " AND AvgTemp != 0 AND MinTemp != 0 AND MaxTemp != 0;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-
-                TempData tempData = new TempData(results.getString("CityName"),
-                        results.getFloat("AvgTemp"), results.getFloat("MinTemp"),
-                        results.getInt("Year"), results.getFloat("MaxTemp"));
-                tempByCity.add(tempData);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return tempByCity;
-    }
-
-
-  
-  public ArrayList<Climate> getCountryPopulationTemp(String startYear, String endYear, String type, String sort) {
+    public ArrayList<Climate> getCountryPopulationTemp(String startYear, String endYear, String type, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -1925,303 +1819,6 @@ public class JDBCConnection {
 
     }
 
-    public static ArrayList<PersonaData> getPersonaData() {
-
-        ArrayList<PersonaData> personaInfo = new ArrayList<PersonaData>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT PersonaId, Name, Quote, ImagePath, Requirements, background, Experience FROM Persona;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                PersonaData personaData = new PersonaData(results.getInt("PersonaId"),
-                        results.getString("Name"), results.getString("Quote"),
-                        results.getString("ImagePath"), results.getString("Requirements"),
-                        results.getString("background"), results.getString("Experience"));
-                personaInfo.add(personaData);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return personaInfo;
-    }
-
-    public static ArrayList<StudentInfo> getStudentInfo() {
-
-        ArrayList<StudentInfo> studentData = new ArrayList<StudentInfo>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT StudentNumber, Fname, Lname, Email FROM StudentInfo;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                StudentInfo studentInfo = new StudentInfo(results.getString("StudentNumber"),
-                        results.getString("Fname"), results.getString("Lname"),
-                        results.getString("Email"));
-                studentData.add(studentInfo);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return studentData;
-    }
-
-    public static boolean hasCities(String countryId) {
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT count(*) as total from CityTemp where CountryId='" + countryId + "';";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                if (results.getInt("total") > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return false;
-    }
-
-    public static boolean hasStates(String countryId) {
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT count(*) as total from StateTemp where CountryId='" + countryId + "';";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                if (results.getInt("total") > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return false;
-    }
-
-    public static ArrayList<String> getDistinctStateNames(String countryId, int fromDate, int toDate) {
-
-        ArrayList<String> distinctStateName = new ArrayList<String>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT DISTINCT StateName WHERE CountryId='" + countryId + "' AND Year >= " + fromDate
-                    + " and Year <= " + toDate + " AND AvgTemp IS NOT NULL, MinTemp IS NOT NULL, MaxTemp IS NOT NULL;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                String distinctStateNames = new String(results.getString("StateName"));
-                distinctStateName.add(distinctStateNames);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return distinctStateName;
-    }
-
-    public static ArrayList<String> distinctCityNames(String countryId, int fromDate, int toDate) {
-
-        ArrayList<String> distinctCityName = new ArrayList<String>();
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT DISTINCT CityName WHERE CountryId='" + countryId + "' AND Year > " + fromDate
-                    + " and Year < " + toDate + " ;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                String distinctCityNames = new String(results.getString("CityName"));
-                distinctCityName.add(distinctCityNames);
-            }
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return distinctCityName;
-    }
-
     public ArrayList<Climate> getCountryName() {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
@@ -2239,11 +1836,11 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                SELECT CountryName
-                FROM Country
-                WHERE CountryId <> 'WLD'
-                AND CountryId <> 'CIV';
-                        """;
+                    SELECT CountryName
+                    FROM Country
+                    WHERE CountryId <> 'WLD'
+                    AND CountryId <> 'CIV';
+                            """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -2300,9 +1897,9 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                SELECT DISTINCT StateName
-                FROM StateTemp;
-                        """;
+                    SELECT DISTINCT StateName
+                    FROM StateTemp;
+                            """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -2359,9 +1956,9 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                SELECT DISTINCT CityName
-                FROM CityTemp;
-                        """;
+                    SELECT DISTINCT CityName
+                    FROM CityTemp;
+                            """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -2418,9 +2015,9 @@ public class JDBCConnection {
 
             // The Query
             String query = """
-                SELECT DISTINCT Year 
-                FROM CityTemp;  
-                        """;
+                    SELECT DISTINCT Year 
+                    FROM CityTemp;  
+                            """;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);
@@ -2460,8 +2057,8 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> get3ATableData(String geoType, String geoName, String startDate1, String timePeriod, 
-    String startDate2, String startDate3, String startDate4, String startDate5, String sort) {
+    public ArrayList<Climate> get3ATableData(String geoType, String geoName, String startDate1, String timePeriod,
+                                             String startDate2, String startDate3, String startDate4, String startDate5, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -2478,15 +2075,13 @@ public class JDBCConnection {
 
             String sqlSelect = "";
             String sqlWhere = "";
-            if(geoType.equals("Country")) {
+            if (geoType.equals("Country")) {
                 sqlSelect = "SELECT (SELECT AVG(ct.AvgTemp) ";
                 sqlWhere = "WHERE c.CountryName = '" + geoName + "' ";
-            }
-            else if(geoType.equals("State")) {
+            } else if (geoType.equals("State")) {
                 sqlSelect = "SELECT (SELECT AVG(s.AvgTemp) ";
                 sqlWhere = "WHERE s.StateName = '" + geoName + "' ";
-            }
-            else if(geoType.equals("City")) {
+            } else if (geoType.equals("City")) {
                 sqlSelect = "SELECT (SELECT AVG(ci.AvgTemp) ";
                 sqlWhere = "WHERE ci.CityName = '" + geoName + "' ";
             }
@@ -2501,47 +2096,47 @@ public class JDBCConnection {
             query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
             query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
             query = query + sqlWhere;
-            query = query + "AND ct.Year >= " + startDate1 + " AND ct.Year <= (" + startDate1  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
+            query = query + "AND ct.Year >= " + startDate1 + " AND ct.Year <= (" + startDate1 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
 
-            if(startDate2 != null) {
-            query = query + "UNION ";
-            query = query + sqlSelect;
-            query = query + "FROM CountryTemp AS ct ";
-            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
-            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
-            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + sqlWhere;
-            query = query + "AND ct.Year >= " + startDate2 + " AND ct.Year <= (" + startDate2  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
+            if (startDate2 != null) {
+                query = query + "UNION ";
+                query = query + sqlSelect;
+                query = query + "FROM CountryTemp AS ct ";
+                query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+                query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+                query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+                query = query + sqlWhere;
+                query = query + "AND ct.Year >= " + startDate2 + " AND ct.Year <= (" + startDate2 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
             }
-            if(startDate3 != null) {
-            query = query + "UNION ";
-            query = query + sqlSelect;
-            query = query + "FROM CountryTemp AS ct ";
-            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
-            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
-            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + sqlWhere;
-            query = query + "AND ct.Year >= " + startDate3 + " AND ct.Year <= (" + startDate3  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
+            if (startDate3 != null) {
+                query = query + "UNION ";
+                query = query + sqlSelect;
+                query = query + "FROM CountryTemp AS ct ";
+                query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+                query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+                query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+                query = query + sqlWhere;
+                query = query + "AND ct.Year >= " + startDate3 + " AND ct.Year <= (" + startDate3 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
             }
-            if(startDate4 != null) {
-            query = query + "UNION ";
-            query = query + sqlSelect;
-            query = query + "FROM CountryTemp AS ct ";
-            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
-            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
-            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + sqlWhere;
-            query = query + "AND ct.Year >= " + startDate4 + " AND ct.Year <= (" + startDate4  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
+            if (startDate4 != null) {
+                query = query + "UNION ";
+                query = query + sqlSelect;
+                query = query + "FROM CountryTemp AS ct ";
+                query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+                query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+                query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+                query = query + sqlWhere;
+                query = query + "AND ct.Year >= " + startDate4 + " AND ct.Year <= (" + startDate4 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
             }
-            if(startDate5 != null) {
-            query = query + "UNION ";
-            query = query + sqlSelect;
-            query = query + "FROM CountryTemp AS ct ";
-            query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
-            query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
-            query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + sqlWhere;
-            query = query + "AND ct.Year >= " + startDate5 + " AND ct.Year <= (" + startDate5  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
+            if (startDate5 != null) {
+                query = query + "UNION ";
+                query = query + sqlSelect;
+                query = query + "FROM CountryTemp AS ct ";
+                query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
+                query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
+                query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
+                query = query + sqlWhere;
+                query = query + "AND ct.Year >= " + startDate5 + " AND ct.Year <= (" + startDate5 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
             }
             query = query + sort;
 
@@ -2587,8 +2182,8 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> get3AGlobalTableData(String geoType, String startDate1, String timePeriod, 
-    String startDate2, String startDate3, String startDate4, String startDate5, String sort) {
+    public ArrayList<Climate> get3AGlobalTableData(String geoType, String startDate1, String timePeriod,
+                                                   String startDate2, String startDate3, String startDate4, String startDate5, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -2608,30 +2203,30 @@ public class JDBCConnection {
             query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
             query = query + "FROM (SELECT (SELECT AVG(AvgAirTemp) ";
             query = query + "FROM GlobalTemp ";
-            query = query + "WHERE Year >= " + startDate1 + " AND Year <= (" + startDate1  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
-            if(startDate2 != null) {
-            query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
-            query = query + "FROM GlobalTemp ";
-            query = query + "WHERE Year >= " + startDate2 + " AND Year <= (" + startDate2  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
+            query = query + "WHERE Year >= " + startDate1 + " AND Year <= (" + startDate1 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
+            if (startDate2 != null) {
+                query = query + "UNION ";
+                query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
+                query = query + "FROM GlobalTemp ";
+                query = query + "WHERE Year >= " + startDate2 + " AND Year <= (" + startDate2 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
             }
-            if(startDate3 != null) {
-            query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
-            query = query + "FROM GlobalTemp ";
-            query = query + "WHERE Year >= " + startDate3 + " AND Year <= (" + startDate3  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
+            if (startDate3 != null) {
+                query = query + "UNION ";
+                query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
+                query = query + "FROM GlobalTemp ";
+                query = query + "WHERE Year >= " + startDate3 + " AND Year <= (" + startDate3 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
             }
-            if(startDate4 != null) {
-            query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
-            query = query + "FROM GlobalTemp ";
-            query = query + "WHERE Year >= " + startDate4 + " AND Year <= (" + startDate4  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
+            if (startDate4 != null) {
+                query = query + "UNION ";
+                query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
+                query = query + "FROM GlobalTemp ";
+                query = query + "WHERE Year >= " + startDate4 + " AND Year <= (" + startDate4 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
             }
-            if(startDate5 != null) {
-            query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
-            query = query + "FROM GlobalTemp ";
-            query = query + "WHERE Year >= " + startDate5 + " AND Year <= (" + startDate5  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
+            if (startDate5 != null) {
+                query = query + "UNION ";
+                query = query + "SELECT (SELECT AVG(AvgAirTemp) ";
+                query = query + "FROM GlobalTemp ";
+                query = query + "WHERE Year >= " + startDate5 + " AND Year <= (" + startDate5 + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
             }
             query = query + sort;
 
