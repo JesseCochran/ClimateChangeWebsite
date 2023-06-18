@@ -124,6 +124,14 @@ public class PageST2C implements Handler {
                 function goToHomePage() {
                   window.location.href = '/';
                 }
+                 // key press to reload/clear values
+
+                          document.addEventListener('keydown', function(event) {
+                // Check if the C key (key code 67) is pressed
+                if (event.keyCode == 67) {
+                  reload();
+                }
+                });
 
                 document.addEventListener('keydown', function(event) {
                   // Check if the Esc key (key code 27) is pressed
@@ -321,20 +329,24 @@ public class PageST2C implements Handler {
         String SortBy = context.formParam("SortOrder");
 
         // validation checks if stuff is null to prevent crashes
-        if (StartYear_drop == null) {
-            html = html + "<h3>Please select a start year</h3>";
-        }
-        if (EndYear_drop == null) {
-            html = html + "<h3>Please select a end year</h3>";
-        }
-        if (DataToShow == null) {
-            html = html + "<h3>Please select a type of data</h3>";
-        }
-        if (SortBy == null) {
-            html = html + "<h3>Please select a sorting method</h3>";
-        } else if (EndYear_drop != null && StartYear_drop != null && DataToShow != null && SortBy != null) {
-            // function where data is calculated
-            html = html + outputData(StartYear_drop, EndYear_drop, DataToShow, SortBy);
+        if (EndYear_drop == null && StartYear_drop == null && DataToShow == null && SortBy == null) {
+            html = html + "<h3>Please Fill Out The Form Above</h3>";
+        } else {
+            if (StartYear_drop == null) {
+                html = html + "<h3>Please select a start year</h3>";
+            }
+            if (EndYear_drop == null) {
+                html = html + "<h3>Please select a end year</h3>";
+            }
+            if (DataToShow == null) {
+                html = html + "<h3>Please select a type of data</h3>";
+            }
+            if (SortBy == null) {
+                html = html + "<h3>Please select a sorting method</h3>";
+            } else if (EndYear_drop != null && StartYear_drop != null && DataToShow != null && SortBy != null) {
+                // function where data is calculated
+                html = html + outputData(StartYear_drop, EndYear_drop, DataToShow, SortBy);
+            }
         }
 
         // Close Content div
