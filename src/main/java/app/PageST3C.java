@@ -2,10 +2,8 @@ package app;
 
 import java.lang.Math;
 import java.util.ArrayList;
-
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,7 +34,7 @@ public class PageST3C implements Handler {
         html = html + "<head> <meta charset='UTF-8'>" +
                 "<title>Comparing Land and Land-Ocean Temperature Data</title>";
 
-        // Add some CSS (external file)
+        // Css for the page
         html = html + "<link rel='stylesheet' type='text/css' href='common.css' />";
         html = html + "<link rel='stylesheet' type='text/css' href='burgerNav.css' />";
         // adds a cool icon on the nav menu
@@ -47,7 +45,7 @@ public class PageST3C implements Handler {
         // Add the body
         html = html + "<body>";
 
-        // Add header content block
+        // header with logo and title
         html = html
                 + """
                             <div class='header'>
@@ -56,7 +54,7 @@ public class PageST3C implements Handler {
                             </div>
                         """;
 
-        // Add the topnav
+        // Navigation Bar
         html = html + """
                     <div class='topnav'>
                             <a href='/'>Home</a>
@@ -95,6 +93,7 @@ public class PageST3C implements Handler {
                             </div>
                             </div>
                 """;
+        // Function in js for opening and closing the burger menu
         html = html + "<script>";
         html = html + """
 
@@ -107,6 +106,7 @@ public class PageST3C implements Handler {
                 }
                                                 """;
         html = html + "</script>";
+        // elements inside the burger menu
         html = html + "<div class='SideNavBar'>";
         html = html
                 + """
@@ -146,14 +146,17 @@ public class PageST3C implements Handler {
                         This can than lead to much more useful results then otherwise just comparing a time period of land-ocean data to another time period, as would just comparing land temperature to land temperature. </p>
 
                         """;
+        html = html
+                + "<p><strong>Note:</strong> It is recommended that you select your time period before selecting the rest of your data.</p>";
 
-        // All the Drop down menu stuff for the data to eventually be retrieved from
-        // html = html + "<form action='/page2C.html' method='post'>";
+        // used for later on when displaying the data
         boolean getInfo = true;
 
         // A version of the same thing with a javascript function to stop values entered
         // being cleared on reload
         html = html + "<form id='page3CForm' action='/page3C.html' method='post' onsubmit='return ReenterData()'>";
+        // this code is used to get information about how many drop downs currently
+        // exist.
         int numberOfDatasets = 0;
         String counterValue = "";
         if (context.formParam("counter") != null) {
@@ -164,12 +167,12 @@ public class PageST3C implements Handler {
         // less user confusion when the page reloads
         html = html + "<script>";
         html = html + "   function ReenterData() {";
+        // store the current values on the page
         html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
         html = html + "       var timeYears = document.getElementById('timeYears_drop').value;";
         html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
         html = html + "       var dataToShow = document.getElementById('TempSelection_drop').value;";
         html = html + "       var counterValue = document.getElementById('counterValue').value;";
-
         html = html + "       sessionStorage.setItem('startYear', startYear);";
         html = html + "       sessionStorage.setItem('timeYears', timeYears);";
         html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
@@ -177,21 +180,8 @@ public class PageST3C implements Handler {
         html = html + "       sessionStorage.setItem('counterValue', counterValue);";
         html = html + "       return true;";
         html = html + "   }";
+        // retrieves stored values to place into the drop downs again
         html = html + " window.onload = function() {";
-        // html = html + " var startYear = sessionStorage.getItem('startYear');";
-        // html = html + " var timeYears = sessionStorage.getItem('timeYears');";
-        // html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
-        // html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
-        // html = html + " if (startYear)
-        // document.getElementById('StartYear_drop').value = startYear;";
-        // html = html + " if (timeYears)
-        // document.getElementById('timeYears_drop').value = timeYears;";
-        // html = html
-        // + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' +
-        // sortOrder + ']').checked = true;";
-        // html = html + " if (dataToShow)
-        // document.getElementById('TempSelection_drop').value = dataToShow;";
-        // html = html + " }";
         html = html + "       var startYear = sessionStorage.getItem('startYear');";
         html = html + "       var timeYears = sessionStorage.getItem('timeYears');";
         html = html + "       var sortOrder = sessionStorage.getItem('sortOrder');";
@@ -207,7 +197,6 @@ public class PageST3C implements Handler {
         // reload/clear button
         html = html + "<button class='reset' type='button' onclick='reload()'>Reset</button>";
         // javascript for that button to clear all data entered
-        //
         html = html + "<script>";
         html = html + "   function reload() {";
         html = html + "       document.getElementById('StartYear_drop').value = '';";
@@ -222,7 +211,6 @@ public class PageST3C implements Handler {
         html = html + "       document.getElementById('tableData').innerHTML = '';";
         html = html + "       return false;";
         html = html + "   }";
-
         // key press to reload/clear values
         html = html + """
                           document.addEventListener('keydown', function(event) {
@@ -232,7 +220,6 @@ public class PageST3C implements Handler {
                 }
                 });
                           """;
-
         // take to help page
         html = html + """
 
@@ -267,7 +254,7 @@ public class PageST3C implements Handler {
         html = html + "   <div class='form-group'>";
         html = html + "      <label for='StartYear_drop'>Select the start year:</label>";
         html = html + "      <select id='StartYear_drop' name='StartYear_drop'>";
-        html = html + "<option value='' disabled selected hidden>--select date--</option>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
 
         JDBCConnection jdbc = new JDBCConnection();
         ArrayList<Climate> years = jdbc.getLandOceanYears();
@@ -278,7 +265,7 @@ public class PageST3C implements Handler {
 
         html = html + "      <label for='lengthDropdown'>Select the time period of years:</label>";
         html = html + "      <select id='lengthDropdown' name='lengthDropdown'>";
-        html = html + "<option value='' disabled selected hidden>--select years--</option>";
+        html = html + "<option value='' disabled selected hidden>--select period--</option>";
         for (int i = 1; i < years.size(); i++) {
             if (i != 1) {
                 html = html + " <option value='" + i + "'>" + i + " years</option>";
@@ -397,6 +384,7 @@ public class PageST3C implements Handler {
 
         // Every time the button is pressed, it will reload the form and increase the
         // counter that is at the top of the document
+        // this increase amount of extra dropdowns
         html = html + "<script>";
         html = html + "function incrementCounter() {";
         html = html + "    var counter = sessionStorage.getItem('counter');";
@@ -416,18 +404,16 @@ public class PageST3C implements Handler {
         html = html + "    form.submit();";
         html = html + "}";
         html = html + "</script>";
-        // testing
-        // html = html + "<p>" + numberOfDatasets + "</p>";
+
+        // this loop creates an additional dropdown everytime the button is pressed
         if (numberOfDatasets > 0) {
             html = html + "<div id='datasetContainer'>";
-
             for (int i = 0; i < numberOfDatasets; i++) {
                 html = html + "<p>Please Select Another Set Of Data To Compare:</p>";
                 html = html + "      <label for='StartYear_drop" + i + "'>Select the start year:</label>";
                 html = html + "      <select id='StartYear_drop" + i + "' name='StartYear_drop" + i
                         + "' onchange='updateStartYearOptionsMultiple(this)'>";
-                html = html + "<option value='' disabled selected hidden>--select date--</option>";
-
+                html = html + "<option value='' disabled selected hidden>--select year--</option>";
                 years = jdbc.getLandOceanYears();
                 for (Climate year : years) {
                     html = html + "<option>" + year.getYear() + "</option>";
@@ -443,7 +429,6 @@ public class PageST3C implements Handler {
             }
             html = html + "</div>";
         }
-
         // Sorting order
         html = html + """
                 <p>Sort By</p>
@@ -455,10 +440,10 @@ public class PageST3C implements Handler {
 
                     """;
 
-        // View table
+        // View table/Graph if this checkbox is selected it shows graph and table
+        // otherwise it just shows table
         html = html + "<input type='checkbox' id='dataTable' name='dataTable' value='seeTable'>";
         html = html + "<label for='dataTable'> Do you wish to see the data in a graph?</label><br>";
-        // html = html + "<p>" + counterValue + "</p>";
 
         // hidden field to save number of dropdowns
         if (counterValue != null) {
@@ -468,9 +453,8 @@ public class PageST3C implements Handler {
         // submit button
         html = html
                 + "   <button class='showTable' type='submit' class='btn btn-primary'>Get Information</button>";
-
         html = html + "</form>";
-        // test
+        // stores variables in both java and javascript from form submission
         String startYear = context.formParam("StartYear_drop");
         String timeYears = context.formParam("lengthDropdown");
         String sortOrder = context.formParam("SortOrder");
@@ -481,15 +465,13 @@ public class PageST3C implements Handler {
         html = html + "   sessionStorage.setItem('sortOrder', '" + sortOrder + "');";
         html = html + "   sessionStorage.setItem('dataToShow', '" + dataToShow + "');";
         html = html + "</script>";
-
         String viewTable = context.formParam("dataTable");
         String startYear1 = context.formParam("StartYear_drop");
         String duration = context.formParam("lengthDropdown");
         String dataType1 = context.formParam("dataType");
         String orderBy = context.formParam("SortOrder");
 
-        // testing code
-        // html = html + "<h2>" + context.formParam("counterValue") + "</h2>";
+        // loop to validated data in the created dropdowns
         int arrayLengthNum = 0;
         if (context.formParam("counterValue") != null) {
             String arrayLength = context.formParam("counterValue");
@@ -506,17 +488,12 @@ public class PageST3C implements Handler {
                 startYears.add(context.formParam("StartYear_drop" + i));
             } else {
                 error = true;
-                // startYears.add("0");
             }
             if (context.formParam("StartYear_drop" + i) != null) {
                 dataTypes.add(context.formParam("dataType" + i));
             } else {
                 error = true;
-                // dataTypes.add("0");
             }
-            // for(int j = 0; j < startYears.size(); j++){
-            // if(startYears.get(j));
-            // }
         }
 
         for (int i = 0; i < startYears.size(); i++) {
