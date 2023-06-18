@@ -391,14 +391,11 @@ public class PageST3B implements Handler {
 
             //        ********************** Average Temp ****************************
 
-
+            html.append("</div>");
+            html.append("</div>");
             html.append("</select>");
-            html.append("</div>");
             html.append("<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>");
-            html.append("</div>");
-            html.append("<div>");
             html.append("<button class='reset' type='reset' >Reset</button>");
-            html.append("</div>");
             html.append("</form>");
 
             if (fromDate != 0 && duration != 0) {
