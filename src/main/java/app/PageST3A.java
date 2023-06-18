@@ -491,30 +491,35 @@ public class PageST3A implements Handler {
       html = html + "<h3>Please Fill Out The Form Above</h3>";
     }
     else if(geoLocation.equals("Global")) {
+      if(timePeriod != null && startYear1 != null) {
       html = html + outputGlobalData(geoLocation, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      else {
+        html = html + "<h3>Please Select At Least One Start Year and Time Period</h3>";
+      }
     }
     else if (geoLocation.equals("Country")) {
-      if(country1 != null) {
+      if(country1 != null && timePeriod != null && startYear1 != null) {
         html = html + outputData(geoLocation, country1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, country2, country3, country4, sort);
       }
       else {
-        html = html + "<h3>Please Select At least One Country</h3>";
+        html = html + "<h3>Please Select At Least One Country, Start Year and Time Period</h3>";
       }
     }
     else if (geoLocation.equals("State")) {
-      if(state1 != null) {
+      if(state1 != null && timePeriod != null && startYear1 != null) {
         html = html + outputData(geoLocation, state1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, state2, state3, state4, sort);
       }
       else {
-        html = html + "<h3>Please Select At least One State</h3>";
+        html = html + "<h3>Please Select At least One State, Start Year and Time Period</h3>";
       }
     }
     else if (geoLocation.equals("City")) {
-      if(city1 != null) {
+      if(city1 != null && timePeriod != null && startYear1 != null) {
         html = html + outputData(geoLocation, city1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, city2, city3, city4, sort);
       }
       else {
-        html = html + "<h3>Please Select At least One City</h3>";
+        html = html + "<h3>Please Select At least One City, Start Year and Time Period</h3>";
       }
     }
 
