@@ -330,7 +330,7 @@ public class PageST2C implements Handler {
 
         // validation checks if stuff is null to prevent crashes
         if (EndYear_drop == null && StartYear_drop == null && DataToShow == null && SortBy == null) {
-            html = html + "<h3>Please Fill Out The Form Above</h3>";
+            html = html + "<h3>Please Enter All The Data Above To See Result </h3>";
         } else {
             if (StartYear_drop == null) {
                 html = html + "<h3>Please select a start year</h3>";

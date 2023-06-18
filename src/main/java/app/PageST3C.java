@@ -472,6 +472,8 @@ public class PageST3C implements Handler {
         String orderBy = context.formParam("SortOrder");
 
         // loop to validated data in the created dropdowns
+        // this ensures no null errors and ensures the page doesn't crash trying to
+        // display something that doesn't exist
         int arrayLengthNum = 0;
         if (context.formParam("counterValue") != null) {
             String arrayLength = context.formParam("counterValue");
@@ -495,44 +497,46 @@ public class PageST3C implements Handler {
                 error = true;
             }
         }
+        if (startYear1 == null && dataType1 == null && orderBy == null && dataType1 == null) {
+            html = html + "<h3>Please Enter All The Data Above To See Result </h3>";
+        } else {
+            for (int i = 0; i < startYears.size(); i++) {
 
-        for (int i = 0; i < startYears.size(); i++) {
-
-            if (startYears.get(i) == null || startYears.get(i).isEmpty() || duration == null
-                    || dataTypes.get(i) == null || dataTypes.get(i).isEmpty()) {
-                html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
+                if (startYears.get(i) == null || startYears.get(i).isEmpty() || duration == null
+                        || dataTypes.get(i) == null || dataTypes.get(i).isEmpty()) {
+                    html = html + "<h3>Please select all start periods and the data you wish to view</h3>";
+                    getInfo = false;
+                    error = true;
+                }
+                if (error == true) {
+                    getGraph = false;
+                } else {
+                    getGraph = true;
+                }
+            }
+            if (startYear1 == null || duration == null) {
+                html = html + "<h3>Please select a start period and a time period</h3>";
                 getInfo = false;
-                error = true;
             }
-            if (error == true) {
-                getGraph = false;
-            } else {
-                getGraph = true;
+            if (dataType1 == null) {
+                html = html + "<h3>Please select the data you wish to view out of land data and land-ocean data</h3>";
+                getInfo = false;
             }
-        }
+            if (orderBy == null) {
+                html = html + "<h3>Please select how you would like the data sorted</h3>";
+                getInfo = false;
+            }
+            if (viewTable != null && viewTable.equals("seeTable") && getInfo == true && startYears != null
+                    && dataTypes != null
+                    && orderBy != null && duration != null && getGraph == true) {
+                // shows graph and table
+                html = html + outputTable(startYears, dataTypes, duration, orderBy, "Graph");
 
-        if (startYear1 == null || duration == null) {
-            html = html + "<h3>Please select a start period and a time period</h3>";
-            getInfo = false;
-        }
-        if (dataType1 == null) {
-            html = html + "<h3>Please select the data you wish to view out of land data and land-ocean data</h3>";
-            getInfo = false;
-        }
-        if (orderBy == null) {
-            html = html + "<h3>Please select how you would like the data sorted</h3>";
-            getInfo = false;
-        }
+            } else if (getInfo && startYears != null && dataTypes != null && orderBy != null && duration != null) {
+                // show table
+                html = html + outputTable(startYears, dataTypes, duration, orderBy, "TableOnly");
 
-        if (viewTable != null && viewTable.equals("seeTable") && getInfo == true && startYears != null
-                && dataTypes != null
-                && orderBy != null && duration != null && getGraph == true) {
-
-            html = html + outputTable(startYears, dataTypes, duration, orderBy, "Graph");
-            // html = html + showGraph(startYears, dataTypes, duration, orderBy);
-        } else if (getInfo && startYears != null && dataTypes != null && orderBy != null && duration != null) {
-            html = html + outputTable(startYears, dataTypes, duration, orderBy, "TableOnly");
-            // html = html + showGraph(startYears, dataTypes, duration, orderBy);
+            }
         }
 
         // Close Content div
@@ -585,17 +589,9 @@ public class PageST3C implements Handler {
     private String outputTable(ArrayList<String> startYears, ArrayList<String> dataTypes, String duration,
             String orderBy, String tableGraph) {
         String html = "<div id='tableData'>";
-        // testing
-        // html = html + "<p>" + startYears.size() + "</p>";
-        // html = html + "<p>" + startYears.get(0) + "</p>";
-        // html = html + "<p>" + startYears.get(1) + "</p>";
         html = html + "<h3> Temperature data over " + duration + " years</h3>";
         JDBCConnection jdbc = new JDBCConnection();
-        // ArrayList<Climate> WorldData =
-        // jdbc.getWorldLandOceanAverageTempOverPeriod(startYear,
-        // Integer.toString(endYear),
-        // dataType);
-
+        // makes the table through query and java
         html = html + "<table> <tr>";
         html = html + "<th>Type of Data</th>";
         html = html + "<th>start year</th>";
@@ -626,16 +622,12 @@ public class PageST3C implements Handler {
             html = html + String.format("%.2f", WorldData.get(j).getAverageTemperature()) + "</td>" + "<td>";
             html = html + String.format("%.2f%%", WorldData.get(j).getTempPercent()) + "</td></tr>";
         }
-
         html = html + "</table></div>";
-
         return html;
     }
 
     private String showGraph(ArrayList<Climate> WorldData, String duration) {
         String html = "";
-        // html = html + "<div id='columnchart_values' style=\"width: 900px; height:
-        // 300px;\"></div>";
         // graph code from google charts
         html = html + "<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>";
         html = html + "  <script type='text/javascript'>";
@@ -708,7 +700,6 @@ public class PageST3C implements Handler {
         html = html + "  </script>";
         html = html
                 + "<div id='columnchart_values' style='padding: 0px; margin-left: 650px; margin-top: -350px; position: absolute; border: 2px solid black; text-align: center;''></div>";
-
         return html;
     }
 }
