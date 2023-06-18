@@ -419,7 +419,7 @@ public class PageST2A implements Handler {
 
     // method to sort inputs into separate table formats
     private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
-        String html = "<div id='tableData'>";
+        String html = "";
 
         if (type.equals("Population Change")) {
             if (sort.equals("Ascending")) {
@@ -471,12 +471,13 @@ public class PageST2A implements Handler {
         html = html + "<th>Correlation</th> </tr>";
 
         for (int i = 0; i < countryPopulationTemp.size(); ++i) {
+            String countryName = countryPopulationTemp.get(i).getCountryName();
             long startPop = countryPopulationTemp.get(i).getStartPopulation();
             long endPop = countryPopulationTemp.get(i).getEndPopulation();
             float startTemp = countryPopulationTemp.get(i).getStartTemp();
             float endTemp = countryPopulationTemp.get(i).getEndTemp();
 
-            html = html + "<tr> <td>" + countryPopulationTemp.get(i).getCountryName() + "</td> " + "<td>";
+            html = html + "<tr> <td>" + countryName + "</td> " + "<td>";
             html = html + String.format("%,d", startPop) + "</td>" + "<td>";
             html = html + String.format("%,d", endPop) + "</td>" + "<td>";
             if (countryPopulationTemp.get(i).getPopulationPercent() > 0) {
@@ -494,30 +495,42 @@ public class PageST2A implements Handler {
             } else {
                 html = html + String.format("%.2f%%", countryPopulationTemp.get(i).getTempPercent()) + "</td>" + "<td>";
             }
-            html = html + String.format("%.3f", correlationCalc(startPop, endPop, startTemp, endTemp)) + "</td> </tr>";
+            html = html + String.format("%.6f", correlationCalc(countryName, startYear, endYear)) + "</td> </tr>";
         }
 
         html = html + "</table>";
-        html = html + "</div>";
 
         return html;
     }
 
     // method to calculate correlation
-    private float correlationCalc(long startPop, long endPop, float startTemp, float endTemp) {
-        float corr;
-        int n = 2;
+    private double correlationCalc(String countryName, String startYear, String endYear) {
+        JDBCConnection jdbc = new JDBCConnection();
+        ArrayList<Climate> countryCorrelation = jdbc.getCountryCorrelation(countryName, startYear, endYear);
+        int n = Integer.parseInt(endYear) - Integer.parseInt(startYear) + 1;
+        long[] X = new long[n];
+        double[] Y = new double[n];
 
-        long sumX = startPop + endPop;
-        float sumY = startTemp + endTemp;
-        float sumXY = (float) ((startPop * startTemp) + (endPop * endTemp));
-        long squareSumX = (startPop * startPop) + (endPop * endPop);
-        float squareSumY = (startTemp * startTemp) + (endTemp * endTemp);
+        for (int i = 0; i < countryCorrelation.size(); ++i) {
+            X[i] = countryCorrelation.get(i).getPopulationLevel();
+            Y[i] = (double) (countryCorrelation.get(i).getAverageTemperature());
+        }
 
-        float numerator = (n * sumXY) - (sumX * sumY);
-        float denominator = (float) (Math
-                .sqrt(((n * squareSumX) - (sumX * sumX)) * ((n * squareSumY) - (sumY * sumY))));
-        corr = numerator / denominator;
+        long sum_X = 0;
+        double sum_Y = 0, sum_XY = 0;
+        long squareSum_X = 0;
+        double squareSum_Y = 0;
+
+        for (int i = 0; i < n; ++i) {
+            sum_X = sum_X + X[i];
+            sum_Y = sum_Y + Y[i];
+            sum_XY = sum_XY + X[i] * Y[i];
+            squareSum_X = squareSum_X + X[i] * X[i];
+            squareSum_Y = squareSum_Y + Y[i] * Y[i];
+        }
+
+        double corr = (double) (n * sum_XY - sum_X * sum_Y)
+                / (double) (Math.sqrt((n * squareSum_X - sum_X * sum_X) * (n * squareSum_Y - sum_Y * sum_Y)));
 
         return corr;
     }
