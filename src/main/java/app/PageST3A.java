@@ -397,7 +397,7 @@ public class PageST3A implements Handler {
     // Sorting order
     html = html + """
         <div class='form-group'>
-        <h4>Sort By </h4>
+        <h4>Sort By Change in Average Temperature</h4>
         <input type='radio' id ='SortOrderNone' name = 'SortOrder' value='False' checked>
         <label class='radio-label' for='SortOrderNone'>Neither</label>
         <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
@@ -408,7 +408,7 @@ public class PageST3A implements Handler {
             """;
 
     html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
-
+    html = html + "<input class='reset' type='reset' value='Reset'>";
     html = html + "</form>";
 
     html = html + "<script>";
@@ -489,11 +489,10 @@ public class PageST3A implements Handler {
       html = html + "<h3>Please Fill Out The Form Above</h3>";
     }
     else if(geoLocation.equals("Global")) {
-      //have to do
-      html = html + "<h3>NA</h3>";
+      html = html + outputGlobalData(geoLocation, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
     }
     else if (geoLocation.equals("Country")) {
-      if(!country1.equals("")) {
+      if(country1 != null) {
         html = html + outputData(geoLocation, country1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, country2, country3, country4, sort);
       }
       else {
@@ -501,10 +500,20 @@ public class PageST3A implements Handler {
       }
     }
     else if (geoLocation.equals("State")) {
-
+      if(state1 != null) {
+        html = html + outputData(geoLocation, state1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, state2, state3, state4, sort);
+      }
+      else {
+        html = html + "<h3>Please Select At least One State</h3>";
+      }
     }
     else if (geoLocation.equals("City")) {
-
+      if(city1 != null) {
+        html = html + outputData(geoLocation, city1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, city2, city3, city4, sort);
+      }
+      else {
+        html = html + "<h3>Please Select At least One City</h3>";
+      }
     }
 
     // Close Content div
@@ -553,13 +562,73 @@ public class PageST3A implements Handler {
     context.html(html);
   }
 
+  private String outputGlobalData(String geoType, String startYear1, String timePeriod, String startYear2, 
+  String startYear3, String startYear4, String startYear5, String sort) {
+    String html = "<div class='table-container'>";
+    JDBCConnection jdbc = new JDBCConnection();
+    ArrayList<Climate> globalTempData; 
+
+    if (sort.equals("False")) {
+      sort = ")) ORDER BY StartDate ASC; ";
+      globalTempData = jdbc.get3AGlobalTableData(geoType, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      html = html + "<div>";
+      html = html + "<h3>Global</h3>";
+      html = html + "<table> <tr>";
+      html = html + "<th>Year</th>";
+      html = html + "<th>Average Temperature over " + timePeriod + " years</th>";
+      html = html + "<th>Temperature Change from Previous Period</th> </tr>";
+      for(int i = 0; i < globalTempData.size(); ++i) {
+        html = html + "<tr> <td>" + globalTempData.get(i).getYear() + "</td> " + "<td>";
+        html = html + globalTempData.get(i).getAverageTemperature() + "</td> " + "<td>";
+        html = html + globalTempData.get(i).getAverageDifference() + "</td> " + "</tr>";
+      }
+      html = html + "</table>";
+      html = html + "</div>";
+    }
+    else if (sort.equals("Ascending")) {
+      sort = ")) ORDER BY AvgDiff ASC; ";
+      globalTempData = jdbc.get3AGlobalTableData(geoType, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      html = html + "<div>";
+      html = html + "<h3>Global</h3>";
+      html = html + "<table> <tr>";
+      html = html + "<th>Year</th>";
+      html = html + "<th>Average Temperature over " + timePeriod + " years</th>";
+      html = html + "<th>Average Difference </th> </tr>";
+      for(int i = 0; i < globalTempData.size(); ++i) {
+        html = html + "<tr> <td>" + globalTempData.get(i).getYear() + "</td> " + "<td>";
+        html = html + globalTempData.get(i).getAverageTemperature() + "</td> " + "<td>";
+        html = html + globalTempData.get(i).getAverageDifference() + "</td> " + "</tr>";
+      }
+      html = html + "</table>";
+      html = html + "</div>";
+    }
+    else if (sort.equals("Descending")) {
+      sort = ")) ORDER BY AvgDiff DESC; ";
+      globalTempData = jdbc.get3AGlobalTableData(geoType, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      html = html + "<div>";
+      html = html + "<h3>Global</h3>";
+      html = html + "<table> <tr>";
+      html = html + "<th>Year</th>";
+      html = html + "<th>Average Temperature over " + timePeriod + " years</th>";
+      html = html + "<th>Average Difference </th> </tr>";
+      for(int i = 0; i < globalTempData.size(); ++i) {
+        html = html + "<tr> <td>" + globalTempData.get(i).getYear() + "</td> " + "<td>";
+        html = html + globalTempData.get(i).getAverageTemperature() + "</td> " + "<td>";
+        html = html + globalTempData.get(i).getAverageDifference() + "</td> " + "</tr>";
+      }
+      html = html + "</table>";
+      html = html + "</div>";
+    }
+
+    html = html + "</div>";
+
+    return html;
+  }
+
   private String outputData(String geoType, String geoName1, String startYear1, String timePeriod, String startYear2, 
   String startYear3, String startYear4, String startYear5, String geoName2, String geoName3, String geoName4, String sort) {
     
     String html = "<div class='table-container'>";
-    /*if (geoType.equals("Global")) {
-
-    }*/
 
     if (geoType.equals("Country") && sort.equals("False")) {
       sort = ")) ORDER BY StartDate ASC; ";
@@ -694,7 +763,7 @@ public class PageST3A implements Handler {
     html = html + "<table> <tr>";
     html = html + "<th>Year</th>";
     html = html + "<th>Average Temperature over " + timePeriod + " years</th>";
-    html = html + "<th>Average Difference </th> </tr>";
+    html = html + "<th>Temperature Change from Previous Period</th> </tr>";
     
     JDBCConnection jdbc = new JDBCConnection();
     ArrayList<Climate> tempData = jdbc.get3ATableData(geoType, geoName, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
