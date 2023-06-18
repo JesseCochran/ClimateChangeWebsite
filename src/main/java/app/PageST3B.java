@@ -31,84 +31,159 @@ public class PageST3B implements Handler {
                   <link rel='stylesheet' type='text/css' href='ST3A.css' />
                   <link rel='stylesheet' type='text/css' href='burgerNav.css' />
                 """);
-        html.append("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+        html.append(
+                "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
         html.append("</head>");
 
         // Add the body
         html.append("<body>");
 
         // Add header content block
-        html.append("""
-                    <div class='header'>
-                        <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                        Climate Change Awareness</h1>
-                    </div>
-                """);
+        html.append(
+                """
+                            <div class='header'>
+                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                                Climate Change Awareness</h1>
+                            </div>
+                        """);
 
         // Add the topnav
         // This uses a Java v15+ Text Block
 
         html.append("""
                     <div class='topnav'>
-                    <a href='/'>Home</a>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Shallow View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                    <a href='page2B.html'>Temperature Change By State/City</a>
-                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>In-Depth View Of Climate Change
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>About Us
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='mission.html'>Our Mission</a>
-                    <a href='mission.html#persona-section'>Personas</a>
-                    <a href='mission.html#aboutUs-section'>Contact Us</a>
-                    </div>
-                    </div>
-                    <div class='dropDown'>
-                    <button class='dropbtn'>Help & Support
-                    <i class='fa fa-caret-down'></i>
-                    </button>
-                    <div class='dropdown-content'>
-                    <a href='PageHelp.html'>Page Assistance</a>
-                    <a href='PageHelp.html#faq-section'>FAQ</a>
-                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
-                    </div>
-                    </div>
-                    </div>
+                            <a href='/'>Home</a>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Climate Data and Analysis
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                            <a href='page2B.html'>Temperature Change By State/City</a>
+                            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>About Us
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            </div>
+                            </div>
+                            <div class='dropDown'>
+                            <button class='dropbtn'>Help & Support
+                            <i class='fa fa-caret-down'></i>
+                            </button>
+                            <div class='dropdown-content'>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                            </div>
+                            </div>
+                            </div>
                 """);
 
+        // Function in js for opening and closing the burger menu
+        html.append("<script>");
+        html.append("""
+
+                                function openNav() {
+                  document.getElementById('mySidenav').style.width = '250px';
+                }
+
+                function closeNav() {
+                  document.getElementById('mySidenav').style.width = '0px';
+                }
+                                                """);
+        html.append("</script>");
+        // elements inside the burger menu
+        html.append("<div class='SideNavBar'>");
+        html.append(
+                """
+                                <div id='mySidenav' class='sidenav'>
+                                    <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
+                                    <a href='/'>Home</a>
+                                    <p>Climate Data and Analysis</p>
+                                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                    <a href='page2B.html'>Temperature Change By State/City</a>
+                                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    <p>About Us</p>
+                                    <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            <p>Help & Support</p>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
+                                </div>
+                        <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
+                                """);
+        html.append("</div>");
+        // key press to reload/clear values
+        html.append("""
+                <script>
+                                document.addEventListener('keydown', function(event) {
+                      // Check if the C key (key code 67) is pressed
+                      if (event.keyCode == 67) {
+                        reload();
+                      }
+                      });
+                                """);
+        // take to help page
+        html.append("""
+
+                     // Function to navigate to the help page
+                function goToHelpPage() {
+                  window.location.href = 'PageHelp.html';
+                }
+                                        document.addEventListener('keydown', function(event) {
+                              // Check if the h key (key code 72) is pressed
+                              if (event.keyCode === 72) {
+                                goToHelpPage();
+                              }
+                            });
+                                        """);
+        // take to home page
+        html.append("""
+                     // Function to navigate to the home page
+                function goToHomePage() {
+                  window.location.href = '/';
+                }
+
+                document.addEventListener('keydown', function(event) {
+                  // Check if the Esc key (key code 27) is pressed
+                  if (event.keyCode === 27) {
+                    goToHomePage();
+                  }
+                });
+                            """);
+        html.append("</script>");
         // Add Div for page Content
         html.append("<div class='content'>");
-
 
         // Add HTML for the page content
         html.append("<h2> A Focused View Of Date On a Country, City or State Level </h2>");
 
         // page description
-        html.append("<p> On this page you have the option to select whether you wish to view data on a country, city, or state level. </p>");
-        html.append("<p> If you have chosen to view country data you may view population, temperature or both population and temperature. </p>");
+        html.append(
+                "<p> On this page you have the option to select whether you wish to view data on a country, city, or state level. </p>");
+        html.append(
+                "<p> If you have chosen to view country data you may view population, temperature or both population and temperature. </p>");
         html.append("<p> If you have chosen to view city or state data only temperature data is available. </p>");
-        html.append("<p> The table generator will provide you with information geographical locations with similar data to your chosen location. You may choose how many locations you wish to compare.  </p>");
-        html.append("<p> Please note Cities and States will be compared with respect to their parent country. </p>");
         html.append("<p> Additionally you may choose to compare data by relative change or absolute value </p>");
-
+        html.append("<p> The table generator will provide you with information geographical locations with similar data to your chosen location. You may choose how many locations you wish to compare.  </p>");
+        html.append("<p> Additionally you may choose to compare data by relative change or absolute value </p>");
+        html.append("<p> Please note: Cities and States will be compared with respect to their parent country. </p>");
 
         // declaring variables
         int fromDate;
@@ -119,7 +194,6 @@ public class PageST3B implements Handler {
         String stateParameterFromUrl = context.req.getParameter("state");
         String similarityParameterFromUrl = context.req.getParameter("similarity");
         String dataParameterFromUrl = context.req.getParameter("data");
-
 
         try {
             fromDate = Integer.parseInt(context.req.getParameter("from"));
@@ -140,10 +214,9 @@ public class PageST3B implements Handler {
             number = 0;
         }
 
-
         ArrayList<Country> mapOfCountries = JDBCConnection.getCountryNames();
         html.append("""
-                            
+
                     <form id='form-id'>
                     <label for>Select Country:</label>
                     <select name="country" onchange='document.getElementById("form-id").submit();'>
@@ -172,7 +245,6 @@ public class PageST3B implements Handler {
         }
         html.append("</select>");
 
-
         if (countryParameterFromURL != null) {
 
             if (cityParameterFromUrl == null && stateParameterFromUrl == null) {
@@ -180,8 +252,8 @@ public class PageST3B implements Handler {
                 html.append("<label>Select Desired Data:</label>");
                 html.append("""
                         <select name="data" onchange='document.getElementById("form-id").submit();'>
-                                            
-                               
+
+
                                   """);
                 if (dataParameterFromUrl != null) {
                     if (dataParameterFromUrl.equals("temperature")) {
@@ -239,7 +311,6 @@ public class PageST3B implements Handler {
 
             html.append("</select>");
 
-
             if (JDBCConnection.hasStates(countryParameterFromURL)) {
                 ArrayList<CityState> mapOfStates = JDBCConnection.getStateNames(countryParameterFromURL);
 
@@ -267,7 +338,6 @@ public class PageST3B implements Handler {
 
             }
 
-
             if (JDBCConnection.hasCities(countryParameterFromURL)) {
                 ArrayList<CityState> mapOfCities = JDBCConnection.getCityNames(countryParameterFromURL);
                 html.append("<br><label for>(Optional) Select City:</label>");
@@ -292,17 +362,15 @@ public class PageST3B implements Handler {
                 }
                 html.append("</select>");
 
-
             }
 
             // // dropdown for starting year
             html.append("""
-                                        
+
                      <br></br> <label for>Select Start Year:</label>
                        <select name='from'>
                           <option value='' selected disabled hidden>Year</option>
                     """);
-
 
             for (int i = 1960; i < 2014; i++) {
                 if (fromDate == i) {
@@ -316,16 +384,13 @@ public class PageST3B implements Handler {
             }
             html.append("</select>");
 
-
             // duration dropdown
             html.append("""
                     </select>
                        <br> <label for>Select Duration:</label>
                           <select name='duration'>
-                              <option value='' selected disabled hidden> </option>
 
                                   """);
-
 
             for (int i = 1; i < 53; i++) {
                 if (duration == i) {
@@ -339,8 +404,7 @@ public class PageST3B implements Handler {
             }
             html.append("</select>");
 
-
-            // determine Similarity in Terms  Of
+            // determine Similarity in Terms Of
             if (similarityParameterFromUrl != null) {
                 if (similarityParameterFromUrl.equals("absolute")) {
                     html.append("""
@@ -350,11 +414,12 @@ public class PageST3B implements Handler {
                                 """);
 
                 } else if (similarityParameterFromUrl.equals("relative")) {
-                    html.append("""
-                            <p>Calculate similarity in terms of: </p>
-                            <input type='radio' id='Similarity' name='similarity'  value='absolute'>Absolute Value</input>
-                            <input type='radio' id='Similarity' name='similarity' checked value='relative'>Relative Change in value</input>
-                                """);
+                    html.append(
+                            """
+                                    <p>Calculate similarity in terms of: </p>
+                                    <input type='radio' id='Similarity' name='similarity'  value='absolute'>Absolute Value</input>
+                                    <input type='radio' id='Similarity' name='similarity' checked value='relative'>Relative Change in value</input>
+                                        """);
 
                 } else {
                     html.append("""
@@ -376,10 +441,8 @@ public class PageST3B implements Handler {
                     </select>
                        <br> <label for>Select number of locations to compare:</label>
                           <select name='number'>
-                              <option value='' selected disabled hidden> </option>
 
                                   """);
-
 
             for (int i = 1; i <= 200; i++) {
                 if (number == i) {
@@ -392,7 +455,7 @@ public class PageST3B implements Handler {
                 }
             }
 
-            //        ********************** Average Temp ****************************
+            // ********************** Average Temp ****************************
 
             html.append("</div>");
             html.append("</div>");
@@ -408,14 +471,14 @@ public class PageST3B implements Handler {
                     toDate = 2013;
                 }
 
-
                 ArrayList<PopulationAndTemp> data = JDBCConnection.getCountryPopulationAndTemp(fromDate, toDate);
                 ArrayList<PopulationAndTemp> minData = getDataByYear(data, fromDate);
                 ArrayList<PopulationAndTemp> maxData = getDataByYear(data, toDate);
                 ArrayList<Stat> avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
                 sort(avgTempProportionalValues);
                 avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
-                if (fromDate != 0 && duration != 0 && countryParameterFromURL != null && cityParameterFromUrl == null & stateParameterFromUrl == null) {
+                if (fromDate != 0 && duration != 0 && countryParameterFromURL != null
+                        && cityParameterFromUrl == null & stateParameterFromUrl == null) {
                     if (dataParameterFromUrl != null) {
                         if (dataParameterFromUrl.equals("temperature") || dataParameterFromUrl.equals("tandp")) {
 
@@ -431,7 +494,6 @@ public class PageST3B implements Handler {
                                     html.append("<th>Start Year Temperature</th>");
                                     html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
-
 
                                     for (Stat d : avgTempProportionalValues) {
                                         html.append("<tr>");
@@ -451,7 +513,6 @@ public class PageST3B implements Handler {
                         }
                     }
                 }
-
 
                 // ********CountryTemp Absolute Vale
 
@@ -474,7 +535,8 @@ public class PageST3B implements Handler {
 
                                         ArrayList<Stat> avgTempAbsoluteValuesforCountry = getAvgTempAbsoluteValue(minData, maxData);
                                         sort(avgTempAbsoluteValuesforCountry);
-                                        avgTempAbsoluteValuesforCountry = getNearByCountries(avgTempAbsoluteValuesforCountry, countryParameterFromURL, number);
+                                        avgTempAbsoluteValuesforCountry = getNearByCountries(avgTempAbsoluteValuesforCountry,
+                                                countryParameterFromURL, number);
                                         if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                             int i = 1;
                                             for (Stat d : avgTempAbsoluteValuesforCountry) {
@@ -500,8 +562,7 @@ public class PageST3B implements Handler {
                     }
                 }
 
-
-//        ********************** Average Population ****************************
+                // ********************** Average Population ****************************
                 if (cityParameterFromUrl == null) {
                     if (stateParameterFromUrl == null) {
                         if (similarityParameterFromUrl != null) {
@@ -519,10 +580,10 @@ public class PageST3B implements Handler {
                                         html.append("<th>End Year Population</th>");
                                         html.append("</tr>");
 
-
                                         ArrayList<Stat> avgPopProportionalValues = getPopulationProportionalValues(minData, maxData);
                                         sort(avgPopProportionalValues);
-                                        avgPopProportionalValues = getNearByCountries(avgPopProportionalValues, countryParameterFromURL, number);
+                                        avgPopProportionalValues = getNearByCountries(avgPopProportionalValues, countryParameterFromURL,
+                                                number);
                                         if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                             int i = 1;
                                             for (Stat d : avgPopProportionalValues) {
@@ -547,8 +608,7 @@ public class PageST3B implements Handler {
                     }
                 }
 
-
-                //  ********Absolute population data
+                // ********Absolute population data
                 if (cityParameterFromUrl == null) {
                     if (stateParameterFromUrl == null) {
                         if (similarityParameterFromUrl != null) {
@@ -567,7 +627,8 @@ public class PageST3B implements Handler {
 
                                         ArrayList<Stat> avgTempAbsoluteValuesforpopulation = getPopulationAbsoluteValues(minData, maxData);
                                         sort(avgTempAbsoluteValuesforpopulation);
-                                        avgTempAbsoluteValuesforpopulation = getNearByCountries(avgTempAbsoluteValuesforpopulation, countryParameterFromURL, number);
+                                        avgTempAbsoluteValuesforpopulation = getNearByCountries(avgTempAbsoluteValuesforpopulation,
+                                                countryParameterFromURL, number);
                                         if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                             int i = 1;
                                             for (Stat d : avgTempAbsoluteValuesforpopulation) {
@@ -592,7 +653,6 @@ public class PageST3B implements Handler {
                     }
                 }
 
-
                 // ***********************Geting avgTemp for City***************
 
                 if (cityParameterFromUrl != null && stateParameterFromUrl == null) {
@@ -611,13 +671,13 @@ public class PageST3B implements Handler {
                                     html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
 
-
                                     data = JDBCConnection.getAvgTempForCity(countryParameterFromURL, fromDate, toDate);
                                     minData = getDataByYear(data, fromDate);
                                     maxData = getDataByYear(data, toDate);
                                     avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
                                     sort(avgTempProportionalValues);
-                                    avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
+                                    avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL,
+                                            number);
                                     if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                         int i = 1;
                                         for (Stat d : avgTempProportionalValues) {
@@ -639,7 +699,6 @@ public class PageST3B implements Handler {
                         }
                     }
                 }
-
 
                 // ********absvalue for city*******
 
@@ -664,7 +723,8 @@ public class PageST3B implements Handler {
                                     maxData = getDataByYear(data, toDate);
                                     ArrayList<Stat> avgTempAbsoluteValuesforcities = getAvgTempAbsoluteValue(minData, maxData);
                                     sort(avgTempAbsoluteValuesforcities);
-                                    avgTempAbsoluteValuesforcities = getNearByCountries(avgTempAbsoluteValuesforcities, countryParameterFromURL, number);
+                                    avgTempAbsoluteValuesforcities = getNearByCountries(avgTempAbsoluteValuesforcities,
+                                            countryParameterFromURL, number);
                                     if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                         int i = 1;
                                         for (Stat d : avgTempAbsoluteValuesforcities) {
@@ -695,7 +755,6 @@ public class PageST3B implements Handler {
                             if (dataParameterFromUrl != null) {
                                 if (dataParameterFromUrl.equals("temperature")) {
 
-
                                     html.append("<table> <tr>");
                                     html.append("<th>Rank By Similarity</th>");
                                     html.append("<th>State</th>");
@@ -706,13 +765,13 @@ public class PageST3B implements Handler {
                                     html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
 
-
                                     data = JDBCConnection.getAvgTempForState(countryParameterFromURL, fromDate, toDate);
                                     minData = getDataByYear(data, fromDate);
                                     maxData = getDataByYear(data, toDate);
                                     avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
                                     sort(avgTempProportionalValues);
-                                    avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
+                                    avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL,
+                                            number);
                                     if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                         int i = 1;
                                         for (Stat d : avgTempProportionalValues) {
@@ -735,7 +794,6 @@ public class PageST3B implements Handler {
                     }
                 }
 
-
                 // ************** Absolute Value For State
 
                 if (cityParameterFromUrl == null && stateParameterFromUrl != null) {
@@ -756,7 +814,8 @@ public class PageST3B implements Handler {
 
                                     ArrayList<Stat> avgTempAbsoluteValuesforstate = getAvgTempAbsoluteValue(minData, maxData);
                                     sort(avgTempAbsoluteValuesforstate);
-                                    avgTempAbsoluteValuesforstate = getNearByCountries(avgTempAbsoluteValuesforstate, countryParameterFromURL, number);
+                                    avgTempAbsoluteValuesforstate = getNearByCountries(avgTempAbsoluteValuesforstate,
+                                            countryParameterFromURL, number);
                                     if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
                                         int i = 1;
                                         for (Stat d : avgTempAbsoluteValuesforstate) {
@@ -783,38 +842,38 @@ public class PageST3B implements Handler {
             }
         }
 
-
         // Close Content div
         html.append("</div>");
 
         // Footer
         html.append("""
-                    <div class='footer'>
-                 <h3 style='text-align: center; margin-top: 0; text-decoration: underline;'>Index</h3>
+                   <div class='footer'>
+
                 <div class='footerBlock'>
                             <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>Shallow View</p>
+                              <p style='margin-top: 0;'>Shallow View</p>
                               <a href='page2A.html'>Temperature & Population Change By Country/World</a>
                               <a href='page2B.html'>Temperature Change By State/City</a>
                               <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
                             </div>
                             <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>In-Depth View</p>
+                              <p style='margin-top: 0;'>In-Depth View</p>
                               <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
                               <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
                               <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
                             </div>
                             <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>About</p>
+                              <p style='margin-top: 0;'>About</p>
                               <a href='mission.html'>Our Mission</a>
                               <a href='mission.html#persona-section'>Personas</a>
                               <a href='mission.html#aboutUs-section'>Contact Us</a>
                             </div>
                             <div class='footerColumn'>
-                              <p style='margin-bottom: 0; margin-top: 0;'>Help & Support</p>
+                              <p style='margin-top: 0;'>Help & Support</p>
                               <a href='PageHelp.html'>Page Assistance</a>
                               <a href='PageHelp.html#faq-section'>FAQ</a>
                               <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+
                             </div>
                           </div>
                         </div>
@@ -838,59 +897,61 @@ public class PageST3B implements Handler {
         return tmp;
     }
 
-    public ArrayList<Stat> getAvgTempProportionalValues
-            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+    public ArrayList<Stat> getAvgTempProportionalValues(ArrayList<PopulationAndTemp> min,
+                                                        ArrayList<PopulationAndTemp> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (PopulationAndTemp m : min) {
             for (PopulationAndTemp x : max) {
                 if (m.getCountryId().equals(x.getCountryId())) {
-                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getAvgTemp() - x.getAvgTemp()) / m.getAvgTemp()) * 100, m.getAvgTemp(), x.getAvgTemp()));
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getAvgTemp() - x.getAvgTemp()) / m.getAvgTemp()) * 100,
+                            m.getAvgTemp(), x.getAvgTemp()));
                 }
             }
         }
         return stats;
     }
 
-    public ArrayList<Stat> getAvgTempAbsoluteValue
-            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+    public ArrayList<Stat> getAvgTempAbsoluteValue(ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (PopulationAndTemp m : min) {
             for (PopulationAndTemp x : max) {
                 if (m.getCountryId().equals(x.getCountryId())) {
-                    stats.add(new Stat(x.getCountryId(), x.getName(), ((abs(m.getAvgTemp() - x.getAvgTemp()))), m.getAvgTemp(), x.getAvgTemp()));
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((abs(m.getAvgTemp() - x.getAvgTemp()))), m.getAvgTemp(),
+                            x.getAvgTemp()));
                 }
             }
         }
         return stats;
     }
 
-
-    public ArrayList<Stat> getPopulationProportionalValues
-            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+    public ArrayList<Stat> getPopulationProportionalValues(ArrayList<PopulationAndTemp> min,
+                                                           ArrayList<PopulationAndTemp> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (PopulationAndTemp m : min) {
             for (PopulationAndTemp x : max) {
                 if (m.getCountryId().equals(x.getCountryId())) {
-                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getPopulation() - x.getPopulation()) / m.getPopulation()) * 100, m.getPopulation(), x.getPopulation()));
+                    stats.add(new Stat(x.getCountryId(), x.getName(),
+                            ((m.getPopulation() - x.getPopulation()) / m.getPopulation()) * 100, m.getPopulation(),
+                            x.getPopulation()));
                 }
             }
         }
         return stats;
     }
 
-    public ArrayList<Stat> getPopulationAbsoluteValues
-            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+    public ArrayList<Stat> getPopulationAbsoluteValues(ArrayList<PopulationAndTemp> min,
+                                                       ArrayList<PopulationAndTemp> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (PopulationAndTemp m : min) {
             for (PopulationAndTemp x : max) {
                 if (m.getCountryId().equals(x.getCountryId())) {
-                    stats.add(new Stat(x.getCountryId(), x.getName(), (abs(m.getPopulation() - x.getPopulation())), m.getPopulation(), x.getPopulation()));
+                    stats.add(new Stat(x.getCountryId(), x.getName(), (abs(m.getPopulation() - x.getPopulation())),
+                            m.getPopulation(), x.getPopulation()));
                 }
             }
         }
         return stats;
     }
-
 
     public ArrayList<Stat> getNearByCountries(ArrayList<Stat> stat, String countryName, int limit) {
         int x = 0;
