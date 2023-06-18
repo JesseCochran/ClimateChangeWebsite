@@ -60,11 +60,11 @@ public class PageST2B implements Handler {
         // Add header content block
         html = html
                 + """
-                    <div class='header'>
-                        <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                        Climate Change Awareness</h1>
-                    </div>
-                """;
+                            <div class='header'>
+                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                                Climate Change Awareness</h1>
+                            </div>
+                        """;
 
         // Add the topnav
         html = html + """
@@ -121,28 +121,28 @@ public class PageST2B implements Handler {
         html = html + "<div class='SideNavBar'>";
         html = html
                 + """
-                        <div id='mySidenav' class='sidenav'>
-                            <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
-                            <a href='/'>Home</a>
-                            <p>Climate Data and Analysis</p>
-                            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                            <a href='page2B.html'>Temperature Change By State/City</a>
-                            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                            <p>About Us</p>
-                            <a href='mission.html'>Our Mission</a>
-                    <a href='mission.html#persona-section'>Personas</a>
-                    <a href='mission.html#aboutUs-section'>Contact Us</a>
-                    <p>Help & Support</p>
-                    <a href='PageHelp.html'>Page Assistance</a>
-                    <a href='PageHelp.html#faq-section'>FAQ</a>
-                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                                <div id='mySidenav' class='sidenav'>
+                                    <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
+                                    <a href='/'>Home</a>
+                                    <p>Climate Data and Analysis</p>
+                                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                    <a href='page2B.html'>Temperature Change By State/City</a>
+                                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    <p>About Us</p>
+                                    <a href='mission.html'>Our Mission</a>
+                            <a href='mission.html#persona-section'>Personas</a>
+                            <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            <p>Help & Support</p>
+                            <a href='PageHelp.html'>Page Assistance</a>
+                            <a href='PageHelp.html#faq-section'>FAQ</a>
+                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
 
-                        </div>
-                <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
-                        """;
+                                </div>
+                        <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
+                                """;
         html = html + "</div>";
         html = html + "<script>";
         // take to help page
@@ -221,7 +221,7 @@ public class PageST2B implements Handler {
 
         ArrayList<Country> mapOfCountries = JDBCConnection.getCountryNames();
         html += """
-                            
+
                     <form id='form-id'>
                     <label for>Select Country:</label>
                     <select name="country" onchange='document.getElementById("form-id").submit();'>
@@ -248,7 +248,6 @@ public class PageST2B implements Handler {
                 html += key + "'>" + value + "</option>";
             }
         }
-
 
         html += "</select>";
 
@@ -296,7 +295,6 @@ public class PageST2B implements Handler {
                     <option value='' selected disabled hidden>Year</option>
                 """;
 
-
         for (int i = 1750; i < 2014; i++) {
             if (fromDate == i) {
                 html += "<option selected='selected' value='";
@@ -336,6 +334,20 @@ public class PageST2B implements Handler {
         html += "</div>";
         html += "</form>";
 
+        // javascript to allow 'c' to also reset the data
+        html = html + """
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var button = document.querySelector('.reset');
+                        document.addEventListener('keydown', function(event) {
+                            // Check if the C key (key code 67) is pressed
+                            if (event.keyCode == 67) {
+                                button.click();
+                            }
+                        });
+                    });
+                    </script>
+                """;
         // note from jesse had to disable code below as it was breaking the footer
         // html = html + "<div class='content' style='margin-top:10px;'>";
 
@@ -396,37 +408,37 @@ public class PageST2B implements Handler {
         html = html
                 + """
 
-                    <div class='footer'>
+                            <div class='footer'>
 
-                <div class='footerBlock'>
-                            <div class='footerColumn'>
-                              <p style='margin-top: 0;'>Shallow View</p>
-                              <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                              <a href='page2B.html'>Temperature Change By State/City</a>
-                              <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                            </div>
-                            <div class='footerColumn'>
-                              <p style='margin-top: 0;'>In-Depth View</p>
-                              <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                              <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                              <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                            </div>
-                            <div class='footerColumn'>
-                              <p style='margin-top: 0;'>About</p>
-                              <a href='mission.html'>Our Mission</a>
-                              <a href='mission.html#persona-section'>Personas</a>
-                              <a href='mission.html#aboutUs-section'>Contact Us</a>
-                            </div>
-                            <div class='footerColumn'>
-                              <p style='margin-top: 0;'>Help & Support</p>
-                              <a href='PageHelp.html'>Page Assistance</a>
-                              <a href='PageHelp.html#faq-section'>FAQ</a>
-                              <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                        <div class='footerBlock'>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>Shallow View</p>
+                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                                      <a href='page2B.html'>Temperature Change By State/City</a>
+                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>In-Depth View</p>
+                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>About</p>
+                                      <a href='mission.html'>Our Mission</a>
+                                      <a href='mission.html#persona-section'>Personas</a>
+                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
+                                    </div>
+                                    <div class='footerColumn'>
+                                      <p style='margin-top: 0;'>Help & Support</p>
+                                      <a href='PageHelp.html'>Page Assistance</a>
+                                      <a href='PageHelp.html#faq-section'>FAQ</a>
+                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
 
-                            </div>
-                          </div>
-                        </div>
-                        """;
+                                    </div>
+                                  </div>
+                                </div>
+                                """;
 
         html += "<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
                 "    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1\n" +
