@@ -231,6 +231,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
+    //start year and time period drop downs
     html = html + "<h3>Choose a Start Year & Time Period</h3>";
     ArrayList<Climate> years = jdbc.getYearRange3A();
     html = html + "<div class='year-container'>";
@@ -256,6 +257,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
+    //add more start year drop downs
     html = html + "<h3>Add More Start Years</h3>";
     html = html + "<div class='year-container'>";
     html = html + "<div id='addYear1Layer'>";
@@ -300,6 +302,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
+    //add more location drop downs
     html = html + "<h3>Add More Locations to Compare</h3>";
     html = html + "<div class='location-container'>";
     html = html + "<div id='country1Layer' class='hide-element'>";
@@ -396,7 +399,7 @@ public class PageST3A implements Handler {
 
     html = html + "</div>";
 
-    // Sorting order
+    // Sorting order radio buttons
     html = html + """
         <div class='form-group'>
         <h3>Sort By Change in Average Temperature</h3>
@@ -409,10 +412,14 @@ public class PageST3A implements Handler {
          </div>
             """;
 
+    //submit form button
     html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
+
+    //reset form button
     html = html + "<input class='reset' type='reset' value='Reset'>";
     html = html + "</form>";
 
+    //javascript to show location type based of GeoLocation drop down selected
     html = html + "<script>";
     html = html + "function showSelectedElements() {";
     html = html + "var GeoLocation_drop = document.getElementById('GeoLocation_drop');";
@@ -487,6 +494,7 @@ public class PageST3A implements Handler {
     String city4 = context.formParam("City4_drop");
     String sort = context.formParam("SortOrder");
 
+    //validation for form
     if(geoLocation == null) {
       html = html + "<h3>Please Fill Out The Form Above</h3>";
     }
@@ -569,6 +577,7 @@ public class PageST3A implements Handler {
     context.html(html);
   }
 
+  //method to create global table based off inputs
   private String outputGlobalData(String geoType, String startYear1, String timePeriod, String startYear2, 
   String startYear3, String startYear4, String startYear5, String sort) {
     String html = "<div class='table-container'>";
@@ -632,6 +641,7 @@ public class PageST3A implements Handler {
     return html;
   }
 
+  //method to create the correct table format based off inputs
   private String outputData(String geoType, String geoName1, String startYear1, String timePeriod, String startYear2, 
   String startYear3, String startYear4, String startYear5, String geoName2, String geoName3, String geoName4, String sort) {
     
@@ -762,6 +772,7 @@ public class PageST3A implements Handler {
     return html;
   }
 
+  //method to create table for country, state and city based off inputs
   private String tableFormat(String geoType, String geoName, String startYear1, String timePeriod, String startYear2, 
   String startYear3, String startYear4, String startYear5, String sort) {
     String html = "<div>";
