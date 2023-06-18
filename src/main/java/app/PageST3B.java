@@ -7,15 +7,6 @@ import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 
-/**
- * Example Index HTML class using Javalin
- * <p>
- * Generate a static HTML page using Javalin
- * by writing the raw HTML into a Java String object
- *
- * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
- * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
- */
 public class PageST3B implements Handler {
 
     // URL of this page relative to http://localhost:7001/
@@ -105,37 +96,12 @@ public class PageST3B implements Handler {
 
 
         // Add HTML for the page content
-        html.append("""
-                     <h4> description of task from milsetone document <h4/>
-                     <p>Enable the user to select a starting year, a time period (in years), and a geographic region
-                          (country, state, or city), then find other time periods that are “the most similar” to the chosen
-                          combination on a set of user selected properties, such that users may:
-                          o Select similarity in terms of temperature alone
-                          o Select similarity in terms of population alone (for country only)
-                          o Select similarity in terms of both temperature and population (for country only)
-                          o The user can then select to determine similarity in terms of:
-                          the absolute values
-                          the relative change in values
-                          • From the user selection, your system must find the <x> most similar results, identifying the
-                          region, the start year, end year, the values used to determine its similarity to the selected
-                          region, as well as the similarity score, using the user's selection of constraints, where the user
-                          chooses the number of regions <x> to locate:
-                          o For example, the user selects the starting year 1900, a time period of 10 years, and the
-                          region Australia. The user selects similarity by temperature alone based on the
-                          absolute value, and to find the 5 most similar regions. Since the user has selected a
-                          country (Australia), the system should then find countries (including Australia) and time
-                          periods (of 10 years) that have similar start and end temperatures, then display the 5
-                          most similar results.
-                          • Present the selected region and most similar regions, along with the relevant data that was used
-                          to determine the similarity.
-                          • Sort the regions that are found by the most similar to the least similar.
-                          • Retrieve the exact information from your database using as few queries as possible:
-                          o Ideally, use only a single query (with column selections and JOIN operations)
-                          o Unnecessary information should not be returned in the SQL queries.
-                          o Performing the sorting through SQL queries if possible.
-                          o Note that this is challenge in making suitable SQL queries </p>   
-                """);
-
+        html.append("<h4> A Focused View Of Date On a Country, City or State Level <h4/>");
+        html.append("<p> On this page you have the option to select whether you wish to view data on a country, city, or state level. <p/>");
+        html.append("<p> If you have chosen to view country data you may view population, temperature or both population and temperature. <p/>");
+        html.append("<p> If you have chosen to view city or state data only temperature data is available. <p/>");
+        html.append("<p> The table generator will provide you with information geographical locations with similar data to your chosen location. You may choose how many locations you wish to compare.  <p/>");
+        html.append("<p> Additionally you may choose to compare data by relative change or absolute value <p/>");
 
         // declaring variables
         int fromDate;
@@ -144,6 +110,8 @@ public class PageST3B implements Handler {
         String countryParameterFromURL = context.req.getParameter("country");
         String cityParameterFromUrl = context.req.getParameter("city");
         String stateParameterFromUrl = context.req.getParameter("state");
+        String similarityParameterFromUrl = context.req.getParameter("similarity");
+        String dataParameterFromUrl = context.req.getParameter("data");
 
 
         try {
@@ -204,26 +172,65 @@ public class PageST3B implements Handler {
 
                 html.append("<label>Select Desired Data:</label>");
                 html.append("""
-                        <select name='Data'>
-                           <option value="" selected disabled hidden>Data</option>
-                           <option value="Temperature">Temperature</option>
-                           <option value="Population">Population</option>
-                           <option value="Temperature-and-Population">Temperature and Temperature</option>
-                              """);
+                        <select name="data" onchange='document.getElementById("form-id").submit();'>
+                                            
+                               
+                                  """);
+                if (dataParameterFromUrl != null) {
+                    if (dataParameterFromUrl.equals("temperature")) {
+                        html.append("<option selected=selected value='temperature'>Temperature</option>");
+                        html.append("<option value='population'>Population</option>");
+                        html.append("<option value='tandp'>Temperature and Population</option>");
+
+                    } else if (dataParameterFromUrl.equals("population")) {
+
+                        html.append("<option selected=selected value='population'>Population</option>");
+                        html.append("<option  value='temperature'>Temperature</option>");
+                        html.append("<option value='tandp'>Temperature and Population</option>");
+
+                    } else if (dataParameterFromUrl.equals("tandp")) {
+
+                        html.append("<option value='population'>Population</option>");
+                        html.append("<option value='temperature'>Temperature</option>");
+                        html.append("<option selected=selected value='tandp'>Temperature and Population</option>");
+
+                    } else {
+                        html.append("<option value='population'>Population</option>");
+                        html.append("<option value='temperature'>Temperature</option>");
+                        html.append("<option value='tandp'>Temperature and Population</option>");
+
+                    }
+
+                } else {
+                    html.append("""
+                               <option value="temperature">Temperature</option>
+                               <option value="population">Population</option>
+                               <option value="tandp">Temperature and Population</option>
+                            """);
+                }
                 html.append("</select>");
-
-
             }
 
             if (cityParameterFromUrl != null || stateParameterFromUrl != null) {
                 html.append("<label>Select Desired Data:</label>");
-                html.append("""
-                        <select name='Data'>
-                           <option value="" selected disabled hidden>Data</option>
-                           <option value="Temperature">Temperature</option>
-                              """);
-                html.append("</select>");
+                if (dataParameterFromUrl != null) {
+                    if (dataParameterFromUrl.equals("temperature")) {
+                        html.append("""
+                                <select name="data" onchange='document.getElementById("form-id").submit();'>
+                                   <option value="" selected disabled hidden>data</option>
+                                   <option selected=selected value="temperature">Temperature</option>
+                                      """);
+                    }
+                } else {
+                    html.append("""
+                            <select name="data" onchange='document.getElementById("form-id").submit();'>
+                               <option value="" selected disabled hidden>data</option>
+                               <option value="temperature">Temperature</option>
+                                  """);
+                }
             }
+
+            html.append("</select>");
 
 
             if (JDBCConnection.hasStates(countryParameterFromURL)) {
@@ -252,181 +259,537 @@ public class PageST3B implements Handler {
                 html.append("</select>");
 
             }
-        }
 
-        if (JDBCConnection.hasCities(countryParameterFromURL)) {
-            ArrayList<CityState> mapOfCities = JDBCConnection.getCityNames(countryParameterFromURL);
-            html.append("<br><label for>(Optional) Select City:</label>");
-            html.append("""
-                    <select name='city' onchange='document.getElementById("form-id").submit();'>
-                         <option value="" selected disabled hidden>City</option>
-                                 """);
 
-            for (CityState x : mapOfCities) {
-                if (cityParameterFromUrl != null) {
-                    if (cityParameterFromUrl.equals(x.getName())) {
-                        html.append("<option selected='selected' value='");
-                        html.append(x.getName()).append("'>").append(x.getName()).append("</option>");
+            if (JDBCConnection.hasCities(countryParameterFromURL)) {
+                ArrayList<CityState> mapOfCities = JDBCConnection.getCityNames(countryParameterFromURL);
+                html.append("<br><label for>(Optional) Select City:</label>");
+                html.append("""
+                        <select name='city' onchange='document.getElementById("form-id").submit();'>
+                             <option value="" selected disabled hidden>City</option>
+                                     """);
+
+                for (CityState x : mapOfCities) {
+                    if (cityParameterFromUrl != null) {
+                        if (cityParameterFromUrl.equals(x.getName())) {
+                            html.append("<option selected='selected' value='");
+                            html.append(x.getName()).append("'>").append(x.getName()).append("</option>");
+                        } else {
+                            html.append("<option value='");
+                            html.append(x.getName()).append("'>").append(x.getName()).append("</option>");
+                        }
                     } else {
                         html.append("<option value='");
                         html.append(x.getName()).append("'>").append(x.getName()).append("</option>");
                     }
+                }
+                html.append("</select>");
+
+
+            }
+
+            // // dropdown for starting year
+            html.append("""
+                                        
+                     <br></br> <label for>Select Start Year:</label>
+                       <select name='from'>
+                          <option value='' selected disabled hidden>Year</option>
+                    """);
+
+
+            for (int i = 1960; i < 2014; i++) {
+                if (fromDate == i) {
+                    html.append("<option selected='selected' value='");
+                    html.append(i).append("'>").append(i).append("</option>");
                 } else {
+
                     html.append("<option value='");
-                    html.append(x.getName()).append("'>").append(x.getName()).append("</option>");
+                    html.append(i).append("'>").append(i).append("</option>");
                 }
             }
             html.append("</select>");
 
 
-        }
+            // duration dropdown
+            html.append("""
+                    </select>
+                       <br> <label for>Select Duration:</label>
+                          <select name='duration'>
+                              <option value='' selected disabled hidden> </option>
 
-        // // dropdown for starting year
-        html.append("""
-                                    
-                 <br></br> <label for>Select Start Year:</label>
-                   <select name='from'>
-                      <option value='' selected disabled hidden>Year</option>
-                """);
+                                  """);
 
 
-        for (int i = 1750; i < 2014; i++) {
-            if (fromDate == i) {
-                html.append("<option selected='selected' value='");
-                html.append(i).append("'>").append(i).append("</option>");
+            for (int i = 1; i < 53; i++) {
+                if (duration == i) {
+                    html.append("<option selected='selected' value='");
+                    html.append(i).append("'>").append(i).append("</option>");
+                } else {
+
+                    html.append("<option value='");
+                    html.append(i).append("'>").append(i).append("</option>");
+                }
+            }
+            html.append("</select>");
+
+
+            // determine Similarity in Terms  Of
+            if (similarityParameterFromUrl != null) {
+                if (similarityParameterFromUrl.equals("absolute")) {
+                    html.append("""
+                            <p>Calculate similarity in terms of: </p>
+                            <input type='radio' id='Similarity' name='similarity' checked value='absolute'>Absolute Value</input>
+                            <input type='radio' id='Similarity' name='similarity' value='relative'>Relative Change in value</input>
+                                """);
+
+                } else if (similarityParameterFromUrl.equals("relative")) {
+                    html.append("""
+                            <p>Calculate similarity in terms of: </p>
+                            <input type='radio' id='Similarity' name='similarity'  value='absolute'>Absolute Value</input>
+                            <input type='radio' id='Similarity' name='similarity' checked value='relative'>Relative Change in value</input>
+                                """);
+
+                } else {
+                    html.append("""
+                            <p>Calculate similarity in terms of: </p>
+                            <input type='radio' id='Similarity' name='similarity' checked value='absolute'>Absolute Value</input>
+                            <input type='radio' id='Similarity' name='similarity'  value='relative'>Relative Change in value</input>
+                                """);
+                }
             } else {
-
-                html.append("<option value='");
-                html.append(i).append("'>").append(i).append("</option>");
+                html.append("""
+                        <p>Calculate similarity in terms of: </p>
+                        <input type='radio' id='Similarity' name='similarity' checked value='absolute'>Absolute Value</input>
+                        <input type='radio' id='Similarity' name='similarity'  value='relative'>Relative Change in value</input>
+                            """);
             }
-        }
-        html.append("</select>");
+
+            // number of comparisons
+            html.append("""
+                    </select>
+                       <br> <label for>Select number of locations to compare:</label>
+                          <select name='number'>
+                              <option value='' selected disabled hidden> </option>
+
+                                  """);
 
 
-        // duration dropdown
-        html.append("""
-                </select>
-                   <br> <label for>Select Duration:</label>
-                      <select name='duration'>
-                          <option value='' selected disabled hidden> </option>
+            for (int i = 1; i <= 200; i++) {
+                if (number == i) {
+                    html.append("<option selected='selected' value='");
+                    html.append(i).append("'>").append(i).append("</option>");
+                } else {
 
-                              """);
-
-
-        for (int i = 1; i < 250; i++) {
-            if (duration == i) {
-                html.append("<option selected='selected' value='");
-                html.append(i).append("'>").append(i).append("</option>");
-            } else {
-
-                html.append("<option value='");
-                html.append(i).append("'>").append(i).append("</option>");
+                    html.append("<option value='");
+                    html.append(i).append("'>").append(i).append("</option>");
+                }
             }
-        }
-        html.append("</select>");
+
+            //        ********************** Average Temp ****************************
 
 
-        // determine Similarity in Terms  Of
-        html.append("""
-                <p>Calculate similarity in terms of: </p>
-                <input type='radio' id='Similarity' name='Similarity' value='Absolute Value'>
-                <label class='radio-label' for='Ascending'>Absolute Value</label><br>
-                <input type='radio' id='Similarity' name='Similarity' value='Relative Change in value'>
-                 <label class='radio-label' for='Descending'>Relative Change in value</label>
-                    """);
+            html.append("</select>");
+            html.append("</div>");
+            html.append("<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>");
+            html.append("</div>");
+            html.append("<div>");
+            html.append("<button class='reset' type='reset' >Reset</button>");
+            html.append("</div>");
+            html.append("</form>");
 
-        // number of comparisons
-        html.append("""
-                </select>
-                   <br> <label for>Select number of locations to compare:</label>
-                      <select name='number'>
-                          <option value='' selected disabled hidden> </option>
+            if (fromDate != 0 && duration != 0) {
 
-                              """);
+                int toDate = fromDate + duration;
+                if (toDate > 2014) {
+                    toDate = 2013;
+                }
+                boolean a = true;
+                if (dataParameterFromUrl.equals("temperature")) {
+                    a = true;
+                }
+                boolean b = true;
+                if (dataParameterFromUrl.equals("tandp")) {
+                    b = true;
+                }
+                boolean c = true;
+
+                if (dataParameterFromUrl.equals("population")) {
+                    c = true;
+                }
 
 
-        for (int i = 1; i <= 10; i++) {
-            if (number == i) {
-                html.append("<option selected='selected' value='");
-                html.append(i).append("'>").append(i).append("</option>");
-            } else {
+                ArrayList<PopulationAndTemp> data = JDBCConnection.getCountryPopulationAndTemp(fromDate, toDate);
+                ArrayList<PopulationAndTemp> minData = getDataByYear(data, fromDate);
+                ArrayList<PopulationAndTemp> maxData = getDataByYear(data, toDate);
+                ArrayList<Stat> avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
+                sort(avgTempProportionalValues);
+                avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
+                if (fromDate != 0 && duration != 0 && countryParameterFromURL != null && cityParameterFromUrl == null & stateParameterFromUrl == null) {
+                    if (dataParameterFromUrl != null) {
+                        if (dataParameterFromUrl.equals("temperature") || dataParameterFromUrl.equals("tandp")) {
 
-                html.append("<option value='");
-                html.append(i).append("'>").append(i).append("</option>");
-            }
-        }
+                            if (similarityParameterFromUrl != null) {
+                                if (similarityParameterFromUrl.equals("relative")) {
+                                    int i = 1;
+                                    html.append("<table> <tr>");
+                                    html.append("<th>Rank By Similarity</th>");
+                                    html.append("<th>Country</th>");
+                                    html.append("<th>start year</th>");
+                                    html.append("<th>end year</th>");
+                                    html.append("<th>Relative Change in Data</th>");
+                                    html.append("<th>Start Year Temp.</th>");
+                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("</tr>");
 
-        html.append("</select>");
-        html.append("</div>");
-        html.append("<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>");
-        html.append("</div>");
-        html.append("<div>");
-        html.append("<button class='reset' type='reset' >Reset</button>");
-        html.append("</div>");
-        html.append("</form>");
 
-//        ********************** Average Temp ****************************
+                                    for (Stat d : avgTempProportionalValues) {
+                                        html.append("<tr>");
+                                        html.append("<td>").append(i).append("</td>");
+                                        html.append("<td>").append(d.getName()).append("</td>");
+                                        html.append("<td>").append(fromDate).append("</td>");
+                                        html.append("<td>").append(toDate).append("</td>");
+                                        html.append("<td>").append(d.getProportion()).append("</td>");
+                                        html.append("<td>").append(d.getStartData()).append("</td>");
+                                        html.append("<td>").append(d.getEndData()).append("</td>");
+                                        html.append("</tr>");
+                                        i++;
+                                    }
+                                    html.append("</table>");
+                                }
+                            }
+                        }
+                    }
+                }
 
-        html.append("<table> <tr>");
-        html.append("<th>Rank By Similarity</th>");
-        html.append("<th>Country</th>");
-        html.append("<th>start year</th>");
-        html.append("<th>end year</th>");
-        html.append("<th>Proportion</th>");
-        html.append("</tr>");
 
-        int toDate = fromDate + duration;
-        if (toDate > 2014) {
-            toDate = 2013;
-        }
-        ArrayList<PopulationAndTemp> data = JDBCConnection.getCountryPopulationAndTemp(fromDate, toDate);
-        ArrayList<PopulationAndTemp> minData = getDataByYear(data, fromDate);
-        ArrayList<PopulationAndTemp> maxData = getDataByYear(data, toDate);
-        ArrayList<Stat> avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
-        sort(avgTempProportionalValues);
-        avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
-        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
-            int i = 1;
-            for (Stat d : avgTempProportionalValues) {
-                html.append("<tr>");
-                html.append("<td>").append(i).append("</td>");
-                html.append("<td>").append(d.getName()).append("</td>");
-                html.append("<td>").append(fromDate).append("</td>");
-                html.append("<td>").append(toDate).append("</td>");
-                html.append("<td>").append(d.getProportion()).append("</td>");
-                html.append("</tr>");
-                i++;
-            }
-            html.append("</table>");
-        }
+                // ********CountryTemp Absolute Vale
+
+                if (cityParameterFromUrl == null) {
+                    if (stateParameterFromUrl == null) {
+                        if (similarityParameterFromUrl != null) {
+                            if (similarityParameterFromUrl.equals("absolute")) {
+                                if (dataParameterFromUrl != null) {
+                                    if (dataParameterFromUrl.equals("temperature") || dataParameterFromUrl.equals("tandp")) {
+
+                                        html.append("<table> <tr>");
+                                        html.append("<th>Rank By Similarity</th>");
+                                        html.append("<th>Country</th>");
+                                        html.append("<th>start year</th>");
+                                        html.append("<th>end year</th>");
+                                        html.append("<th>Absolute in Data</th>");
+                                        html.append("<th>Start Year Temp.</th>");
+                                        html.append("<th>End Year Temp.</th>");
+                                        html.append("</tr>");
+
+                                        ArrayList<Stat> avgTempAbsoluteValuesforCountry = getAvgTempAbsoluteValue(minData, maxData);
+                                        sort(avgTempAbsoluteValuesforCountry);
+                                        avgTempAbsoluteValuesforCountry = getNearByCountries(avgTempAbsoluteValuesforCountry, countryParameterFromURL, number);
+                                        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                            int i = 1;
+                                            for (Stat d : avgTempAbsoluteValuesforCountry) {
+                                                html.append("<tr>");
+                                                html.append("<td>").append(i).append("</td>");
+                                                html.append("<td>").append(d.getName()).append("</td>");
+                                                html.append("<td>").append(fromDate).append("</td>");
+                                                html.append("<td>").append(toDate).append("</td>");
+                                                html.append("<td>").append(d.getProportion()).append("</td>");
+                                                html.append("<td>").append(d.getStartData()).append("</td>");
+                                                html.append("<td>").append(d.getEndData()).append("</td>");
+
+                                                html.append("</tr>");
+                                                i++;
+                                            }
+                                            html.append("</table>");
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
 
 //        ********************** Average Population ****************************
+                if (cityParameterFromUrl == null) {
+                    if (stateParameterFromUrl == null) {
+                        if (similarityParameterFromUrl != null) {
+                            if (similarityParameterFromUrl.equals("relative")) {
+                                if (dataParameterFromUrl != null) {
+                                    if (dataParameterFromUrl.equals("population") || dataParameterFromUrl.equals("tandp")) {
 
-        html.append("<table> <tr>");
-        html.append("<th>Rank By Similarity</th>");
-        html.append("<th>Country</th>");
-        html.append("<th>start year</th>");
-        html.append("<th>end year</th>");
-        html.append("<th>Proportion</th>");
-        html.append("</tr>");
+                                        html.append("<table> <tr>");
+                                        html.append("<th>Rank By Similarity</th>");
+                                        html.append("<th>Country</th>");
+                                        html.append("<th>start year</th>");
+                                        html.append("<th>end year</th>");
+                                        html.append("<th>Relative Change in Data</th>");
+                                        html.append("<th>Start Year Population.</th>");
+                                        html.append("<th>End Year Population.</th>");
+                                        html.append("</tr>");
 
 
-        ArrayList<Stat> avgPopProportionalValues = getPopulationProportionalValues(minData, maxData);
-        sort(avgPopProportionalValues);
-        avgPopProportionalValues = getNearByCountries(avgPopProportionalValues, countryParameterFromURL, number);
-        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
-            int i = 1;
-            for (Stat d : avgPopProportionalValues) {
-                html.append("<tr>");
-                html.append("<td>").append(i).append("</td>");
-                html.append("<td>").append(d.getName()).append("</td>");
-                html.append("<td>").append(fromDate).append("</td>");
-                html.append("<td>").append(toDate).append("</td>");
-                html.append("<td>").append(d.getProportion()).append("</td>");
-                html.append("</tr>");
-                i++;
+                                        ArrayList<Stat> avgPopProportionalValues = getPopulationProportionalValues(minData, maxData);
+                                        sort(avgPopProportionalValues);
+                                        avgPopProportionalValues = getNearByCountries(avgPopProportionalValues, countryParameterFromURL, number);
+                                        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                            int i = 1;
+                                            for (Stat d : avgPopProportionalValues) {
+                                                html.append("<tr>");
+                                                html.append("<td>").append(i).append("</td>");
+                                                html.append("<td>").append(d.getName()).append("</td>");
+                                                html.append("<td>").append(fromDate).append("</td>");
+                                                html.append("<td>").append(toDate).append("</td>");
+                                                html.append("<td>").append(d.getProportion()).append("</td>");
+                                                html.append("<td>").append(d.getStartData()).append("</td>");
+                                                html.append("<td>").append(d.getEndData()).append("</td>");
+
+                                                html.append("</tr>");
+                                                i++;
+                                            }
+                                            html.append("</table>");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                //  ********Absolute population data
+                if (cityParameterFromUrl == null) {
+                    if (stateParameterFromUrl == null) {
+                        if (similarityParameterFromUrl != null) {
+                            if (similarityParameterFromUrl.equals("absolute")) {
+                                if (dataParameterFromUrl != null) {
+                                    if (dataParameterFromUrl.equals("population") || dataParameterFromUrl.equals("tandp")) {
+                                        html.append("<table> <tr>");
+                                        html.append("<th>Rank By Similarity</th>");
+                                        html.append("<th>Country</th>");
+                                        html.append("<th>start year</th>");
+                                        html.append("<th>end year</th>");
+                                        html.append("<th>Absolute Change in Data</th>");
+                                        html.append("<th>Start Year Population.</th>");
+                                        html.append("<th>End Year Population.</th>");
+                                        html.append("</tr>");
+
+                                        ArrayList<Stat> avgTempAbsoluteValuesforpopulation = getPopulationAbsoluteValues(minData, maxData);
+                                        sort(avgTempAbsoluteValuesforpopulation);
+                                        avgTempAbsoluteValuesforpopulation = getNearByCountries(avgTempAbsoluteValuesforpopulation, countryParameterFromURL, number);
+                                        if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                            int i = 1;
+                                            for (Stat d : avgTempAbsoluteValuesforpopulation) {
+                                                html.append("<tr>");
+                                                html.append("<td>").append(i).append("</td>");
+                                                html.append("<td>").append(d.getName()).append("</td>");
+                                                html.append("<td>").append(fromDate).append("</td>");
+                                                html.append("<td>").append(toDate).append("</td>");
+                                                html.append("<td>").append(d.getProportion()).append("</td>");
+                                                html.append("<td>").append(d.getStartData()).append("</td>");
+                                                html.append("<td>").append(d.getEndData()).append("</td>");
+
+                                                html.append("</tr>");
+                                                i++;
+                                            }
+                                            html.append("</table>");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                // ***********************Geting avgTemp for City***************
+
+                if (cityParameterFromUrl != null && stateParameterFromUrl == null) {
+                    if (similarityParameterFromUrl != null) {
+                        if (similarityParameterFromUrl.equals("relative")) {
+                            if (dataParameterFromUrl != null) {
+                                if (dataParameterFromUrl.equals("temperature")) {
+
+                                    html.append("<table> <tr>");
+                                    html.append("<th>Rank By Similarity</th>");
+                                    html.append("<th>City</th>");
+                                    html.append("<th>start year</th>");
+                                    html.append("<th>end year</th>");
+                                    html.append("<th>Change in Data</th>");
+                                    html.append("<th>Start Year Temp.</th>");
+                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("</tr>");
+
+
+                                    data = JDBCConnection.getAvgTempForCity(countryParameterFromURL, fromDate, toDate);
+                                    minData = getDataByYear(data, fromDate);
+                                    maxData = getDataByYear(data, toDate);
+                                    avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
+                                    sort(avgTempProportionalValues);
+                                    avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
+                                    if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                        int i = 1;
+                                        for (Stat d : avgTempProportionalValues) {
+                                            html.append("<tr>");
+                                            html.append("<td>").append(i).append("</td>");
+                                            html.append("<td>").append(d.getName()).append("</td>");
+                                            html.append("<td>").append(fromDate).append("</td>");
+                                            html.append("<td>").append(toDate).append("</td>");
+                                            html.append("<td>").append(d.getProportion()).append("</td>");
+                                            html.append("<td>").append(d.getStartData()).append("</td>");
+                                            html.append("<td>").append(d.getEndData()).append("</td>");
+                                            html.append("</tr>");
+                                            i++;
+                                        }
+                                        html.append("</table>");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                // ********absvalue for city*******
+
+                if (cityParameterFromUrl != null && stateParameterFromUrl == null) {
+                    if (similarityParameterFromUrl != null) {
+                        if (similarityParameterFromUrl.equals("absolute")) {
+                            if (dataParameterFromUrl != null) {
+                                if (dataParameterFromUrl.equals("temperature")) {
+
+                                    html.append("<table> <tr>");
+                                    html.append("<th>Rank By Similarity</th>");
+                                    html.append("<th>City</th>");
+                                    html.append("<th>start year</th>");
+                                    html.append("<th>end year</th>");
+                                    html.append("<th>Change in Data</th>");
+                                    html.append("<th>Start Year Temp.</th>");
+                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("</tr>");
+
+                                    data = JDBCConnection.getAvgTempForCity(countryParameterFromURL, fromDate, toDate);
+                                    minData = getDataByYear(data, fromDate);
+                                    maxData = getDataByYear(data, toDate);
+                                    ArrayList<Stat> avgTempAbsoluteValuesforcities = getAvgTempAbsoluteValue(minData, maxData);
+                                    sort(avgTempAbsoluteValuesforcities);
+                                    avgTempAbsoluteValuesforcities = getNearByCountries(avgTempAbsoluteValuesforcities, countryParameterFromURL, number);
+                                    if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                        int i = 1;
+                                        for (Stat d : avgTempAbsoluteValuesforcities) {
+                                            html.append("<tr>");
+                                            html.append("<td>").append(i).append("</td>");
+                                            html.append("<td>").append(d.getName()).append("</td>");
+                                            html.append("<td>").append(fromDate).append("</td>");
+                                            html.append("<td>").append(toDate).append("</td>");
+                                            html.append("<td>").append(d.getProportion()).append("</td>");
+                                            html.append("<td>").append(d.getStartData()).append("</td>");
+                                            html.append("<td>").append(d.getEndData()).append("</td>");
+
+                                            html.append("</tr>");
+                                            i++;
+                                        }
+                                        html.append("</table>");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // ***********************Geting avgTemp for State***************
+                if (cityParameterFromUrl == null && stateParameterFromUrl != null) {
+                    if (similarityParameterFromUrl != null) {
+                        if (similarityParameterFromUrl.equals("relative")) {
+                            if (dataParameterFromUrl != null) {
+                                if (dataParameterFromUrl.equals("temperature")) {
+
+
+                                    html.append("<table> <tr>");
+                                    html.append("<th>Rank By Similarity</th>");
+                                    html.append("<th>State</th>");
+                                    html.append("<th>start year</th>");
+                                    html.append("<th>end year</th>");
+                                    html.append("<th>Relative Change in Data</th>");
+                                    html.append("<th>Start Year Temperature</th>");
+                                    html.append("<th>End Year Temperature</th>");
+                                    html.append("</tr>");
+
+
+                                    data = JDBCConnection.getAvgTempForState(countryParameterFromURL, fromDate, toDate);
+                                    minData = getDataByYear(data, fromDate);
+                                    maxData = getDataByYear(data, toDate);
+                                    avgTempProportionalValues = getAvgTempProportionalValues(minData, maxData);
+                                    sort(avgTempProportionalValues);
+                                    avgTempProportionalValues = getNearByCountries(avgTempProportionalValues, countryParameterFromURL, number);
+                                    if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                        int i = 1;
+                                        for (Stat d : avgTempProportionalValues) {
+                                            html.append("<tr>");
+                                            html.append("<td>").append(i).append("</td>");
+                                            html.append("<td>").append(d.getName()).append("</td>");
+                                            html.append("<td>").append(fromDate).append("</td>");
+                                            html.append("<td>").append(toDate).append("</td>");
+                                            html.append("<td>").append(d.getProportion()).append("</td>");
+                                            html.append("<td>").append(d.getStartData()).append("</td>");
+                                            html.append("<td>").append(d.getEndData()).append("</td>");
+                                            html.append("</tr>");
+                                            i++;
+                                        }
+                                        html.append("</table>");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                // ************** Absolute Value For State
+
+                if (cityParameterFromUrl == null && stateParameterFromUrl != null) {
+                    if (similarityParameterFromUrl != null) {
+                        if (similarityParameterFromUrl.equals("absolute")) {
+                            if (dataParameterFromUrl != null) {
+                                if (dataParameterFromUrl.equals("temperature")) {
+
+                                    html.append("<table> <tr>");
+                                    html.append("<th>Rank By Similarity</th>");
+                                    html.append("<th>State</th>");
+                                    html.append("<th>start year</th>");
+                                    html.append("<th>end year</th>");
+                                    html.append("<th>Change in Data</th>");
+                                    html.append("<th>Start Year Temp.</th>");
+                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("</tr>");
+
+                                    ArrayList<Stat> avgTempAbsoluteValuesforstate = getAvgTempAbsoluteValue(minData, maxData);
+                                    sort(avgTempAbsoluteValuesforstate);
+                                    avgTempAbsoluteValuesforstate = getNearByCountries(avgTempAbsoluteValuesforstate, countryParameterFromURL, number);
+                                    if (fromDate != 0 && duration != 0 && countryParameterFromURL != null) {
+                                        int i = 1;
+                                        for (Stat d : avgTempAbsoluteValuesforstate) {
+                                            html.append("<tr>");
+                                            html.append("<td>").append(i).append("</td>");
+                                            html.append("<td>").append(d.getName()).append("</td>");
+                                            html.append("<td>").append(fromDate).append("</td>");
+                                            html.append("<td>").append(toDate).append("</td>");
+                                            html.append("<td>").append(d.getProportion()).append("</td>");
+                                            html.append("<td>").append(d.getStartData()).append("</td>");
+                                            html.append("<td>").append(d.getEndData()).append("</td>");
+
+                                            html.append("</tr>");
+                                            i++;
+                                        }
+                                        html.append("</table>");
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            html.append("</table>");
         }
 
 
@@ -484,24 +847,53 @@ public class PageST3B implements Handler {
         return tmp;
     }
 
-    public ArrayList<Stat> getAvgTempProportionalValues(ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+    public ArrayList<Stat> getAvgTempProportionalValues
+            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (PopulationAndTemp m : min) {
             for (PopulationAndTemp x : max) {
                 if (m.getCountryId().equals(x.getCountryId())) {
-                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getAvgTemp() - x.getAvgTemp()) / m.getAvgTemp()) * 100));
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getAvgTemp() - x.getAvgTemp()) / m.getAvgTemp()) * 100, m.getAvgTemp(), x.getAvgTemp()));
                 }
             }
         }
         return stats;
     }
 
-    public ArrayList<Stat> getPopulationProportionalValues(ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+    public ArrayList<Stat> getAvgTempAbsoluteValue
+            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
         ArrayList<Stat> stats = new ArrayList<Stat>();
         for (PopulationAndTemp m : min) {
             for (PopulationAndTemp x : max) {
                 if (m.getCountryId().equals(x.getCountryId())) {
-                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getPopulation() - x.getPopulation()) / m.getPopulation()) * 100));
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((abs(m.getAvgTemp() - x.getAvgTemp()))), m.getAvgTemp(), x.getAvgTemp()));
+                }
+            }
+        }
+        return stats;
+    }
+
+
+    public ArrayList<Stat> getPopulationProportionalValues
+            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (PopulationAndTemp m : min) {
+            for (PopulationAndTemp x : max) {
+                if (m.getCountryId().equals(x.getCountryId())) {
+                    stats.add(new Stat(x.getCountryId(), x.getName(), ((m.getPopulation() - x.getPopulation()) / m.getPopulation()) * 100, m.getPopulation(), x.getPopulation()));
+                }
+            }
+        }
+        return stats;
+    }
+
+    public ArrayList<Stat> getPopulationAbsoluteValues
+            (ArrayList<PopulationAndTemp> min, ArrayList<PopulationAndTemp> max) {
+        ArrayList<Stat> stats = new ArrayList<Stat>();
+        for (PopulationAndTemp m : min) {
+            for (PopulationAndTemp x : max) {
+                if (m.getCountryId().equals(x.getCountryId())) {
+                    stats.add(new Stat(x.getCountryId(), x.getName(), (abs(m.getPopulation() - x.getPopulation())), m.getPopulation(), x.getPopulation()));
                 }
             }
         }
@@ -519,18 +911,25 @@ public class PageST3B implements Handler {
             }
             x++;
         }
-        Stat country = stat.get(index);
         ArrayList<Stat> nearStats = new ArrayList<>();
+        Stat country = stat.get(index);
         nearStats.add(country);
-        for (int i = 1; i < limit; i++) {
-            float above = country.getProportion() - stat.get(index + i).getProportion();
-            float below = country.getProportion() - stat.get(index - i).getProportion();
-            if (abs(above) > abs(below)) {
-                nearStats.add(stat.get(index - i));
-            } else {
+        float above;
+        float below;
+        for (int i = 1; i < limit + 1; i++) {
+            if (index + i < stat.size() && index - i > 0) {
+                above = country.getProportion() - stat.get(index + i).getProportion();
+                below = country.getProportion() - stat.get(index - i).getProportion();
+                if (abs(above) > abs(below)) {
+                    nearStats.add(stat.get(index + i));
+                } else {
+                    nearStats.add(stat.get(index - i));
+                }
+            } else if (index + i < stat.size()) {
                 nearStats.add(stat.get(index + i));
+            } else if (index - i > 0) {
+                nearStats.add(stat.get(index - i));
             }
-
         }
         return nearStats;
     }

@@ -17,8 +17,13 @@ public class PopulationAndTemp {
         this.year = year;
         this.population = population;
         this.name = name;
+    }
 
-
+    public PopulationAndTemp(String name, float avgTemp, int year) {
+        this.name = name;
+        this.avgTemp = avgTemp;
+        this.year = year;
+        this.countryId = name;
     }
 
     public String getCountryId() {

@@ -10,8 +10,6 @@ public class Temp {
         this.name = name;
         this.avgTemp = avgTemp;
         this.year = year;
-
-
     }
 
     public String getName() {

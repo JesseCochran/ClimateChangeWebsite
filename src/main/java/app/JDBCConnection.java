@@ -583,6 +583,126 @@ public class JDBCConnection {
         return countryPopulationAndTemp;
     }
 
+    public static ArrayList<PopulationAndTemp> getAvgTempForCity(String countryId, int fromDate, int duration) {
+
+        ArrayList<PopulationAndTemp> avgTempForCity = new ArrayList<PopulationAndTemp>();
+
+        // Create the ArrayList of Climate objects to return
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT CityName,  Year, AvgTemp from CityTemp " +
+                    "WHERE CountryId='" + countryId + "' " +
+                    "AND Year = " + fromDate + " " +
+                    "AND AvgTemp IS NOT NULL " +
+                    "UNION " +
+                    "SELECT CityName,  Year, AvgTemp from CityTemp " +
+                    "WHERE CountryId='" + countryId + "' " +
+                    "AND Year = " + (duration) + " " +
+                    "AND AvgTemp IS NOT NULL;";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+//                    public PopulationAndTemp(String name, float avgTemp, int year) {
+
+                PopulationAndTemp avgTempforcities = new PopulationAndTemp(results.getString("CityName"), results.getInt("AvgTemp"), results.getInt("Year"));
+                avgTempForCity.add(avgTempforcities);
+            }
+
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return avgTempForCity;
+    }
+
+    public static ArrayList<PopulationAndTemp> getAvgTempForState(String countryId, int fromDate, int duration) {
+
+        ArrayList<PopulationAndTemp> avgTempForState = new ArrayList<PopulationAndTemp>();
+
+        // Create the ArrayList of Climate objects to return
+
+        Connection connection = null;
+
+        try {
+            // Connect to JDBC data base
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Prepare a new SQL Query & Set a timeout
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            // The Query
+            String query = "SELECT StateName,  Year, AvgTemp from StateTemp " +
+                    "WHERE CountryId='" + countryId + "' " +
+                    "AND Year = " + fromDate + " " +
+                    "AND AvgTemp IS NOT NULL " +
+                    "UNION " +
+                    "SELECT StateName,  Year, AvgTemp from StateTemp " +
+                    "WHERE CountryId='" + countryId + "' " +
+                    "AND Year = " + (duration) + " " +
+                    "AND AvgTemp IS NOT NULL;";
+
+            // Get Result
+            ResultSet results = statement.executeQuery(query);
+
+            // Process all of the results
+            while (results.next()) {
+                // Lookup the columns we need
+                PopulationAndTemp avgTempForStates = new PopulationAndTemp(results.getString("StateName"), results.getInt("AvgTemp"), results.getInt("Year"));
+                avgTempForState.add(avgTempForStates);
+            }
+
+            statement.close();
+        }
+        //
+        catch (SQLException e) {
+            // If there is an error, lets just pring the error
+            System.err.println(e.getMessage());
+        } finally {
+            // Safety code to cleanup
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+        }
+
+        // Finally we return all of the lga
+        return avgTempForState;
+    }
+
     /**
      * Get all of the LGAs in the database.
      *
@@ -1701,162 +1821,6 @@ public class JDBCConnection {
         // Finally we return all of the lga
         return climates;
 
-    }
-
-    public ArrayList<PopData> getPopulation(String countryId, int fromDate, int duration) {
-
-        ArrayList<PopData> population = new ArrayList<PopData>();
-
-        // Create the ArrayList of Climate objects to return
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT CountryName, PopulationLevel, max(Year), AvgTemp from CountryTemp Union SELECT CountryName, PopulationLevel,  min(Year), AvgTemp from CountryTemp " +
-                    "WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + (fromDate + duration) + " AND AvgTemp IS NOT NULL;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                PopData populations = new PopData(results.getString("CountryName"), results.getInt("Year"), results.getInt("PopulationLevel"));
-                population.add(populations);
-            }
-
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return population;
-    }
-
-    public ArrayList<Temp> getAvgTempForCities(String countryId, int fromDate, int duration) {
-
-        ArrayList<Temp> avgTempForCities = new ArrayList<Temp>();
-
-        // Create the ArrayList of Climate objects to return
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT CityName, max(Year), AvgTemp from CountryTemp Union SELECT CityName,  min(Year), AvgTemp from StateTemp " +
-                    "WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + (fromDate + duration) + " AND AvgTemp IS NOT NULL;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                Temp avgTempsForCities = new Temp(results.getString("CityName"), results.getInt("Year"), results.getInt("AvgTemp"));
-                avgTempForCities.add(avgTempsForCities);
-            }
-
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return avgTempForCities;
-    }
-
-    public ArrayList<Temp> getAvgTempForState(String countryId, int fromDate, int duration) {
-
-        ArrayList<Temp> avgTempForState = new ArrayList<Temp>();
-
-        // Create the ArrayList of Climate objects to return
-
-        Connection connection = null;
-
-        try {
-            // Connect to JDBC data base
-            connection = DriverManager.getConnection(DATABASE);
-
-            // Prepare a new SQL Query & Set a timeout
-            Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
-
-            // The Query
-            String query = "SELECT StateName, max(Year), AvgTemp from CountryTemp Union SELECT StateName,  min(Year), AvgTemp from StateTemp " +
-                    "WHERE CountryId='" + countryId + "' AND Year >= " + fromDate + " and Year <= " + (fromDate + duration) + " AND AvgTemp IS NOT NULL;";
-
-            // Get Result
-            ResultSet results = statement.executeQuery(query);
-
-            // Process all of the results
-            while (results.next()) {
-                // Lookup the columns we need
-                Temp avgTempForStates = new Temp(results.getString("StateName"), results.getInt("Year"), results.getInt("AvgTemp"));
-                avgTempForState.add(avgTempForStates);
-            }
-
-            statement.close();
-        }
-        //
-        catch (SQLException e) {
-            // If there is an error, lets just pring the error
-            System.err.println(e.getMessage());
-        } finally {
-            // Safety code to cleanup
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                // connection close failed.
-                System.err.println(e.getMessage());
-            }
-        }
-
-        // Finally we return all of the lga
-        return avgTempForState;
     }
 
 }
