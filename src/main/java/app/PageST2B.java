@@ -121,28 +121,28 @@ public class PageST2B implements Handler {
         html = html + "<div class='SideNavBar'>";
         html = html
                 + """
-                                <div id='mySidenav' class='sidenav'>
-                                    <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
-                                    <a href='/'>Home</a>
-                                    <p>Climate Data and Analysis</p>
-                                    <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                                    <a href='page2B.html'>Temperature Change By State/City</a>
-                                    <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                                    <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                                    <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                                    <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                                    <p>About Us</p>
-                                    <a href='mission.html'>Our Mission</a>
-                            <a href='mission.html#persona-section'>Personas</a>
-                            <a href='mission.html#aboutUs-section'>Contact Us</a>
-                            <p>Help & Support</p>
-                            <a href='PageHelp.html'>Page Assistance</a>
-                            <a href='PageHelp.html#faq-section'>FAQ</a>
-                            <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                        <div id='mySidenav' class='sidenav'>
+                            <a href='javascript:void(0)' class='closebtn' onclick='closeNav()'>&times;</a>
+                            <a href='/'>Home</a>
+                            <p>Climate Data and Analysis</p>
+                            <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                            <a href='page2B.html'>Temperature Change By State/City</a>
+                            <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                            <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                            <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                            <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                            <p>About Us</p>
+                            <a href='mission.html'>Our Mission</a>
+                    <a href='mission.html#persona-section'>Personas</a>
+                    <a href='mission.html#aboutUs-section'>Contact Us</a>
+                    <p>Help & Support</p>
+                    <a href='PageHelp.html'>Page Assistance</a>
+                    <a href='PageHelp.html#faq-section'>FAQ</a>
+                    <a href='PageHelp.html#advanced-section'>Advanced Features</a>
 
-                                </div>
-                        <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
-                                """;
+                        </div>
+                <span style='color: #f1f1f1; position: fixed; top:10px; right:20px; font-size:40px; cursor:pointer' onclick='openNav()'> &#9776;</span>
+                        """;
         html = html + "</div>";
         html = html + "<script>";
         // take to help page
@@ -213,6 +213,7 @@ public class PageST2B implements Handler {
                    temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing
                    temperatures.
                      </p>
+                     <p> Please note that data is not available for all countries. </p>
 
                 """;
 
@@ -395,37 +396,37 @@ public class PageST2B implements Handler {
         html = html
                 + """
 
-                            <div class='footer'>
+                    <div class='footer'>
 
-                        <div class='footerBlock'>
-                                    <div class='footerColumn'>
-                                      <p style='margin-top: 0;'>Shallow View</p>
-                                      <a href='page2A.html'>Temperature & Population Change By Country/World</a>
-                                      <a href='page2B.html'>Temperature Change By State/City</a>
-                                      <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
-                                    </div>
-                                    <div class='footerColumn'>
-                                      <p style='margin-top: 0;'>In-Depth View</p>
-                                      <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
-                                      <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
-                                      <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
-                                    </div>
-                                    <div class='footerColumn'>
-                                      <p style='margin-top: 0;'>About</p>
-                                      <a href='mission.html'>Our Mission</a>
-                                      <a href='mission.html#persona-section'>Personas</a>
-                                      <a href='mission.html#aboutUs-section'>Contact Us</a>
-                                    </div>
-                                    <div class='footerColumn'>
-                                      <p style='margin-top: 0;'>Help & Support</p>
-                                      <a href='PageHelp.html'>Page Assistance</a>
-                                      <a href='PageHelp.html#faq-section'>FAQ</a>
-                                      <a href='PageHelp.html#advanced-section'>Advanced Features</a>
+                <div class='footerBlock'>
+                            <div class='footerColumn'>
+                              <p style='margin-top: 0;'>Shallow View</p>
+                              <a href='page2A.html'>Temperature & Population Change By Country/World</a>
+                              <a href='page2B.html'>Temperature Change By State/City</a>
+                              <a href='page2C.html'>Global Land-Ocean Temperature Change</a>
+                            </div>
+                            <div class='footerColumn'>
+                              <p style='margin-top: 0;'>In-Depth View</p>
+                              <a href='page3A.html'>Change In Temperature Over Extended Periods</a>
+                              <a href='page3B.html'>Time Periods With Similar Temperature/Population</a>
+                              <a href='page3C.html'>Comparison Of Global Temperature Data Over Extended Periods</a>
+                            </div>
+                            <div class='footerColumn'>
+                              <p style='margin-top: 0;'>About</p>
+                              <a href='mission.html'>Our Mission</a>
+                              <a href='mission.html#persona-section'>Personas</a>
+                              <a href='mission.html#aboutUs-section'>Contact Us</a>
+                            </div>
+                            <div class='footerColumn'>
+                              <p style='margin-top: 0;'>Help & Support</p>
+                              <a href='PageHelp.html'>Page Assistance</a>
+                              <a href='PageHelp.html#faq-section'>FAQ</a>
+                              <a href='PageHelp.html#advanced-section'>Advanced Features</a>
 
-                                    </div>
-                                  </div>
-                                </div>
-                                """;
+                            </div>
+                          </div>
+                        </div>
+                        """;
 
         html += "<script>$(\"#form-id\").html($(\"#form-id option\").sort(function (a, b) {\n" +
                 "    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1\n" +
