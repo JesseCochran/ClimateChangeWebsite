@@ -342,9 +342,10 @@ public class PageST2B implements Handler {
         if (countryParameterFromURL != null) {
             ArrayList<TempData> data;
 
-            html += "<table><tr> <th> Year </th> ";
 
             if (type != null) {
+                html += "<table><tr> <th> Year </th> ";
+
                 if (type.equals("States")) {
                     data = JDBCConnection.getTempByState(countryParameterFromURL, fromDate, toDate);
                     html += "<th> State</th>";
