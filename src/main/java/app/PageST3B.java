@@ -404,19 +404,6 @@ public class PageST3B implements Handler {
                 if (toDate > 2014) {
                     toDate = 2013;
                 }
-                boolean a = true;
-                if (dataParameterFromUrl.equals("temperature")) {
-                    a = true;
-                }
-                boolean b = true;
-                if (dataParameterFromUrl.equals("tandp")) {
-                    b = true;
-                }
-                boolean c = true;
-
-                if (dataParameterFromUrl.equals("population")) {
-                    c = true;
-                }
 
 
                 ArrayList<PopulationAndTemp> data = JDBCConnection.getCountryPopulationAndTemp(fromDate, toDate);
@@ -435,11 +422,11 @@ public class PageST3B implements Handler {
                                     html.append("<table> <tr>");
                                     html.append("<th>Rank By Similarity</th>");
                                     html.append("<th>Country</th>");
-                                    html.append("<th>start year</th>");
-                                    html.append("<th>end year</th>");
+                                    html.append("<th>Start Year</th>");
+                                    html.append("<th>End Year</th>");
                                     html.append("<th>Relative Change in Data</th>");
-                                    html.append("<th>Start Year Temp.</th>");
-                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("<th>Start Year Temperature</th>");
+                                    html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
 
 
@@ -475,11 +462,11 @@ public class PageST3B implements Handler {
                                         html.append("<table> <tr>");
                                         html.append("<th>Rank By Similarity</th>");
                                         html.append("<th>Country</th>");
-                                        html.append("<th>start year</th>");
-                                        html.append("<th>end year</th>");
-                                        html.append("<th>Absolute in Data</th>");
-                                        html.append("<th>Start Year Temp.</th>");
-                                        html.append("<th>End Year Temp.</th>");
+                                        html.append("<th>Start Year</th>");
+                                        html.append("<th>End Year</th>");
+                                        html.append("<th>Absolute Change in Data</th>");
+                                        html.append("<th>Start Year Temperature</th>");
+                                        html.append("<th>End Year Temperature</th>");
                                         html.append("</tr>");
 
                                         ArrayList<Stat> avgTempAbsoluteValuesforCountry = getAvgTempAbsoluteValue(minData, maxData);
@@ -522,11 +509,11 @@ public class PageST3B implements Handler {
                                         html.append("<table> <tr>");
                                         html.append("<th>Rank By Similarity</th>");
                                         html.append("<th>Country</th>");
-                                        html.append("<th>start year</th>");
-                                        html.append("<th>end year</th>");
+                                        html.append("<th>Start Year</th>");
+                                        html.append("<th>End Year</th>");
                                         html.append("<th>Relative Change in Data</th>");
-                                        html.append("<th>Start Year Population.</th>");
-                                        html.append("<th>End Year Population.</th>");
+                                        html.append("<th>Start Year Population</th>");
+                                        html.append("<th>End Year Population</th>");
                                         html.append("</tr>");
 
 
@@ -568,11 +555,11 @@ public class PageST3B implements Handler {
                                         html.append("<table> <tr>");
                                         html.append("<th>Rank By Similarity</th>");
                                         html.append("<th>Country</th>");
-                                        html.append("<th>start year</th>");
-                                        html.append("<th>end year</th>");
+                                        html.append("<th>Start Year</th>");
+                                        html.append("<th>End Year</th>");
                                         html.append("<th>Absolute Change in Data</th>");
-                                        html.append("<th>Start Year Population.</th>");
-                                        html.append("<th>End Year Population.</th>");
+                                        html.append("<th>Start Year Population</th>");
+                                        html.append("<th>End Year Population</th>");
                                         html.append("</tr>");
 
                                         ArrayList<Stat> avgTempAbsoluteValuesforpopulation = getPopulationAbsoluteValues(minData, maxData);
@@ -614,11 +601,11 @@ public class PageST3B implements Handler {
                                     html.append("<table> <tr>");
                                     html.append("<th>Rank By Similarity</th>");
                                     html.append("<th>City</th>");
-                                    html.append("<th>start year</th>");
-                                    html.append("<th>end year</th>");
-                                    html.append("<th>Change in Data</th>");
-                                    html.append("<th>Start Year Temp.</th>");
-                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("<th>Start Year</th>");
+                                    html.append("<th>End Year</th>");
+                                    html.append("<th>Relative Change in Data</th>");
+                                    html.append("<th>Start Year Temperature</th>");
+                                    html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
 
 
@@ -662,11 +649,11 @@ public class PageST3B implements Handler {
                                     html.append("<table> <tr>");
                                     html.append("<th>Rank By Similarity</th>");
                                     html.append("<th>City</th>");
-                                    html.append("<th>start year</th>");
-                                    html.append("<th>end year</th>");
+                                    html.append("<th>Start Year</th>");
+                                    html.append("<th>End Year</th>");
                                     html.append("<th>Change in Data</th>");
-                                    html.append("<th>Start Year Temp.</th>");
-                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("<th>Start Year Temperature</th>");
+                                    html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
 
                                     data = JDBCConnection.getAvgTempForCity(countryParameterFromURL, fromDate, toDate);
@@ -709,8 +696,8 @@ public class PageST3B implements Handler {
                                     html.append("<table> <tr>");
                                     html.append("<th>Rank By Similarity</th>");
                                     html.append("<th>State</th>");
-                                    html.append("<th>start year</th>");
-                                    html.append("<th>end year</th>");
+                                    html.append("<th>Start Year</th>");
+                                    html.append("<th>End Year</th>");
                                     html.append("<th>Relative Change in Data</th>");
                                     html.append("<th>Start Year Temperature</th>");
                                     html.append("<th>End Year Temperature</th>");
@@ -757,11 +744,11 @@ public class PageST3B implements Handler {
                                     html.append("<table> <tr>");
                                     html.append("<th>Rank By Similarity</th>");
                                     html.append("<th>State</th>");
-                                    html.append("<th>start year</th>");
-                                    html.append("<th>end year</th>");
+                                    html.append("<th>Start Year</th>");
+                                    html.append("<th>End Year</th>");
                                     html.append("<th>Change in Data</th>");
-                                    html.append("<th>Start Year Temp.</th>");
-                                    html.append("<th>End Year Temp.</th>");
+                                    html.append("<th>Start Year Temperature</th>");
+                                    html.append("<th>End Year Temperature</th>");
                                     html.append("</tr>");
 
                                     ArrayList<Stat> avgTempAbsoluteValuesforstate = getAvgTempAbsoluteValue(minData, maxData);
