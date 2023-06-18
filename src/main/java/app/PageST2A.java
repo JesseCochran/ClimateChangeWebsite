@@ -292,6 +292,7 @@ public class PageST2A implements Handler {
         String TypeOrder = context.formParam("TypeOrder_drop");
         String SortOrder = context.formParam("SortOrder");
 
+        //validation for form
         if (DataToOutput == null) {
             html = html + "<h3>Please Select Country or Global Data</h3>";
         } else if (DataToOutput.equals("Global")) {
@@ -356,6 +357,7 @@ public class PageST2A implements Handler {
         context.html(html);
     }
 
+    //method to create World Table based off inputs
     private String outputWorld(String dataOutput, String startYear, String endYear) {
         String html = "<div id='tableData'>";
         html = html + "<h3>" + dataOutput + " data for " + startYear + " and " + endYear + "</h3>";
@@ -397,6 +399,7 @@ public class PageST2A implements Handler {
         return html;
     }
 
+    //method to sort inputs into separate table formats
     private String outputCountry(String dataOutput, String startYear, String endYear, String type, String sort) {
         String html = "<div id='tableData'>";
 
@@ -432,6 +435,7 @@ public class PageST2A implements Handler {
         return html;
     }
 
+    //method to create country table based off inputs
     private String countryTableFormat(String html, String dataOutput, String startYear, String endYear, String type,
             String sort) {
         html = html + "<h3>" + dataOutput + " data for " + startYear + " and " + endYear + "</h3>";
@@ -481,6 +485,7 @@ public class PageST2A implements Handler {
         return html;
     }
 
+    //method to calculate correlation 
     private float correlationCalc(long startPop, long endPop, float startTemp, float endTemp) {
         float corr;
         int n = 2;

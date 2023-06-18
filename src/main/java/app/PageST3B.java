@@ -109,6 +109,7 @@ public class PageST3B implements Handler {
         html.append("<p> Please note Cities and States will be compared with respect to their parent country. </p>");
         html.append("<p> Additionally you may choose to compare data by relative change or absolute value </p>");
 
+
         // declaring variables
         int fromDate;
         int duration;
