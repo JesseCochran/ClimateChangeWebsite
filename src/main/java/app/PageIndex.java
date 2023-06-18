@@ -225,6 +225,7 @@ public class PageIndex implements Handler {
     int populationYears = populationTempRanges.get(1).getYear() - populationTempRanges.get(0).getYear();
 
     // Add HTML data specifications(1A)
+    html = html + "<h2>Introduction</h2>";
     html = html
         + "<p>Here is a look at the ranges of data available and the global population and temperatures at the times. The data begins at "
         +

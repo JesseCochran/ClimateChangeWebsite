@@ -172,46 +172,23 @@ public class PageST2A implements Handler {
 
         // Add HTML for the page content
         html = html + """
-                <h2>Focused view of temperature and population change by Country/Global</h2>
+                <h2>Focused view of temperature and population change by Country/World</h2>
                 """;
+        
+        html = html + "<p>This page allows you to look at specific global temperature and population change over a time period" +
+                      " or compare changes in country population and temperature change. As a result you can find ways in which" +
+                      " population change has affected temperature change on a large scale.</p>";
 
-        html = html + "<form action='/page2A.html' method='post' onsubmit='return ReenterData()'>";
+        html = html + "<p><strong>Note:</strong> Only data where population and temperature is available has been used below.</p>";
 
-        // Elements keep values on reload
-        html = html + "<script>";
-        html = html + "   function ReenterData() {";
-        html = html + "       var dataToShow = document.getElementById('CountryWorld_drop').value;";
-        html = html + "       var startYear = document.getElementById('StartYear_drop').value;";
-        html = html + "       var endYear = document.getElementById('EndYear_drop').value;";
-        html = html + "       var dataType = document.getElementById('TypeOrder_drop').value;";
-        html = html + "       var sortOrder = document.querySelector('input[name=SortOrder]:checked').value;";
-        html = html + "       sessionStorage.setItem('dataToShow', dataToShow);";
-        html = html + "       sessionStorage.setItem('startYear', startYear);";
-        html = html + "       sessionStorage.setItem('endYear', endYear);";
-        html = html + "       sessionStorage.setItem('dataType', dataType);";
-        html = html + "       sessionStorage.setItem('sortOrder', sortOrder);";
-        html = html + "       return true;";
-        html = html + "   }";
-        html = html + " window.onload = function() {";
-        html = html + " var dataToShow = sessionStorage.getItem('dataToShow');";
-        html = html + " var startYear = sessionStorage.getItem('startYear');";
-        html = html + " var endYear = sessionStorage.getItem('endYear');";
-        html = html + " var dataType = sessionStorage.getItem('dataType');";
-        html = html + " var sortOrder = sessionStorage.getItem('sortOrder');";
-        html = html + " if (dataToShow) document.getElementById('TempSelection_drop').value = dataToShow;";
-        html = html + " if (startYear) document.getElementById('StartYear_drop').value = startYear;";
-        html = html + " if (endYear) document.getElementById('EndYear_drop').value = endYear;";
-        html = html + " if (dataType) document.getElementById('TypeOrder_drop').value = dataType;";
-        html = html
-                + " if (sortOrder) document.querySelector('input[name=SortOrder][value=' + sortOrder + ']').checked = true;";
-        html = html + " }";
-        html = html + "</script>";
+        html = html + "<form action='/page2A.html' method='post'>";
 
         // Dropdown to select country or world data
-        html = html + "<div class='form-group'>";
-        html = html + "     <label for='CountryWorld_drop'>Select World or Country data:</label>";
+        html = html + "<div>";
+        html = html + "     <label for='CountryWorld_drop'>Select Global or Country data:</label>";
         html = html + "     <select id='CountryWorld_drop' name='CountryWorld_drop' size='1'>";
-        html = html + "     <option>World</option>";
+        html = html + "<option value='' disabled selected hidden>--select country/global--</option>";
+        html = html + "     <option>Global</option>";
         html = html + "     <option>Country</option>";
         html = html + "     </select>";
         html = html + "</div>";
@@ -221,10 +198,10 @@ public class PageST2A implements Handler {
         ArrayList<Climate> years = jdbc.getPopulationYears();
 
         // Dropdown to select start year which updates end year based on result
-        html = html + "<div class='form-group'>";
+        html = html + "<div>";
         html = html + "     <label for='StartYear_drop'>Select the start year:</label>";
-        html = html
-                + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html + "     <select id='StartYear_drop' name='StartYear_drop' onchange='updateEndYearOptions()' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
@@ -273,11 +250,10 @@ public class PageST2A implements Handler {
         html = html + "}";
         html = html + "</script>";
 
-        html = html + "   <div class='form-group'>";
+        html = html + "   <div>";
         html = html + "      <label for='EndYear_drop'>Select the end year:</label>";
-        html = html
-                + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
-
+        html = html + "      <select id='EndYear_drop' name='EndYear_drop' onchange='updateStartYearOptions()' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select year--</option>";
         for (Climate year : years) {
             html = html + "<option>" + year.getYear() + "</option>";
         }
@@ -285,9 +261,10 @@ public class PageST2A implements Handler {
         html = html + "   </div>";
 
         // Dropdown to select how to format the data
-        html = html + "<div class='form-group'>";
+        html = html + "<div>";
         html = html + "      <label for='TypeOrder_drop'>Select how you want to order the data:</label>";
         html = html + "      <select id='TypeOrder_drop' name='TypeOrder_drop' size='1'>";
+        html = html + "<option value='' disabled selected hidden>--select order type--</option>";
         html = html + "      <option>Population Change</option>";
         html = html + "      <option>Temperature Change</option>";
         html = html + "      </select>";
@@ -295,17 +272,18 @@ public class PageST2A implements Handler {
 
         // Sorting order
         html = html + """
+                <div>
                 <p>Sort By</p>
-                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending'>
+                <input type='radio' id='SortOrderAsc' name='SortOrder' value='Ascending' checked>
                 <label class='radio-label' for='SortOrderAsc'>Low to High</label><br>
                 <input type='radio' id='SortOrderDes' name='SortOrder' value='Descending'>
                  <label class='radio-label' for='SortOrderDes'>High to Low</label>
+                 </div>
                     """;
 
         // submit button
-        html = html + "<div>";
         html = html + "<button class='showTable' type='submit' class='btn btn-primary'>Show Table</button>";
-        html = html + "</div>";
+
         html = html + "</form>";
 
         String DataToOutput = context.formParam("CountryWorld_drop");
@@ -315,11 +293,21 @@ public class PageST2A implements Handler {
         String SortOrder = context.formParam("SortOrder");
 
         if (DataToOutput == null) {
-            html = html + "<h3>Please Select Country or World Data</h3>";
-        } else if (DataToOutput.equals("World")) {
+            html = html + "<h3>Please Select Country or Global Data</h3>";
+        } else if (DataToOutput.equals("Global")) {
+            if(StartYear_drop != null) {
             html = html + outputWorld(DataToOutput, StartYear_drop, EndYear_drop);
+            }
+            else {
+                html = html + "<h3>Please Select a Start & End Date</h3>";
+            }
         } else if (DataToOutput.equals("Country")) {
+            if(TypeOrder != null) {
             html = html + outputCountry(DataToOutput, StartYear_drop, EndYear_drop, TypeOrder, SortOrder);
+            }
+            else {
+                html = html + "<h3>Please Select an Order Type</h3>";
+            }
         }
 
         // Close Content div
