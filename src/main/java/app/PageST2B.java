@@ -213,7 +213,7 @@ public class PageST2B implements Handler {
                    temperatures for the time period chosen to be explored. They are ranked from the largest to smallest change with respect to increasing
                    temperatures.
                      </p>
-                     <p> Please note that data is not available for all countries. </p>
+                     <p> <strong>Please Note:</strong> Data is not available for all countries. </p>
 
                 """;
 
