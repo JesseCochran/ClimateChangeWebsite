@@ -1781,7 +1781,8 @@ public class JDBCConnection {
         return climates;
     }
 
-    public ArrayList<Climate> get3ATableData(String geoType, String geoName, String startDate1, String timePeriod, String StartDate2, String StartDate3, String StartDate4, String StartDate5, String sort) {
+    public ArrayList<Climate> get3ATableData(String geoType, String geoName, String startDate1, String timePeriod, 
+    String startDate2, String startDate3, String startDate4, String startDate5, String sort) {
         // Create the ArrayList of Climate objects to return
         ArrayList<Climate> climates = new ArrayList<Climate>();
 
@@ -1796,54 +1797,74 @@ public class JDBCConnection {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
 
+            String sqlSelect = "";
+            String sqlWhere = "";
+            if(geoType.equals("Country")) {
+                sqlSelect = "SELECT (SELECT AVG(ct.AvgTemp) ";
+                sqlWhere = "WHERE c.CountryName = '" + geoName + "' ";
+            }
+            else if(geoType.equals("State")) {
+                sqlSelect = "SELECT (SELECT AVG(s.AvgTemp) ";
+                sqlWhere = "WHERE s.StateName = '" + geoName + "' ";
+            }
+            else if(geoType.equals("City")) {
+                sqlSelect = "SELECT (SELECT AVG(ci.AvgTemp) ";
+                sqlWhere = "WHERE ci.CityName = '" + geoName + "' ";
+            }
+
             // The Query
             String query = "SELECT StartDate, AvgTemp, AvgDiff ";
             query = query + "FROM (SELECT StartDate, AvgTemp,AvgTemp - LAG(AvgTemp) OVER (ORDER BY StartDate) AS AvgDiff ";
-            query = query + "FROM (SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + "FROM (";
+            query = query + sqlSelect;
             query = query + "FROM CountryTemp AS ct ";
             query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
             query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
             query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + "WHERE s.StateName = 'Victoria' ";
-            query = query + "AND ct.Year >= 1960 AND ct.Year <= (1960 + 10)) AS AvgTemp, '1960' AS StartDate ";
+            query = query + sqlWhere;
+            query = query + "AND ct.Year >= " + startDate1 + " AND ct.Year <= (" + startDate1  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate1 + "' AS StartDate ";
 
+            if(startDate2 != null) {
             query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + sqlSelect;
             query = query + "FROM CountryTemp AS ct ";
             query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
             query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
             query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + "WHERE s.StateName = 'Victoria' ";
-            query = query + "AND ct.Year >= 1990 AND ct.Year <= (1990 + 10)) AS AvgTemp, '1990' AS StartDate ";
-
+            query = query + sqlWhere;
+            query = query + "AND ct.Year >= " + startDate2 + " AND ct.Year <= (" + startDate2  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate2 + "' AS StartDate ";
+            }
+            if(startDate3 != null) {
             query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + sqlSelect;
             query = query + "FROM CountryTemp AS ct ";
             query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
             query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
             query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + "WHERE s.StateName = 'Victoria' ";
-            query = query + "AND ct.Year >= 1880 AND ct.Year <= (1880 + 10)) AS AvgTemp, '1880' AS StartDate ";
-
+            query = query + sqlWhere;
+            query = query + "AND ct.Year >= " + startDate3 + " AND ct.Year <= (" + startDate3  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate3 + "' AS StartDate ";
+            }
+            if(startDate4 != null) {
             query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + sqlSelect;
             query = query + "FROM CountryTemp AS ct ";
             query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
             query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
             query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + "WHERE s.StateName = 'Victoria' ";
-            query = query + "AND ct.Year >= 2000 AND ct.Year <= (2000 + 10)) AS AvgTemp, '2000' AS StartDate ";
-
+            query = query + sqlWhere;
+            query = query + "AND ct.Year >= " + startDate4 + " AND ct.Year <= (" + startDate4  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate4 + "' AS StartDate ";
+            }
+            if(startDate5 != null) {
             query = query + "UNION ";
-            query = query + "SELECT (SELECT AVG(s.AvgTemp) ";
+            query = query + sqlSelect;
             query = query + "FROM CountryTemp AS ct ";
             query = query + "JOIN Country AS c ON ct.CountryId = c.CountryId ";
             query = query + "JOIN StateTemp AS s ON s.Year = ct.Year ";
             query = query + "JOIN CityTemp AS ci ON ci.Year = ct.Year ";
-            query = query + "WHERE s.StateName = 'Victoria' ";
-            query = query + "AND ct.Year >= 1900 AND ct.Year <= (1900 + 10)) AS AvgTemp, '1880' AS StartDate ";
-
-            query = query + ")) ORDER BY StartDate ASC; ";
+            query = query + sqlWhere;
+            query = query + "AND ct.Year >= " + startDate5 + " AND ct.Year <= (" + startDate5  + "+" + timePeriod + ")) AS AvgTemp, '" + startDate5 + "' AS StartDate ";
+            }
+            query = query + sort;
 
             // Get Result
             ResultSet results = statement.executeQuery(query);

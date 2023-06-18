@@ -173,7 +173,7 @@ public class PageST3A implements Handler {
         <h2>Identify changes in temperature over extended periods</h2>
         """;
 
-    html = html + "<form action='/page2A.html' method='post'>";
+    html = html + "<form action='/page3A.html' method='post'>";
 
     // geo location drop down
     html = html + "<h4>Choose a Geographic Type & Location</h4>";
@@ -234,7 +234,7 @@ public class PageST3A implements Handler {
     html = html + "<div class='year-container'>";
     html = html + "<div id='startYearLayer'>";
     html = html + "<label for='StartYear1_drop'>Select a Start Year:</label>";
-    html = html + "<select id='StarYear1_drop name='StartYear2_drop' size='1'>";
+    html = html + "<select id='StarYear1_drop' name='StartYear1_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
     for (Climate year : years) {
       html = html + "<option>" + year.getYear() + "</option>";
@@ -243,12 +243,11 @@ public class PageST3A implements Handler {
     html = html + "</div>";
 
     html = html + "<div id='timePeriodLayer'>";
-    html = html + "<label for='TimePeriod_drop'>Select the Time Period:</label>";
-    html = html + "<select id='TimePeriod_drop name='TimePeriod_drop' size='1'>";
+    html = html + "<label for='TimePeriod_drop'>Select the Time Period (in years):</label>";
+    html = html + "<select id='TimePeriod_drop' name='TimePeriod_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select period--</option>";
-    html = html + "<option>1 year</option>";
-    for (int i = 2; i < years.size() + 1; ++i) {
-      html = html + "<option>" + i + " years</option>";
+    for (int i = 1; i < years.size() + 1; ++i) {
+      html = html + "<option>" + i + "</option>";
     }
     html = html + "</select>";
     html = html + "</div>";
@@ -259,7 +258,7 @@ public class PageST3A implements Handler {
     html = html + "<div class='year-container'>";
     html = html + "<div id='addYear1Layer'>";
     html = html + "<label for='StartYear2_drop'>Add a Start Year:</label>";
-    html = html + "<select id='StarYear2_drop name='StartYear2_drop' size='1'>";
+    html = html + "<select id='StarYear2_drop' name='StartYear2_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
     for (Climate year : years) {
       html = html + "<option>" + year.getYear() + "</option>";
@@ -269,7 +268,7 @@ public class PageST3A implements Handler {
 
     html = html + "<div id='addYear2Layer'>";
     html = html + "<label for='StartYear3_drop'>Add a Start Year:</label>";
-    html = html + "<select id='StarYear3_drop name='StartYear3_drop' size='1'>";
+    html = html + "<select id='StarYear3_drop' name='StartYear3_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
     for (Climate year : years) {
       html = html + "<option>" + year.getYear() + "</option>";
@@ -279,7 +278,7 @@ public class PageST3A implements Handler {
 
     html = html + "<div id='addYear3Layer'>";
     html = html + "<label for='StartYear4_drop'>Add a Start Year:</label>";
-    html = html + "<select id='StarYear4_drop name='StartYear4_drop' size='1'>";
+    html = html + "<select id='StarYear4_drop' name='StartYear4_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
     for (Climate year : years) {
       html = html + "<option>" + year.getYear() + "</option>";
@@ -289,7 +288,7 @@ public class PageST3A implements Handler {
 
     html = html + "<div id='addYear4Layer'>";
     html = html + "<label for='StartYear5_drop'>Add a Start Year:</label>";
-    html = html + "<select id='StarYear5_drop name='StartYear5_drop' size='1'>";
+    html = html + "<select id='StarYear5_drop' name='StartYear5_drop' size='1'>";
     html = html + "<option value='' disabled selected hidden>--select year--</option>";
     for (Climate year : years) {
       html = html + "<option>" + year.getYear() + "</option>";
@@ -478,18 +477,35 @@ public class PageST3A implements Handler {
     String country2 = context.formParam("Country2_drop");
     String country3 = context.formParam("Country3_drop");
     String country4 = context.formParam("Country4_drop");
+    String state2 = context.formParam("State2_drop");
+    String state3 = context.formParam("State3_drop");
+    String state4 = context.formParam("State4_drop");
+    String city2 = context.formParam("City2_drop");
+    String city3 = context.formParam("City3_drop");
+    String city4 = context.formParam("City4_drop");
     String sort = context.formParam("SortOrder");
 
-    
+    if(geoLocation == null) {
+      html = html + "<h3>Please Fill Out The Form Above</h3>";
+    }
+    else if(geoLocation.equals("Global")) {
+      //have to do
+      html = html + "<h3>NA</h3>";
+    }
+    else if (geoLocation.equals("Country")) {
+      if(!country1.equals("")) {
+        html = html + outputData(geoLocation, country1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, country2, country3, country4, sort);
+      }
+      else {
+        html = html + "<h3>Please Select At least One Country</h3>";
+      }
+    }
+    else if (geoLocation.equals("State")) {
 
-    /*
-     * if(geoLocation.equals(" ")) {
-     * html = html + "<h3>Please Select a Geographic Type</h3>";
-     * }
-     * else if(geoLocation.equals("Country")) {
-     * 
-     * }
-     */
+    }
+    else if (geoLocation.equals("City")) {
+
+    }
 
     // Close Content div
     html = html + "</div>";
@@ -535,6 +551,166 @@ public class PageST3A implements Handler {
     // DO NOT MODIFY THIS
     // Makes Javalin render the webpage
     context.html(html);
+  }
+
+  private String outputData(String geoType, String geoName1, String startYear1, String timePeriod, String startYear2, 
+  String startYear3, String startYear4, String startYear5, String geoName2, String geoName3, String geoName4, String sort) {
+    
+    String html = "<div class='table-container'>";
+    /*if (geoType.equals("Global")) {
+
+    }*/
+
+    if (geoType.equals("Country") && sort.equals("False")) {
+      sort = ")) ORDER BY StartDate ASC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+    else if (geoType.equals("Country") && sort.equals("Ascending")) {
+      sort = ")) ORDER BY AvgDiff ASC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+    else if (geoType.equals("Country") && sort.equals("Descending")) {
+      sort = ")) ORDER BY AvgDiff DESC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+
+    if (geoType.equals("State") && sort.equals("False")) {
+      sort = ")) ORDER BY StartDate ASC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+    else if (geoType.equals("State") && sort.equals("Ascending")) {
+      sort = ")) ORDER BY AvgDiff ASC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+    else if (geoType.equals("State") && sort.equals("Descending")) {
+      sort = ")) ORDER BY AvgDiff DESC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+
+    if (geoType.equals("City") && sort.equals("False")) {
+      sort = ")) ORDER BY StartDate ASC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+    else if (geoType.equals("City") && sort.equals("Ascending")) {
+      sort = ")) ORDER BY AvgDiff ASC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+    else if (geoType.equals("City") && sort.equals("Descending")) {
+      sort = ")) ORDER BY AvgDiff DESC; ";
+      html = html + tableFormat(geoType, geoName1, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      if (geoName2 != null) {
+        html = html + tableFormat(geoType, geoName2, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName3 != null) {
+        html = html + tableFormat(geoType, geoName3, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+      if (geoName4 != null) {
+        html = html + tableFormat(geoType, geoName4, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+      }
+    }
+
+
+
+    html = html + "</div>";
+    
+    return html;
+  }
+
+  private String tableFormat(String geoType, String geoName, String startYear1, String timePeriod, String startYear2, 
+  String startYear3, String startYear4, String startYear5, String sort) {
+    String html = "<div>";
+    html = html + "<h3>" + geoName + "</h3>";
+
+    html = html + "<table> <tr>";
+    html = html + "<th>Year</th>";
+    html = html + "<th>Average Temperature over " + timePeriod + " years</th>";
+    html = html + "<th>Average Difference </th> </tr>";
+    
+    JDBCConnection jdbc = new JDBCConnection();
+    ArrayList<Climate> tempData = jdbc.get3ATableData(geoType, geoName, startYear1, timePeriod, startYear2, startYear3, startYear4, startYear5, sort);
+
+    for(int i = 0; i < tempData.size(); ++i) {
+      html = html + "<tr> <td>" + tempData.get(i).getYear() + "</td> " + "<td>";
+      html = html + tempData.get(i).getAverageTemperature() + "</td> " + "<td>";
+      html = html + tempData.get(i).getAverageDifference() + "</td> " + "</tr>";
+    }
+
+    html = html + "</table>";
+    html = html + "</div>";
+
+    return html;
   }
 
 }
