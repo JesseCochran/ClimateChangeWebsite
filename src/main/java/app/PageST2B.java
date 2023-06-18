@@ -1,12 +1,9 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.*;
-
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+
+import java.util.ArrayList;
 
 /**
  * Example Index HTML class using Javalin
@@ -21,6 +18,11 @@ public class PageST2B implements Handler {
 
     // URL of this page relative to http://localhost:7001/
     public static final String URL = "/page2B.html";
+
+    public static void sort(ArrayList<Stat> list) {
+
+        list.sort((o2, o1) -> Float.compare(o1.getProportion(), o2.getProportion()));
+    }
 
     @Override
     public void handle(Context context) throws Exception {
@@ -58,11 +60,11 @@ public class PageST2B implements Handler {
         // Add header content block
         html = html
                 + """
-                            <div class='header'>
-                                <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
-                                Climate Change Awareness</h1>
-                            </div>
-                        """;
+                    <div class='header'>
+                        <h1><a href='/'><img src='ClimateLogo.png' class='top-image' alt='Website Logo' height='120' width = '120' style='float: left;'></a>
+                        Climate Change Awareness</h1>
+                    </div>
+                """;
 
         // Add the topnav
         html = html + """
@@ -218,8 +220,9 @@ public class PageST2B implements Handler {
 
         ArrayList<Country> mapOfCountries = JDBCConnection.getCountryNames();
         html += """
+                            
                     <form id='form-id'>
-                    <label for>Select County:</label>
+                    <label for>Select Country:</label>
                     <select name="country" onchange='document.getElementById("form-id").submit();'>
                     <option value="" selected disabled hidden>Country</option>
                 """;
@@ -245,9 +248,11 @@ public class PageST2B implements Handler {
             }
         }
 
-        // dropdown menu for cites or states
 
         html += "</select>";
+
+        // dropdown menu for cites or states
+
         html = html += "<br> <label for>Select Cities or States:</label>";
         html += """
                     <select name='type'>
@@ -278,8 +283,10 @@ public class PageST2B implements Handler {
                 } else {
                     html += "<option value='Cities'>Cities</option> ";
                 }
+
             }
         }
+        // dropdown menues for start and end dates
 
         html += """
                     </select>
@@ -288,7 +295,6 @@ public class PageST2B implements Handler {
                     <option value='' selected disabled hidden>Year</option>
                 """;
 
-        // dropdown menues for start and end dates
 
         for (int i = 1750; i < 2014; i++) {
             if (fromDate == i) {
@@ -302,7 +308,7 @@ public class PageST2B implements Handler {
         }
 
         html += "</select>";
-        html = html += "<br> <label for>Select End Year:</label>";
+        html += "<br> <label for>Select End Year:</label>";
         html += "<select name='to'>";
         html += """
                   <option value="" selected disabled hidden>Year</option>
@@ -388,6 +394,7 @@ public class PageST2B implements Handler {
         // Footer
         html = html
                 + """
+
                             <div class='footer'>
 
                         <div class='footerBlock'>
@@ -439,9 +446,10 @@ public class PageST2B implements Handler {
             for (TempData t : tmp) {
                 if (d.getName().equals(t.getName())) {
                     exists = true;
+                    break;
                 }
             }
-            if (exists == true) {
+            if (exists) {
                 return tmp;
             } else {
                 tmp.add(d);
@@ -457,9 +465,10 @@ public class PageST2B implements Handler {
             for (TempData t : tmp) {
                 if (data.get(i).getName().equals(t.getName())) {
                     exists = true;
+                    break;
                 }
             }
-            if (exists == true) {
+            if (exists) {
                 return tmp;
             } else {
                 tmp.add(data.get(i));
@@ -504,17 +513,12 @@ public class PageST2B implements Handler {
         return stats;
     }
 
-    public static void sort(ArrayList<Stat> list) {
-
-        list.sort((o2, o1) -> Float.compare(o1.getProportion(), o2.getProportion()));
-    }
-
     public String printOutRanking(ArrayList<Stat> stats) {
         sort(stats);
         String html = "";
         int i = 1;
         for (Stat s : stats) {
-            html += "<li>Rank " + i + ". " + s.getName() + " has a change in proportion of: " + s.getProportion()
+            html += "<li>Rank " + i + ". " + s.getId() + " has a change in proportion of: " + s.getProportion()
                     + "</li>";
             i++;
         }
